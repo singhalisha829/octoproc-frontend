@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
-type Props = {}
+const StockInPage = () => {
+  return <div>StockInPage</div>;
+};
 
-const StockInPage = (props: Props) => {
-  return (
-    <div>StockInPage</div>
-  )
-}
-
-export default StockInPage
+export default StockInPage;

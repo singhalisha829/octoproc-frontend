@@ -1,9 +1,11 @@
 import React from "react";
 
-type Props = {};
-
-const DashboardPage = (props: Props) => {
-  return <div>DashboardPage</div>;
+const DashboardPage = () => {
+  return (
+    <>
+      <header></header>
+    </>
+  );
 };
 
 export default DashboardPage;

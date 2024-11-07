@@ -1,8 +1,6 @@
 import React from "react";
 
-type Props = {};
-
-const LedgerPage = (props: Props) => {
+const LedgerPage = () => {
   return <div>LedgerPage</div>;
 };
 
