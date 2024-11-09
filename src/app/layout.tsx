@@ -38,7 +38,13 @@ export default function RootLayout({
           className="w-full h-full"
         >
           <Sidebar />
-          <main className="h-full overflow-y-auto">{children}</main>
+          <div className="h-full overflow-y-auto relative">
+            <div className="absolute inset-0 flex flex-col ">
+              <img src="/bg.png" className="h-[25%] z-[1]" />
+              <div className="bg-[url('/background.png')] z-[1] bg-repeat bg-[length:200px_200px] w-full grow"></div>
+            </div>
+            <main className="z-10 relative">{children}</main>
+          </div>
         </div>
       </body>
     </html>
