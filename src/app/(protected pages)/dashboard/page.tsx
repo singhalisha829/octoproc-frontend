@@ -13,19 +13,22 @@ import { Logs, Share } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { stocksColumns } from "@/app/(protected pages)/dashboard/table-columns";
+import Header from "@/components/globals/Header";
+import Container from "@/components/globals/Container";
 
 const DashboardPage = () => {
   const [filter, setFilter] = useState({
-    type: "",
+    type: "all",
     searchKeyword: "",
   });
+
   return (
-    <div className="px-8 pt-10 grid gap-3 ">
-      <header className="flex flex-col gap-2">
-        <h2 className="font-semibold text-white text-2xl">Available Stocks</h2>
-        <p className="text-white text-lg">Database for all Available Stocks</p>
-      </header>
-      <div className="p-4 flex items-center justify-between bg-white rounded-md gap-5 shadow-md">
+    <>
+      <Header
+        title="Available Stocks"
+        description="Database for all Available Stocks"
+      />
+      <Container className=" flex items-center justify-between  gap-5">
         <div className="flex items-center gap-4 grow">
           <Select
             value={filter.type}
@@ -55,8 +58,8 @@ const DashboardPage = () => {
         <Button variant={"ghost"} size={"lg"}>
           Export <Share />
         </Button>
-      </div>
-      <div className="p-4 grid gap-4 bg-white rounded-md shadow-md">
+      </Container>
+      <Container className="grid gap-4 ">
         <div className="flex items-center justify-between">
           <p className="font-semibold text-lg">Your Available Stocks Report</p>
           <div className="flex items-center gap-2">
@@ -69,8 +72,8 @@ const DashboardPage = () => {
           </div>
         </div>
         <DataTable data={[]} columns={stocksColumns} />
-      </div>
-    </div>
+      </Container>
+    </>
   );
 };
 
