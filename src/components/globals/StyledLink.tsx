@@ -7,12 +7,11 @@ import React from "react";
 type Props = {
   url: string;
   name: string;
-  icon: any;
+  icon: JSX.Element;
 };
 
 const StyledLink = ({ url, name, icon }: Props) => {
   const pathname = usePathname();
-  console.log(pathname);
 
   return (
     <Link
