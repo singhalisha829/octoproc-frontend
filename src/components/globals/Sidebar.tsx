@@ -19,13 +19,7 @@ const links = [
 const Sidebar = () => {
   return (
     <aside className="max-w-xs h-screen shadow-md p-4 flex flex-col gap-4">
-      <Image
-        src={"/logo.png"}
-        alt="logo"
-        layout="responsive"
-        width={200}
-        height={100}
-      />
+      <h1 className="text-4xl font-bold uppercase ">octoproc</h1>
       <div className="flex flex-col gap-2">
         {links.map((link) => (
           <Link
