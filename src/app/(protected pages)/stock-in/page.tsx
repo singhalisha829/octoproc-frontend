@@ -19,7 +19,7 @@ import { useState } from "react";
 
 export type Item = {
   unitPrice: number;
-  quantity: Number;
+  quantity: number;
   partName: string;
   partId: number | string;
 };

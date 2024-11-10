@@ -1,6 +1,5 @@
 import { Column } from "@tanstack/react-table";
 
-import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,14 +7,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
 import {
   ArrowDownIcon,
   ArrowUpDown,
   ArrowUpIcon,
-  Check,
-  EyeOffIcon,
+  EyeOffIcon
 } from "lucide-react";
+import { Button } from "../ui/button";
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {

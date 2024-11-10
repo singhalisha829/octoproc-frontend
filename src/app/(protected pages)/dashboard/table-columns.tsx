@@ -1,9 +1,6 @@
 "use client";
-import React from "react";
 import { DataTableColumnHeader } from "@/components/table/DataTableColumnHeader";
 import { ColumnDef } from "@tanstack/react-table";
-import { Check } from "lucide-react";
-import Link from "next/link";
 
 export type Stock = {
   id: string | number;
