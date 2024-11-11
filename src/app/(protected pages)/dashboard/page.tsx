@@ -16,6 +16,23 @@ import { stocksColumns } from "@/app/(protected pages)/dashboard/table-columns";
 import Header from "@/components/globals/Header";
 import Container from "@/components/globals/Container";
 
+const stocks = [
+  {
+    id: 1,
+    type: "Metal",
+    name: "Demo",
+    description: "test",
+    quantity: 10,
+  },
+  {
+    id: 2,
+    type: "Wood",
+    name: "Demo",
+    description: "test 2",
+    quantity: 20,
+  },
+];
+
 const DashboardPage = () => {
   const [filter, setFilter] = useState({
     type: "all",
@@ -74,7 +91,7 @@ const DashboardPage = () => {
             </Button>
           </div>
         </div>
-        <DataTable data={[]} columns={stocksColumns} />
+        <DataTable data={stocks} columns={stocksColumns} />
       </Container>
     </>
   );
