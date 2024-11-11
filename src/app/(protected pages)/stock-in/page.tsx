@@ -3,10 +3,12 @@ import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
 import StockTable from "@/components/StockPagesComponents/StockTable";
 import { Button } from "@/components/ui/button";
+import { ComboBox } from "@/components/ui/ComboBox";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Stock } from "@/interfaces/Stock";
+import { VENDORS } from "@/utils/constants";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -47,7 +49,13 @@ const StockInPage = () => {
             <Label htmlFor="vendor" className="font-semibold text-gray-700">
               Vendor:
             </Label>
-            <Input id="vendor" placeholder="Search Vendor" />
+            <ComboBox
+              className="max-w-full"
+              searchPlaceholder="Search Vendor"
+              placeholder="Select Vendor"
+              options={VENDORS}
+              emptyLabel="No vendor found"
+            />
           </div>
           <div className="grid gap-1.5">
             <Label htmlFor="Date" className="font-semibold text-gray-700">
