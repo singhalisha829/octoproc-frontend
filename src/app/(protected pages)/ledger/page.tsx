@@ -15,6 +15,8 @@ import {
 import { Share } from "lucide-react";
 import { useState } from "react";
 import { ledgerColumns } from "@/app/(protected pages)/ledger/ledger-columns";
+import { Label } from "@/components/ui/label";
+import { DatePicker } from "@/components/ui/DatePicker";
 
 const LedgerPage = () => {
   const [filter, setFilter] = useState({
@@ -69,9 +71,49 @@ const LedgerPage = () => {
           </Button>
         </div>
 
-        <div className="p-5 grid gap-3">
-          <div className="grid grid-cols-3 gap-5"></div>
-        </div>
+        {isAdding && (
+          <div className="p-5 grid gap-3">
+            <div className="grid grid-cols-3 gap-5">
+              <div className="grid gap-1.5">
+                <Label htmlFor="status" className="font-semibold text-gray-700">
+                  Status:
+                </Label>
+                <Input id="status" placeholder="Search Status" />
+              </div>
+              <div className="grid gap-1.5">
+                <Label htmlFor="Part" className="font-semibold text-gray-700">
+                  Part:
+                </Label>
+                <Input id="Part" placeholder="Search Part ID/Name" />
+              </div>
+              <div className="grid gap-1.5">
+                <Label htmlFor="doc" className="font-semibold text-gray-700">
+                  Document ID:
+                </Label>
+                <Input id="doc" placeholder="Enter Document ID" />
+              </div>
+              <div className="grid gap-1.5">
+                <Label htmlFor="date" className="font-semibold text-gray-700">
+                  Date:
+                </Label>
+                <DatePicker />
+              </div>
+              <div className="grid gap-1.5">
+                <Label
+                  htmlFor="Quantity"
+                  className="font-semibold text-gray-700"
+                >
+                  Quantity:
+                </Label>
+                <Input id="Quantity" type="number" placeholder="0.00" />
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-4">
+              <Button variant={"outline"}>Cancel</Button>
+              <Button variant={"tertiary"}>Save</Button>
+            </div>
+          </div>
+        )}
         <DataTable data={[]} columns={ledgerColumns} />
       </Container>
     </>
