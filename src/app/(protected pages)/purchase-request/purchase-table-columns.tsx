@@ -1,4 +1,5 @@
 "use client";
+import AssignVendor from "@/components/purchaseRequestPage/AssignVendor";
 import { DataTableColumnCell } from "@/components/table/DataTableColumnCell";
 import { DataTableColumnHeader } from "@/components/table/DataTableColumnHeader";
 import { Button } from "@/components/ui/button";
@@ -39,9 +40,7 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
     cell: () => {
       return (
         <div className=" flex items-center justify-end gap-3">
-          <Button variant="link" className="text-zinc-950 font-semibold">
-            Assign Vendor
-          </Button>
+          <AssignVendor vendors={[]} />
           <Button variant="link" className="text-zinc-950 font-semibold">
             Edit <Pen />
           </Button>
