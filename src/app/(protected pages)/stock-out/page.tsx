@@ -29,9 +29,9 @@ const StockOutPage = () => {
 
   return (
     <>
-      <Header title="Stock In" description="Add New Parts to Stock" />
+      <Header title="Stock Out" description="Add New Parts to Stock" />
       <Container className="grid gap-4">
-        <p className="text-lg font-semibold">Your Stock in Items</p>
+        <p className="text-lg font-semibold">Your Stock Out Items</p>
         <div className="grid grid-cols-3 gap-5">
           <div className="grid gap-1.5">
             <Label htmlFor="Purpose" className="font-semibold text-gray-700">

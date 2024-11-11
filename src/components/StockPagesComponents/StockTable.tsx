@@ -78,7 +78,7 @@ const StockTable = ({ items }: Props) => {
               <CircleCheck color="white" size={30} />
             </button>
             <button
-              className="bg-red-500 rounded-full hover:bg-red-600 p-[2px]"
+              className="bg-primary  rounded-full hover:bg-red-600 p-[2px]"
               onClick={(e) => e.stopPropagation()}
             >
               <X color="white" size={24} />
@@ -87,7 +87,7 @@ const StockTable = ({ items }: Props) => {
         </TableRow>
         {items.map((item) => (
           <TableRow key={item.partId} className="grid grid-cols-5">
-            <TableCell></TableCell>
+            <TableCell>{item.partId}</TableCell>
 
             <TableCell className="flex items-center justify-center text-center">
               {item?.partName}
@@ -103,7 +103,7 @@ const StockTable = ({ items }: Props) => {
 
             <TableCell className="flex gap-4 items-center justify-center text-center">
               <button
-                className="bg-red-500 rounded-full hover:bg-red-600 p-1.5"
+                className="bg-primary rounded-full hover:bg-red-600 p-1.5"
                 onClick={(e) => e.stopPropagation()}
               >
                 <Trash color="white" size={20} />
