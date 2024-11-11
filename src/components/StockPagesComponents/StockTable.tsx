@@ -11,6 +11,7 @@ import { CircleCheck, Trash, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Item } from "@/interfaces/Stock";
 import { ComboBox } from "../ui/ComboBox";
+import { PARTS, UNITS } from "@/utils/constants";
 
 const HEADERS = ["Part ID", "Part Name", "Unit Price", "Quantity"];
 
@@ -43,7 +44,7 @@ const StockTable = ({ items }: Props) => {
               searchPlaceholder="Search Part ID/Name"
               emptyLabel="No part found"
               placeholder="Select Part ID/Name"
-              options={[{ label: "part", value: "part1" }]}
+              options={PARTS}
             />
           </TableCell>
 
@@ -63,7 +64,7 @@ const StockTable = ({ items }: Props) => {
                 className="rounded-l-none border-l-0"
                 searchPlaceholder="Search Unit"
                 placeholder="Select Unit"
-                options={[{ label: "part1", value: "part1" }]}
+                options={UNITS}
                 emptyLabel="No unit found"
               />
             </div>

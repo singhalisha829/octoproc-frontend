@@ -18,6 +18,7 @@ import { ledgerColumns } from "@/app/(protected pages)/ledger/ledger-columns";
 import { Label } from "@/components/ui/label";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { ComboBox } from "@/components/ui/ComboBox";
+import { PARTS, STATUSES, UNITS } from "@/utils/constants";
 
 const LedgerPage = () => {
   const [filter, setFilter] = useState({
@@ -82,7 +83,7 @@ const LedgerPage = () => {
                 <ComboBox
                   searchPlaceholder="Search Status"
                   placeholder="Select Status"
-                  options={[{ label: "active", value: "active" }]}
+                  options={STATUSES}
                   emptyLabel="No status found"
                 />
               </div>
@@ -93,7 +94,7 @@ const LedgerPage = () => {
                 <ComboBox
                   searchPlaceholder="Search Part ID/Name"
                   placeholder="Select Part ID/Name"
-                  options={[{ label: "part1", value: "part1" }]}
+                  options={PARTS}
                   emptyLabel="No part found"
                 />
               </div>
@@ -127,7 +128,7 @@ const LedgerPage = () => {
                     className="rounded-l-none border-l-0"
                     searchPlaceholder="Search Unit"
                     placeholder="Select Unit"
-                    options={[{ label: "part1", value: "part1" }]}
+                    options={UNITS}
                     emptyLabel="No unit found"
                   />
                 </div>
