@@ -23,12 +23,16 @@ type ComboBoxProps = {
   options: Array<{ value: string; label: string }>;
   placeholder: string;
   emptyLabel: string;
+  searchPlaceholder: string;
+  className?: string;
 };
 
 export function ComboBox({
   options,
   placeholder = "Select",
   emptyLabel = "No Options Found",
+  searchPlaceholder = "Search...",
+  className,
 }: ComboBoxProps) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
@@ -40,7 +44,7 @@ export function ComboBox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className={cn("max-w-[200px] justify-between", className)}
         >
           {value
             ? options.find((option) => option.value === value)?.label
@@ -50,7 +54,7 @@ export function ComboBox({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." />
+          <CommandInput placeholder={searchPlaceholder} />
           <CommandList>
             <CommandEmpty>{emptyLabel}</CommandEmpty>
             <CommandGroup>
