@@ -1,4 +1,6 @@
 import { Row } from "@tanstack/react-table";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface DataTableColumnCellProps<TData>
@@ -6,14 +8,23 @@ interface DataTableColumnCellProps<TData>
   row: Row<TData>;
   title?: string;
   badge?: JSX.Element;
+  onRowClick?: (router: AppRouterInstance) => void;
 }
 
 export function DataTableColumnCell<TData>({
   title,
   badge,
+  onRowClick,
 }: DataTableColumnCellProps<TData>) {
+  const router = useRouter();
   return (
-    <div className="text-center flex items-center justify-center">
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+        onRowClick && onRowClick(router);
+      }}
+      className="text-center flex items-center justify-center"
+    >
       {badge ? badge : title}
     </div>
   );

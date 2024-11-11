@@ -29,12 +29,21 @@ const PurchaseRequestPage = () => {
     {
       id: 1,
       name: "Demo purchase request",
-      items: [],
+      items: [
+        {
+          unitPrice: 20,
+          quantity: 20,
+          partName: "item",
+          partId: 2,
+        },
+      ],
+      vendors: [],
     },
     {
       id: 2,
       name: "Demo purchase request 2",
       items: [],
+      vendors: [],
     },
   ]);
   return (

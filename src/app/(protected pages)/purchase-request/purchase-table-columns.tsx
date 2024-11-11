@@ -1,7 +1,10 @@
 "use client";
-import AssignVendor from "@/components/purchaseRequestPage/AssignVendor";
+import AssignVendor, {
+  Vendor,
+} from "@/components/purchaseRequestPage/AssignVendor";
 import { DataTableColumnCell } from "@/components/table/DataTableColumnCell";
 import { DataTableColumnHeader } from "@/components/table/DataTableColumnHeader";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Item } from "@/interfaces/Stock";
 import { ColumnDef } from "@tanstack/react-table";
@@ -11,6 +14,7 @@ export type PurchaseRequest = {
   id: string | number;
   name: string;
   items: Item[];
+  vendors: Vendor[];
 };
 
 export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
@@ -20,7 +24,12 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
       <DataTableColumnHeader column={column} title="ID" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={String(row.original.id)} />
+      <DataTableColumnCell
+        row={row}
+        badge={
+          <Badge variant={"tertiary"}>{`#${row.original.id as string}`}</Badge>
+        }
+      />
     ),
   },
 
@@ -30,17 +39,23 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
       <DataTableColumnHeader column={column} title="NAME" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={row.original.name} />
+      <DataTableColumnCell
+        onRowClick={(router) => {
+          router.push(`/purchase-request/${row.original.id}`);
+        }}
+        row={row}
+        title={row.original.name}
+      />
     ),
   },
 
   {
     id: "actions",
     enableHiding: false,
-    cell: () => {
+    cell: ({ row }) => {
       return (
         <div className=" flex items-center justify-end gap-3">
-          <AssignVendor vendors={[]} />
+          <AssignVendor vendors={row.original.vendors} />
           <Button variant="link" className="text-zinc-950 font-semibold">
             Edit <Pen />
           </Button>
