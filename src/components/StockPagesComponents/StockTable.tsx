@@ -13,30 +13,47 @@ import { Item } from "@/interfaces/Stock";
 import { ComboBox } from "../ui/ComboBox";
 import { PARTS, UNITS } from "@/utils/constants";
 
-const HEADERS = ["Part ID", "Part Name", "Unit Price", "Quantity"];
-
 type Props = {
   items: Item[];
+  headers?: Array<{ label: string; value: string }>;
 };
 
-const StockTable = ({ items }: Props) => {
+const StockTable = ({
+  items,
+  headers = [
+    { label: "Part ID", value: "partId" },
+    { label: "Part Name", value: "partName" },
+    { label: "Unit Price", value: "unitPrice" },
+    { label: "Quantity", value: "quantity" },
+  ],
+}: Props) => {
   return (
     <Table>
       <TableHeader>
-        <TableRow className="grid grid-cols-5">
-          {HEADERS.map((header) => (
+        <TableRow
+          className="grid "
+          style={{
+            gridTemplateColumns: `repeat(${headers.length + 1}, 1fr)`,
+          }}
+        >
+          {headers.map((header) => (
             <TableHead
               className="flex items-center justify-center text-center"
-              key={header}
+              key={header.value}
             >
-              {header}
+              {header.label}
             </TableHead>
           ))}
           <TableHead className="flex items-center justify-center text-center"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow className="grid grid-cols-5">
+        <TableRow
+          className="grid"
+          style={{
+            gridTemplateColumns: `repeat(${headers.length + 1}, 1fr)`,
+          }}
+        >
           <TableCell></TableCell>
 
           <TableCell className="flex items-center justify-center text-center">
@@ -48,27 +65,34 @@ const StockTable = ({ items }: Props) => {
             />
           </TableCell>
 
-          <TableCell className="flex items-center justify-center text-center">
-            <Input placeholder="0.00" type="number" className="max-w-[180px]" />
-          </TableCell>
-
-          <TableCell className="flex items-center justify-center text-center">
-            <div className="flex items-center">
+          {headers.find((header) => header.value === "unitPrice") && (
+            <TableCell className="flex items-center justify-center text-center">
               <Input
-                className="rounded-r-none max-w-20"
-                id="Quantity"
-                type="number"
                 placeholder="0.00"
+                type="number"
+                className="max-w-[180px]"
               />
-              <ComboBox
-                className="rounded-l-none border-l-0"
-                searchPlaceholder="Search Unit"
-                placeholder="Select Unit"
-                options={UNITS}
-                emptyLabel="No unit found"
-              />
-            </div>
-          </TableCell>
+            </TableCell>
+          )}
+          {headers.find((header) => header.value === "quantity") && (
+            <TableCell className="flex items-center justify-center text-center">
+              <div className="flex items-center">
+                <Input
+                  className="rounded-r-none max-w-20"
+                  id="Quantity"
+                  type="number"
+                  placeholder="0.00"
+                />
+                <ComboBox
+                  className="rounded-l-none border-l-0"
+                  searchPlaceholder="Search Unit"
+                  placeholder="Select Unit"
+                  options={UNITS}
+                  emptyLabel="No unit found"
+                />
+              </div>
+            </TableCell>
+          )}
 
           <TableCell className="flex gap-4 items-center justify-center text-center">
             <button
@@ -86,20 +110,21 @@ const StockTable = ({ items }: Props) => {
           </TableCell>
         </TableRow>
         {items.map((item) => (
-          <TableRow key={item.partId} className="grid grid-cols-5">
-            <TableCell>{item.partId}</TableCell>
-
-            <TableCell className="flex items-center justify-center text-center">
-              {item?.partName}
-            </TableCell>
-
-            <TableCell className="flex items-center justify-center text-center">
-              {item?.unitPrice}
-            </TableCell>
-
-            <TableCell className="flex items-center justify-center text-center">
-              {String(item?.quantity)}
-            </TableCell>
+          <TableRow
+            key={item.partId}
+            className="grid"
+            style={{
+              gridTemplateColumns: `repeat(${headers.length + 1}, 1fr)`,
+            }}
+          >
+            {headers.map((header) => (
+              <TableCell
+                key={header.value}
+                className="flex items-center justify-center text-center"
+              >
+                {item[header.value as keyof Item] ?? ""}
+              </TableCell>
+            ))}
 
             <TableCell className="flex gap-4 items-center justify-center text-center">
               <button
