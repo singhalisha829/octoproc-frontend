@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import { LayoutDashboard, LogOut, NotebookText } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import StyledLink from "./StyledLink";
 
@@ -19,7 +19,15 @@ const links = [
 const Sidebar = () => {
   return (
     <aside className="max-w-xs h-screen shadow-md p-4 flex flex-col gap-4">
-      <h1 className="text-4xl font-bold uppercase ">octoproc</h1>
+      <h1 className="text-4xl font-bold uppercase ">
+        <Image
+          alt="logo"
+          layout="responsive"
+          src={"/octoproc_logo.png"}
+          width={200}
+          height={100}
+        />
+      </h1>
       <div className="flex flex-col gap-2">
         {links.map((link) => (
           <StyledLink {...link} key={link.url} />
