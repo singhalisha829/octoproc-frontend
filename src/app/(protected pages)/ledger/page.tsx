@@ -17,6 +17,7 @@ import { useState } from "react";
 import { ledgerColumns } from "@/app/(protected pages)/ledger/ledger-columns";
 import { Label } from "@/components/ui/label";
 import { DatePicker } from "@/components/ui/DatePicker";
+import { ComboBox } from "@/components/ui/ComboBox";
 
 const LedgerPage = () => {
   const [filter, setFilter] = useState({
@@ -78,13 +79,23 @@ const LedgerPage = () => {
                 <Label htmlFor="status" className="font-semibold text-gray-700">
                   Status:
                 </Label>
-                <Input id="status" placeholder="Search Status" />
+                <ComboBox
+                  searchPlaceholder="Search Status"
+                  placeholder="Select Status"
+                  options={[{ label: "active", value: "active" }]}
+                  emptyLabel="No status found"
+                />
               </div>
               <div className="grid gap-1.5">
                 <Label htmlFor="Part" className="font-semibold text-gray-700">
                   Part:
                 </Label>
-                <Input id="Part" placeholder="Search Part ID/Name" />
+                <ComboBox
+                  searchPlaceholder="Search Part ID/Name"
+                  placeholder="Select Part ID/Name"
+                  options={[{ label: "part1", value: "part1" }]}
+                  emptyLabel="No part found"
+                />
               </div>
               <div className="grid gap-1.5">
                 <Label htmlFor="doc" className="font-semibold text-gray-700">
@@ -105,7 +116,21 @@ const LedgerPage = () => {
                 >
                   Quantity:
                 </Label>
-                <Input id="Quantity" type="number" placeholder="0.00" />
+                <div className="flex items-center">
+                  <Input
+                    className="rounded-r-none max-w-20"
+                    id="Quantity"
+                    type="number"
+                    placeholder="0.00"
+                  />
+                  <ComboBox
+                    className="rounded-l-none border-l-0"
+                    searchPlaceholder="Search Unit"
+                    placeholder="Select Unit"
+                    options={[{ label: "part1", value: "part1" }]}
+                    emptyLabel="No unit found"
+                  />
+                </div>
               </div>
             </div>
             <div className="flex items-center justify-end gap-4">

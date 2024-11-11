@@ -69,6 +69,9 @@ const DashboardPage = () => {
             <Button asChild variant={"tertiary"}>
               <Link href={"/stock-in"}>Stock In</Link>
             </Button>
+            <Button asChild variant={"tertiary"}>
+              <Link href={"/stock-out"}>Stock Out</Link>
+            </Button>
           </div>
         </div>
         <DataTable data={[]} columns={stocksColumns} />

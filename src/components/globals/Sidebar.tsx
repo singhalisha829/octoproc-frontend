@@ -1,4 +1,10 @@
-import { LayoutDashboard, LogOut, NotebookText } from "lucide-react";
+import {
+  FileText,
+  LayoutDashboard,
+  LogOut,
+  NotebookText,
+  ShoppingCart,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import StyledLink from "./StyledLink";
@@ -8,6 +14,11 @@ const links = [
     name: "Dashboard",
     url: "/dashboard",
     icon: <LayoutDashboard />,
+  },
+  {
+    name: "Purchase Request",
+    url: "/purchase-request",
+    icon: <ShoppingCart />,
   },
   {
     name: "Ledger",
