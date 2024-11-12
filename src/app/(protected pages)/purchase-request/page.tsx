@@ -37,7 +37,7 @@ const PurchaseRequestPage = () => {
           partId: 2,
         },
       ],
-      vendors: [],
+      vendors: [{ id: 1, name: "vendor", quantity: 20 }],
     },
     {
       id: 2,
