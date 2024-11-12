@@ -14,14 +14,14 @@ interface DataTableColumnCellProps<TData>
 export function DataTableColumnCell<TData>({
   title,
   badge,
-  onRowClick,
+  onRowClick = () => {},
 }: DataTableColumnCellProps<TData>) {
   const router = useRouter();
   return (
     <div
       onClick={(e) => {
         e.stopPropagation();
-        onRowClick && onRowClick(router);
+        onRowClick(router);
       }}
       className="text-center flex items-center justify-center"
     >
