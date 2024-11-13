@@ -49,17 +49,41 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
       />
     ),
   },
+  {
+    accessorKey: "items",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="ITEMS ASSIGNED" />
+    ),
+    cell: ({ row }) => {
+      const items = row.original.items;
+
+      let totalItems = 0;
+      items.forEach((item) => (totalItems += item.quantity));
+      const vendors = row.original.vendors;
+      let assignedItems = 0;
+      vendors.forEach((vendor) => (assignedItems += vendor.quantity));
+
+      return (
+        <DataTableColumnCell
+          row={row}
+          title={`${assignedItems}/${totalItems}`}
+        />
+      );
+    },
+  },
 
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const totalItems = row.original.items.length;
+      const items = row.original.items;
+      let totalItems = 0;
       let itemsAssigned = 0;
+      items.forEach((item) => (totalItems += item.quantity));
+
       row.original.vendors.forEach(
         (vendor) => (itemsAssigned += vendor.quantity)
       );
-      console.log(itemsAssigned);
 
       return (
         <div className=" flex items-center justify-end gap-3">
@@ -67,7 +91,11 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
             <AssignVendor vendors={row.original.vendors} />
           )}
           {itemsAssigned === totalItems && (
-            <Button variant="link" className="text-zinc-950 font-semibold" asChild>
+            <Button
+              variant="link"
+              className="text-zinc-950 font-semibold"
+              asChild
+            >
               <Link href={`/purchase-request/view-vendors`}>
                 View Vendors <Eye />
               </Link>
