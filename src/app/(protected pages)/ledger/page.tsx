@@ -26,6 +26,19 @@ const LedgerPage = () => {
     searchKeyword: "",
   });
   const [isAdding, setIsAdding] = useState(false);
+
+  const [ledgers, setLedgers] = useState([
+    {
+      id: 1,
+      type: "Production Return",
+      partId: "INVC0070135",
+      date: "2024-11-10",
+      quantity: 2000,
+      balanceQuantiy: 1200,
+      documentId: 12,
+      createdBy: "techpix",
+    },
+  ]);
   return (
     <>
       <Header title="Ledger" description="Database for all Ledgers" />
@@ -135,12 +148,22 @@ const LedgerPage = () => {
               </div>
             </div>
             <div className="flex items-center justify-end gap-4">
-              <Button variant={"outline"}>Cancel</Button>
-              <Button variant={"tertiary"}>Save</Button>
+              <Button
+                variant={"outline"}
+                onClick={() => setIsAdding((prev) => !prev)}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => setIsAdding((prev) => !prev)}
+                variant={"tertiary"}
+              >
+                Save
+              </Button>
             </div>
           </div>
         )}
-        <DataTable data={[]} columns={ledgerColumns} />
+        <DataTable data={ledgers} columns={ledgerColumns} />
       </Container>
     </>
   );
