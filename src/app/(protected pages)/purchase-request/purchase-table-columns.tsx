@@ -42,52 +42,52 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
     cell: ({ row }) => (
       <DataTableColumnCell
         onRowClick={(router) => {
-          router.push(`/purchase-request/${row.original.id}`);
+          router.push(`/purchase-request/view/${row.original.id}`);
         }}
         row={row}
         title={row.original.name}
       />
     ),
   },
-  {
-    accessorKey: "items",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ITEMS ASSIGNED" />
-    ),
-    cell: ({ row }) => {
-      const items = row.original.items;
+  // {
+  //   accessorKey: "items",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="ITEMS ASSIGNED" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const items = row.original.items;
 
-      let totalItems = 0;
-      items.forEach((item) => (totalItems += item.quantity));
-      const vendors = row.original.vendors;
-      let assignedItems = 0;
-      vendors.forEach((vendor) => (assignedItems += vendor.quantity));
+  //     let totalItems = 0;
+  //     items.forEach((item) => (totalItems += item.quantity));
+  //     const vendors = row.original.vendors;
+  //     let assignedItems = 0;
+  //     vendors.forEach((vendor) => (assignedItems += vendor.quantity));
 
-      return (
-        <DataTableColumnCell
-          row={row}
-          title={`${assignedItems}/${totalItems}`}
-        />
-      );
-    },
-  },
+  //     return (
+  //       <DataTableColumnCell
+  //         row={row}
+  //         title={`${assignedItems}/${totalItems}`}
+  //       />
+  //     );
+  //   },
+  // },
 
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const items = row.original.items;
-      let totalItems = 0;
-      let itemsAssigned = 0;
-      items.forEach((item) => (totalItems += item.quantity));
+      // const items = row.original.items;
+      // let totalItems = 0;
+      // let itemsAssigned = 0;
+      // items.forEach((item) => (totalItems += item.quantity));
 
-      row.original.vendors.forEach(
-        (vendor) => (itemsAssigned += vendor.quantity)
-      );
+      // row.original.vendors.forEach(
+      //   (vendor) => (itemsAssigned += vendor.quantity)
+      // );
 
       return (
         <div className=" flex items-center justify-end gap-3">
-          {itemsAssigned !== totalItems && (
+          {/* {itemsAssigned !== totalItems && (
             <AssignVendor vendors={row.original.vendors} />
           )}
           {itemsAssigned === totalItems && (
@@ -100,7 +100,7 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
                 View Vendors <Eye />
               </Link>
             </Button>
-          )}
+          )} */}
           <Button variant="link" className="text-zinc-950 font-semibold">
             Edit <Pen />
           </Button>

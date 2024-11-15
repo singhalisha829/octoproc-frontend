@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -12,10 +12,13 @@ import { Input } from "@/components/ui/input";
 import { Item } from "@/interfaces/Stock";
 import { ComboBox } from "../ui/ComboBox";
 import { PARTS, UNITS } from "@/utils/constants";
+import { Badge } from "../ui/badge";
 
 type Props = {
   items: Item[];
   headers?: Array<{ label: string; value: string }>;
+  addItem?: (item: Item) => void;
+  deleteItem?: (item: Item) => void;
 };
 
 const StockTable = ({
@@ -26,7 +29,17 @@ const StockTable = ({
     { label: "Unit Price", value: "unitPrice" },
     { label: "Quantity", value: "quantity" },
   ],
+  addItem = () => {},
+  deleteItem = () => {},
 }: Props) => {
+  const [itemDetails, setItemDetails] = useState<Item>({
+    partId: "",
+    partName: "",
+    quantity: 0,
+    unitPrice: 0,
+    quantityUnit: "",
+  });
+
   return (
     <Table>
       <TableHeader>
@@ -54,7 +67,11 @@ const StockTable = ({
             gridTemplateColumns: `repeat(${headers.length + 1}, 1fr)`,
           }}
         >
-          <TableCell></TableCell>
+          <TableCell className="flex items-center justify-center text-center">
+            {itemDetails.partId && (
+              <Badge variant={"tertiary"}>{itemDetails.partId}</Badge>
+            )}
+          </TableCell>
 
           <TableCell className="flex items-center justify-center text-center">
             <ComboBox
@@ -62,6 +79,13 @@ const StockTable = ({
               emptyLabel="No part found"
               placeholder="Select Part ID/Name"
               options={PARTS}
+              onSelect={(value, valueLabel) => {
+                setItemDetails((prev) => ({
+                  ...prev,
+                  partId: value,
+                  partName: valueLabel,
+                }));
+              }}
             />
           </TableCell>
 
@@ -71,6 +95,13 @@ const StockTable = ({
                 placeholder="0.00"
                 type="number"
                 className="max-w-[180px]"
+                value={itemDetails.unitPrice}
+                onChange={(e) =>
+                  setItemDetails((prev) => ({
+                    ...prev,
+                    unitPrice: Number(e.target.value),
+                  }))
+                }
               />
             </TableCell>
           )}
@@ -82,6 +113,13 @@ const StockTable = ({
                   id="Quantity"
                   type="number"
                   placeholder="0.00"
+                  value={itemDetails.quantity}
+                  onChange={(e) =>
+                    setItemDetails((prev) => ({
+                      ...prev,
+                      quantity: Number(e.target.value),
+                    }))
+                  }
                 />
                 <ComboBox
                   className="rounded-l-none border-l-0"
@@ -89,6 +127,12 @@ const StockTable = ({
                   placeholder="Select Unit"
                   options={UNITS}
                   emptyLabel="No unit found"
+                  onSelect={(value, valueLabel) => {
+                    setItemDetails((prev) => ({
+                      ...prev,
+                      quantityUnit: value,
+                    }));
+                  }}
                 />
               </div>
             </TableCell>
@@ -97,13 +141,32 @@ const StockTable = ({
           <TableCell className="flex gap-4 items-center justify-center text-center">
             <button
               className="bg-green-500 rounded-full hover:bg-green-600"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                addItem(itemDetails);
+                setItemDetails({
+                  partId: "",
+                  partName: "",
+                  quantity: 0,
+                  unitPrice: 0,
+                  quantityUnit: "",
+                });
+              }}
             >
               <CircleCheck color="white" size={30} />
             </button>
             <button
               className="bg-primary  rounded-full hover:bg-red-600 p-[2px]"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                setItemDetails({
+                  partId: "",
+                  partName: "",
+                  quantity: 0,
+                  unitPrice: 0,
+                  quantityUnit: "",
+                });
+              }}
             >
               <X color="white" size={24} />
             </button>
@@ -122,14 +185,18 @@ const StockTable = ({
                 key={header.value}
                 className="flex items-center justify-center text-center"
               >
-                {item[header.value as keyof Item] ?? ""}
+                {item[header.value as keyof Item] ?? ""}{" "}
+                {header.value === "quantity" && item.quantityUnit}
               </TableCell>
             ))}
 
             <TableCell className="flex gap-4 items-center justify-center text-center">
               <button
                 className="bg-primary rounded-full hover:bg-red-600 p-1.5"
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteItem(item);
+                }}
               >
                 <Trash color="white" size={20} />
               </button>

@@ -4,10 +4,31 @@ import Header from "@/components/globals/Header";
 import StockTable from "@/components/StockPagesComponents/StockTable";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useCallback, useState } from "react";
+import { PurchaseRequest } from "../purchase-table-columns";
+import { Item } from "@/interfaces/Stock";
 
 const CreatePurchaseRequestPage = () => {
   const router = useRouter();
+  const [purchaseRequest, setPurchaseRequest] = useState<PurchaseRequest>({
+    id: 1,
+    name: "Demo purchase request",
+    items: [],
+    vendors: [{ id: 1, name: "Demo Vendor", quantity: 20 }],
+  });
+
+  const addItem = useCallback((item: Item) => {
+    setPurchaseRequest((prev) => ({ ...prev, items: [...prev.items, item] }));
+  }, []);
+
+  const deleteItem = useCallback((item: Item) => {
+    const items = [...purchaseRequest.items];
+
+    setPurchaseRequest((prev) => ({
+      ...prev,
+      items: items.filter((i) => i.partId !== item.partId),
+    }));
+  }, []);
   return (
     <>
       <Header
@@ -18,7 +39,9 @@ const CreatePurchaseRequestPage = () => {
         <p className="text-lg font-semibold">Your Purchase Request Items</p>
 
         <StockTable
-          items={[]}
+          items={purchaseRequest.items}
+          addItem={addItem}
+          deleteItem={deleteItem}
           headers={[
             { label: "Part ID", value: "partId" },
             { label: "Part Name", value: "partName" },
