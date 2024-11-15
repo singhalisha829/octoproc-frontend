@@ -1,4 +1,5 @@
 "use client";
+import AssignVendor from "@/components/purchaseRequestPage/AssignVendor";
 import { DataTableColumnCell } from "@/components/table/DataTableColumnCell";
 import { DataTableColumnHeader } from "@/components/table/DataTableColumnHeader";
 import { Badge } from "@/components/ui/badge";
@@ -51,5 +52,17 @@ export const vendorColumns: ColumnDef<Item>[] = [
     cell: ({ row }) => (
       <DataTableColumnCell row={row} title={String(row.original.quantity)} />
     ),
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+
+    cell: () => {
+      return (
+        <div className="flex items-center justify-end">
+          <AssignVendor vendors={[]} />
+        </div>
+      );
+    },
   },
 ];
