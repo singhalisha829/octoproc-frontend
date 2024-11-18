@@ -3,9 +3,9 @@ import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
 import { DataTable } from "@/components/table/data-table";
 import { Button } from "@/components/ui/button";
+import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
 import { useState } from "react";
-import { PurchaseRequest } from "../purchase-table-columns";
-import { vendorColumns } from "./view-vendor-columns";
+import { viewVendorColumns } from "./view-vendor-columns";
 
 const ViewVendorsPage = () => {
   const [purchaseRequest, setPurchaseRequest] = useState<PurchaseRequest>({
@@ -18,8 +18,17 @@ const ViewVendorsPage = () => {
         partName: "item",
         partId: 2,
       },
+      {
+        unitPrice: 20,
+        quantity: 20,
+        partName: "item",
+        partId: 2,
+      },
     ],
-    vendors: [{ id: 1, name: "Demo Vendor", quantity: 20 }],
+    vendors: [
+      { id: 1, name: "Demo Vendor", quantity: 20 },
+      { id: 2, name: "Demo Vendor", quantity: 20 },
+    ],
   });
   return (
     <>
@@ -37,7 +46,7 @@ const ViewVendorsPage = () => {
               </Button>
             </div>
           </div>
-          <DataTable data={purchaseRequest.items} columns={vendorColumns} />
+          <DataTable data={purchaseRequest.items} columns={viewVendorColumns} />
         </Container>
       ))}
     </>

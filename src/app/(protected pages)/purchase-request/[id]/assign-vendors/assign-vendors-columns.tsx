@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Item } from "@/interfaces/Stock";
 import { ColumnDef } from "@tanstack/react-table";
 
-export const vendorColumns: ColumnDef<Item>[] = [
+export const assignVendorColumns: ColumnDef<Item>[] = [
   {
     accessorKey: "partId",
     header: ({ column }) => (

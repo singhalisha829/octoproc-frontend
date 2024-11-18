@@ -3,9 +3,10 @@ import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
 import { DataTable } from "@/components/table/data-table";
 import { useState } from "react";
-import { PurchaseRequest } from "../../purchase-table-columns";
-import { vendorColumns } from "../../view-vendors/view-vendor-columns";
+
+import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
 import { useParams } from "next/navigation";
+import { viewPrColumns } from "./view-pr-columns";
 
 const ViewItems = () => {
   const params = useParams<{
@@ -22,6 +23,13 @@ const ViewItems = () => {
         quantityUnit: "",
         partId: 2,
       },
+      {
+        unitPrice: 20,
+        quantity: 20,
+        partName: "item",
+        quantityUnit: "",
+        partId: 2,
+      },
     ],
     vendors: [{ id: 1, name: "Demo Vendor", quantity: 20 }],
   });
@@ -31,7 +39,7 @@ const ViewItems = () => {
       <Header title={params?.purchaseRequestId} description="" />
       <Container className="grid gap-2">
         <p className="text-xl font-semibold">Items:</p>
-        <DataTable data={purchaseRequest.items} columns={vendorColumns} />
+        <DataTable data={purchaseRequest.items} columns={viewPrColumns} />
       </Container>
     </>
   );

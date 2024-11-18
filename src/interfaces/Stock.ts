@@ -12,3 +12,9 @@ export type Stock = {
   date: string;
   items: Item[];
 };
+
+export type Vendor = {
+  name: string;
+  id: number | string;
+  quantity: number;
+};

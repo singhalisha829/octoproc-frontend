@@ -21,12 +21,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Vendor } from "@/interfaces/Stock";
 
-export type Vendor = {
-  name: string;
-  id: number | string;
-  quantity: number;
-};
 
 type Props = {
   vendors: Array<Vendor>;

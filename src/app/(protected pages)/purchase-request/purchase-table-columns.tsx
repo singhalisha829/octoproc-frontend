@@ -1,22 +1,13 @@
 "use client";
-import AssignVendor, {
-  Vendor,
-} from "@/components/purchaseRequestPage/AssignVendor";
 import { DataTableColumnCell } from "@/components/table/DataTableColumnCell";
 import { DataTableColumnHeader } from "@/components/table/DataTableColumnHeader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Item } from "@/interfaces/Stock";
+import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
 import { ColumnDef } from "@tanstack/react-table";
-import { Eye, Pen } from "lucide-react";
-import Link from "next/link";
+import { Pen } from "lucide-react";
 
-export type PurchaseRequest = {
-  id: string | number;
-  name: string;
-  items: Item[];
-  vendors: Vendor[];
-};
+
 
 export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
   {
@@ -42,7 +33,7 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
     cell: ({ row }) => (
       <DataTableColumnCell
         onRowClick={(router) => {
-          router.push(`/purchase-request/view/${row.original.id}`);
+          router.push(`/purchase-request/${row.original.id}`);
         }}
         row={row}
         title={row.original.name}

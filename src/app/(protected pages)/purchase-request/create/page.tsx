@@ -5,8 +5,8 @@ import StockTable from "@/components/StockPagesComponents/StockTable";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useState } from "react";
-import { PurchaseRequest } from "../purchase-table-columns";
 import { Item } from "@/interfaces/Stock";
+import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
 
 const CreatePurchaseRequestPage = () => {
   const router = useRouter();
@@ -61,7 +61,9 @@ const CreatePurchaseRequestPage = () => {
         </Button>
         <Button
           onClick={() => {
-            router.back();
+            router.push(
+              `/purchase-request/${purchaseRequest.id}/assign-vendors`
+            );
           }}
           size={"lg"}
           variant={"tertiary"}

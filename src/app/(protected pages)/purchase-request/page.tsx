@@ -15,10 +15,8 @@ import React, { useState } from "react";
 
 import Header from "@/components/globals/Header";
 import Container from "@/components/globals/Container";
-import {
-  PurchaseRequest,
-  purchaseRequestColumns,
-} from "./purchase-table-columns";
+import { purchaseRequestColumns } from "./purchase-table-columns";
+import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
 
 const PurchaseRequestPage = () => {
   const [filter, setFilter] = useState({
