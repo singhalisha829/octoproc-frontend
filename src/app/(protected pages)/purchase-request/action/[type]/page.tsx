@@ -3,17 +3,38 @@ import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
 import StockTable from "@/components/StockPagesComponents/StockTable";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useCallback, useState } from "react";
 import { Item } from "@/interfaces/Stock";
 import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
 
 const CreatePurchaseRequestPage = () => {
   const router = useRouter();
+  const { type } = useParams<{
+    type: string;
+  }>();
   const [purchaseRequest, setPurchaseRequest] = useState<PurchaseRequest>({
     id: 1,
     name: "Demo purchase request",
-    items: [],
+    items:
+      type === "edit"
+        ? [
+            {
+              unitPrice: 20,
+              quantity: 20,
+              partName: "item",
+              quantityUnit: "V",
+              partId: 4,
+            },
+            {
+              unitPrice: 30,
+              quantity: 10,
+              partName: "item2",
+              quantityUnit: "Kg",
+              partId: 2,
+            },
+          ]
+        : [],
     vendors: [{ id: 1, name: "Demo Vendor", quantity: 20 }],
   });
 

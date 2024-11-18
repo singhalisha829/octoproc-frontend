@@ -93,7 +93,7 @@ const PurchaseRequestPage = () => {
           </p>
           <div className="flex items-center gap-2">
             <Button asChild variant={"tertiary"}>
-              <Link href={"/purchase-request/create"}>
+              <Link href={"/purchase-request/action/create"}>
                 Create Purchase Request
               </Link>
             </Button>

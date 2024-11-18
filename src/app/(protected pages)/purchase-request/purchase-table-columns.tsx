@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
 import { ColumnDef } from "@tanstack/react-table";
 import { Pen } from "lucide-react";
-
-
+import Link from "next/link";
 
 export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
   {
@@ -92,8 +91,14 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
               </Link>
             </Button>
           )} */}
-          <Button variant="link" className="text-zinc-950 font-semibold">
-            Edit <Pen />
+          <Button
+            asChild
+            variant="link"
+            className="text-zinc-950 font-semibold"
+          >
+            <Link href={"/purchase-request/action/edit"}>
+              Edit <Pen />
+            </Link>
           </Button>
         </div>
       );

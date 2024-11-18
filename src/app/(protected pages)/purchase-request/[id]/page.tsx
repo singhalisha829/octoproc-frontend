@@ -28,7 +28,7 @@ const ViewItems = () => {
         quantity: 20,
         partName: "item",
         quantityUnit: "",
-        partId: 2,
+        partId: 3,
       },
     ],
     vendors: [{ id: 1, name: "Demo Vendor", quantity: 20 }],

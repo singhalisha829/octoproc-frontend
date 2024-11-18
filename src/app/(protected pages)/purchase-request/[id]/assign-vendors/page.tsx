@@ -30,7 +30,7 @@ const AssignVendors = () => {
         quantity: 10,
         partName: "item2",
         quantityUnit: "Kg",
-        partId: 2,
+        partId: 4,
       },
     ],
     vendors: [{ id: 1, name: "Demo Vendor", quantity: 20 }],
