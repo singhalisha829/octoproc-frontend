@@ -15,7 +15,7 @@ export const assignVendorColumns: ColumnDef<Item>[] = [
       (row.original.assignedVendors?.length || 0) > 0 && (
         <button
           onClick={row.getToggleExpandedHandler()}
-          className="text-blue-500"
+          className="text-primary"
         >
           {row.getIsExpanded() ? <ChevronDown /> : <ChevronRight />}
         </button>
