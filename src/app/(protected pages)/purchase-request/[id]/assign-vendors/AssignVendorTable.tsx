@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import { Item } from "@/interfaces/Stock";
 import {
+  ColumnDef,
   flexRender,
   getCoreRowModel,
   getExpandedRowModel,
@@ -16,13 +17,15 @@ import {
 } from "@tanstack/react-table";
 import { EllipsisVertical } from "lucide-react";
 import * as React from "react";
-const AssignVendorTable = ({
+
+interface AssignVendorTableProps {
+  columns: ColumnDef<Item>[];
+  data: Item[];
+}
+export default function AssignVendorTable({
   data,
   columns,
-}: {
-  data: Item[];
-  columns: any;
-}) => {
+}: AssignVendorTableProps) {
   const table = useReactTable({
     data,
     columns,
@@ -91,6 +94,4 @@ const AssignVendorTable = ({
       </TableBody>
     </Table>
   );
-};
-
-export default AssignVendorTable;
+}
