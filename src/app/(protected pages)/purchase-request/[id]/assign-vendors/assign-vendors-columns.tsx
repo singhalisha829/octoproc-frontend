@@ -57,10 +57,10 @@ export const assignVendorColumns: ColumnDef<Item>[] = [
     id: "actions",
     enableHiding: false,
 
-    cell: () => {
+    cell: ({ row }) => {
       return (
         <div className="flex items-center justify-end">
-          <AssignVendor vendors={[]} />
+          <AssignVendor vendors={[]} maxQuantity={row.original.quantity} />
         </div>
       );
     },

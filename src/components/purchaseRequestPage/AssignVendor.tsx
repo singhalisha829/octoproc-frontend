@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ComboBox } from "@/components/ui/ComboBox";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -12,7 +13,7 @@ import { CircleCheck } from "lucide-react";
 import { useCallback, useState } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-
+import { toast } from "sonner";
 import {
   Table,
   TableBody,
@@ -23,12 +24,12 @@ import {
 } from "@/components/ui/table";
 import { Vendor } from "@/interfaces/Stock";
 
-
 type Props = {
   vendors: Array<Vendor>;
+  maxQuantity: number;
 };
 
-const AssignVendor = ({ vendors }: Props) => {
+const AssignVendor = ({ vendors, maxQuantity }: Props) => {
   const [assignedVendors, setAssignedVendors] = useState<Vendor[]>(vendors);
   const [vendorInfo, setVendorInfo] = useState({
     name: "",
@@ -69,16 +70,43 @@ const AssignVendor = ({ vendors }: Props) => {
 
             <div className="grid gap-1.5">
               <Label asChild className="font-semibold text-gray-700">
-                <p>Quantity:</p>
+                <p>
+                  Quantity (max:{" "}
+                  {maxQuantity -
+                    assignedVendors?.reduce(
+                      (count, vendor) => count + Number(vendor.quantity || 0),
+                      0
+                    )}
+                  ):
+                </p>
               </Label>
               <Input
+                maxLength={
+                  maxQuantity -
+                  assignedVendors?.reduce(
+                    (count, vendor) => count + Number(vendor.quantity || 0),
+                    0
+                  )
+                }
                 value={vendorInfo.quantity}
-                onChange={(e) =>
+                onChange={(e) => {
+                  if (Number(e.target.value) > maxQuantity) {
+                    return toast.error(
+                      `Please enter a value less than ${
+                        maxQuantity -
+                        assignedVendors?.reduce(
+                          (count, vendor) =>
+                            count + Number(vendor.quantity || 0),
+                          0
+                        )
+                      }`
+                    );
+                  }
                   setVendorInfo((prev) => ({
                     ...prev,
                     quantity: Number(e.target.value),
-                  }))
-                }
+                  }));
+                }}
                 placeholder="0"
                 type="number"
               />
@@ -88,6 +116,12 @@ const AssignVendor = ({ vendors }: Props) => {
                 className="bg-green-500 rounded-full hover:bg-green-600"
                 onClick={(e) => {
                   e.stopPropagation();
+                  if (!vendorInfo.id || !vendorInfo.name) {
+                    return toast.error("Please choose vendor.");
+                  }
+                  if (!vendorInfo.quantity) {
+                    return toast.error("Please enter quantity.");
+                  }
                   setAssignedVendors((prev) => [...prev, vendorInfo]);
                 }}
               >
@@ -127,9 +161,11 @@ const AssignVendor = ({ vendors }: Props) => {
               ))}
             </TableBody>
           </Table>
-          <Button className="mt-5" variant={"tertiary"} size={"lg"}>
-            Submit
-          </Button>
+          <DialogClose asChild>
+            <Button className="mt-5" variant={"tertiary"} size={"lg"}>
+              Submit
+            </Button>
+          </DialogClose>
         </div>
       </DialogContent>
     </Dialog>
