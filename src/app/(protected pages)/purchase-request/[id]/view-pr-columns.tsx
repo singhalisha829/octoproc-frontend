@@ -6,9 +6,24 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Item } from "@/interfaces/Stock";
 import { ColumnDef } from "@tanstack/react-table";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 export const viewPrColumns: ColumnDef<Item>[] = [
+  {
+    id: "expander",
+    header: () => null,
+    cell: ({ row }) =>
+      (row.original.assignedVendors?.length || 0) > 0 && (
+        <button
+          onClick={row.getToggleExpandedHandler()}
+          className="text-blue-500"
+        >
+          {row.getIsExpanded() ? <ChevronDown /> : <ChevronRight />}
+        </button>
+      ),
+  },
+
   {
     accessorKey: "partId",
     header: ({ column }) => (
@@ -66,23 +81,5 @@ export const viewPrColumns: ColumnDef<Item>[] = [
         title={`${row.original.quantity}/${String(row.original.quantity)}`}
       />
     ),
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-
-    cell: ({ row }) => {
-      return (
-        <div className="flex items-center justify-end">
-          <Button asChild variant={"link"}>
-            <Link
-              href={`/purchase-request/${row.original.partId}/view-vendors`}
-            >
-              View Vendors
-            </Link>
-          </Button>
-        </div>
-      );
-    },
   },
 ];

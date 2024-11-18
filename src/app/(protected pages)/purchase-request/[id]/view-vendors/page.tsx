@@ -31,8 +31,8 @@ const ViewVendorsPage = () => {
       { id: 1, name: "Demo Vendor", quantity: 20 },
       {
         id: 2,
-        name: "Demo Vendor",
-        quantity: 20,
+        name: "ABC PVT LTD",
+        quantity: 10,
       },
     ],
   });
@@ -49,9 +49,7 @@ const ViewVendorsPage = () => {
             </div>
             <div className="flex items-center gap-2">
               <Button asChild variant={"tertiary"}>
-                <Link href={"/purchase-request"}>
-                Generate Purchase Order
-                </Link>
+                <Link href={"/purchase-request"}>Generate Purchase Order</Link>
               </Button>
             </div>
           </div>
