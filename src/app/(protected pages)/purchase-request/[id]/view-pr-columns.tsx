@@ -56,17 +56,31 @@ export const viewPrColumns: ColumnDef<Item>[] = [
     ),
   },
   {
+    accessorKey: "assignedquantity",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title=" AssignedQuantity" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell
+        row={row}
+        title={`${row.original.quantity}/${String(row.original.quantity)}`}
+      />
+    ),
+  },
+  {
     id: "actions",
     enableHiding: false,
 
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return (
         <div className="flex items-center justify-end">
           <Button asChild variant={"link"}>
-            <Link href={`/purchase-request/${row.original.partId}/view-vendors`}>
-            View Vendors
+            <Link
+              href={`/purchase-request/${row.original.partId}/view-vendors`}
+            >
+              View Vendors
             </Link>
-            </Button>
+          </Button>
         </div>
       );
     },
