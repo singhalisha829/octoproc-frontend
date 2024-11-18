@@ -45,7 +45,7 @@ const AssignVendor = ({ vendors, maxQuantity }: Props) => {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="link" className="text-zinc-950 font-semibold">
-          Assign Vendor
+          {vendors.length > 0 ? "Edit" : "Assign "} Vendor
         </Button>
       </DialogTrigger>
       <DialogContent>

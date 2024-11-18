@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
 import { useParams, useRouter } from "next/navigation";
 import { assignVendorColumns } from "./assign-vendors-columns";
+import AssignVendorTable from "./AssignVendorTable";
 
 const AssignVendors = () => {
   const params = useParams<{
@@ -24,6 +25,7 @@ const AssignVendors = () => {
         partName: "item",
         quantityUnit: "V",
         partId: 2,
+        assignedVendors: [{ id: 1, name: "Demo Vendor", quantity: 20 }],
       },
       {
         unitPrice: 30,
@@ -41,7 +43,10 @@ const AssignVendors = () => {
       <Header title={params?.id} description="" />
       <Container className="grid gap-2">
         <p className="text-xl font-semibold">Items:</p>
-        <DataTable data={purchaseRequest.items} columns={assignVendorColumns} />
+        <AssignVendorTable
+          data={purchaseRequest.items}
+          columns={assignVendorColumns}
+        />
       </Container>
       <Container className="fixed bottom-0 left-[320px] right-0 shadow-inner flex rounded-none items-center justify-end gap-2">
         <Button
@@ -55,7 +60,7 @@ const AssignVendors = () => {
         </Button>
         <Button
           onClick={() => {
-            router.push(`/purchase-request`);
+            router.push(`/purchase-request/${purchaseRequest.id}/view-vendors`);
           }}
           size={"lg"}
           variant={"tertiary"}

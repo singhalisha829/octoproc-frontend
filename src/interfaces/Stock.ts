@@ -4,6 +4,7 @@ export type Item = {
   quantityUnit?: string;
   partName: string;
   partId: number | string;
+  assignedVendors?: Vendor[];
 };
 
 export type Stock = {

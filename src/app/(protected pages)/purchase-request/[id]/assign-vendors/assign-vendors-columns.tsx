@@ -5,8 +5,23 @@ import { DataTableColumnHeader } from "@/components/table/DataTableColumnHeader"
 import { Badge } from "@/components/ui/badge";
 import { Item } from "@/interfaces/Stock";
 import { ColumnDef } from "@tanstack/react-table";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 export const assignVendorColumns: ColumnDef<Item>[] = [
+  {
+    id: "expander",
+    header: () => null,
+    cell: ({ row }) =>
+      (row.original.assignedVendors?.length || 0) > 0 && (
+        <button
+          onClick={row.getToggleExpandedHandler()}
+          className="text-blue-500"
+        >
+          {row.getIsExpanded() ? <ChevronDown /> : <ChevronRight />}
+        </button>
+      ),
+  },
+
   {
     accessorKey: "partId",
     header: ({ column }) => (
@@ -60,7 +75,10 @@ export const assignVendorColumns: ColumnDef<Item>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex items-center justify-end">
-          <AssignVendor vendors={[]} maxQuantity={row.original.quantity} />
+          <AssignVendor
+            vendors={row.original.assignedVendors || []}
+            maxQuantity={row.original.quantity}
+          />
         </div>
       );
     },

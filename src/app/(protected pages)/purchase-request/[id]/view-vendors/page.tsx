@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
 import { useState } from "react";
 import { viewVendorColumns } from "./view-vendor-columns";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 const ViewVendorsPage = () => {
   const [purchaseRequest, setPurchaseRequest] = useState<PurchaseRequest>({
@@ -27,7 +29,11 @@ const ViewVendorsPage = () => {
     ],
     vendors: [
       { id: 1, name: "Demo Vendor", quantity: 20 },
-      { id: 2, name: "Demo Vendor", quantity: 20 },
+      {
+        id: 2,
+        name: "Demo Vendor",
+        quantity: 20,
+      },
     ],
   });
   return (
@@ -37,12 +43,15 @@ const ViewVendorsPage = () => {
       {purchaseRequest.vendors.map((vendor) => (
         <Container className="grid gap-4 " key={vendor.id}>
           <div className="flex items-center justify-between">
-            <p className="font-bold text-lg">{vendor.name}</p>
             <div className="flex items-center gap-2">
-              <Button variant={"tertiary"}>
-                {/* <Link href={"/#"}> */}
-                Create Purchase Request
-                {/* </Link> */}
+              <p className="font-bold text-lg">{vendor.name}</p>
+              <Badge variant={"tertiary"}>Partially Processed</Badge>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button asChild variant={"tertiary"}>
+                <Link href={"/purchase-request"}>
+                Generate Purchase Order
+                </Link>
               </Button>
             </div>
           </div>
