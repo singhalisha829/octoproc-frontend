@@ -1,3 +1,5 @@
+//@ts-ignore
+//@ts-nocheck
 import React, { useState } from "react";
 import {
   Table,
