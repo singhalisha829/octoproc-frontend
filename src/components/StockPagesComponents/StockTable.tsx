@@ -1,6 +1,5 @@
-//@ts-ignore
-//@ts-nocheck
-import React, { useState } from "react";
+// added assigned vendors that is array of vendors
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -9,12 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CircleCheck, Trash, X } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { Item } from "@/interfaces/Stock";
-import { ComboBox } from "../ui/ComboBox";
 import { PARTS, UNITS } from "@/utils/constants";
+import { CircleCheck, Trash, X } from "lucide-react";
+import { useState } from "react";
 import { Badge } from "../ui/badge";
+import { ComboBox } from "../ui/ComboBox";
 
 type Props = {
   items: Item[];
@@ -187,7 +186,9 @@ const StockTable = ({
                 key={header.value}
                 className="flex items-center justify-center text-center"
               >
-                {item[header.value as keyof Item] ?? ""}{" "}
+                {(header.value !== "assignedVendors" &&
+                  item[header.value as "quantity"]) ||
+                  ""}{" "}
                 {header.value === "quantity" && item.quantityUnit}
               </TableCell>
             ))}
