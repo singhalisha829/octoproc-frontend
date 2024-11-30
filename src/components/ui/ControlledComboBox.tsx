@@ -19,18 +19,19 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export type ComboBoxProps = {
+export type ControlledComboBoxProps = {
   options: Array<{ value: string; label: string }>;
   placeholder: string;
   emptyLabel: string;
   searchPlaceholder: string;
   className?: string;
-  onSelect?: (value: string, valueLabel: string) => void;
+  onSelect: (selectedOption: { value: string; label: string } | null) => void;
+  value: string | number;
   valueKey?: string;
   labelKey?: string;
 };
 
-export function ComboBox({
+export function ControlledComboBox({
   options,
   placeholder = "Select",
   emptyLabel = "No Options Found",
@@ -39,18 +40,9 @@ export function ComboBox({
   onSelect = () => {},
   valueKey = "value",
   labelKey = "label",
-}: ComboBoxProps) {
+  value,
+}: ControlledComboBoxProps) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
-  const [valueLabel, setValueLabel] = React.useState("");
-
-  React.useEffect(() => {
-    onSelect(value, valueLabel);
-  }, [value, valueLabel]);
-
-
-  console.log(options ," opt");
-  
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -77,15 +69,14 @@ export function ComboBox({
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
-                  key={`${option[valueLabel as "label"]}${
-                    option[valueKey as "value"]
-                  }`}
+                  key={option[valueKey as "value"]}
                   value={option[valueKey as "value"]}
                   onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
-                    setValueLabel(
-                      currentValue === value ? "" : option[labelKey as "label"]
-                    );
+                    currentValue === value ? onSelect(null) : onSelect(option);
+                    // setValue(currentValue === value ? "" : currentValue);
+                    // setValueLabel(
+                    //   currentValue === value ? "" : option[labelKey as "label"]
+                    // );
                     setOpen(false);
                   }}
                 >

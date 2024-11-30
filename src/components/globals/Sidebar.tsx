@@ -32,7 +32,7 @@ const links = [
   },
   {
     name: "Vendor",
-    url: "/vendor",
+    url: "/vendors",
     icon: <NotebookText />,
   },
   {

@@ -1,8 +1,9 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
-import { HTMLAttributes, useState } from "react";
+import { useState } from "react";
 
 interface Props extends React.ComponentProps<"input"> {
   labelText: string;
@@ -18,6 +19,7 @@ const InputLabelGroup = ({
   value,
   type = "text",
   icon,
+  ...rest
 }: Props) => {
   const [isShowingPassword, setIsShowingPassword] = useState(false);
 
@@ -52,7 +54,7 @@ const InputLabelGroup = ({
           id={id}
           value={value}
           onChange={onChange}
-          className="min-w-[400px]"
+          {...rest}
         />
       </div>
     </div>
