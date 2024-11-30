@@ -4,11 +4,9 @@ import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import { HTMLAttributes, useState } from "react";
 
-interface Props extends HTMLAttributes<HTMLInputElement> {
+interface Props extends React.ComponentProps<"input"> {
   labelText: string;
   required?: boolean;
-  value?: string | number;
-  type?: string;
   icon?: JSX.Element;
 }
 
