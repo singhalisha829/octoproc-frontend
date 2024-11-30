@@ -102,7 +102,7 @@ const AddVendorPage = () => {
     queryFn: getStates,
   });
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: addVendor,
     onSuccess: (res) => {
       console.log(res.data);
@@ -220,6 +220,8 @@ const AddVendorPage = () => {
       contact_persons: [contactPersonDetails],
       data: null,
       gstin: vendorDetails.gstIn,
+      phone: vendorDetails.mobileNo,
+      email: vendorDetails.email,
     });
   };
 
@@ -309,7 +311,11 @@ const AddVendorPage = () => {
           )}
         </div>
 
-        <Button type="submit" className="max-w-fit ml-auto">
+        <Button
+          isLoading={isPending}
+          type="submit"
+          className="max-w-fit ml-auto"
+        >
           Add Vendor
         </Button>
       </form>

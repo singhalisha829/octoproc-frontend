@@ -15,7 +15,7 @@ import React, { useState } from "react";
 
 import Header from "@/components/globals/Header";
 import Container from "@/components/globals/Container";
-import { purchaseRequestColumns } from "./purchase-table-columns";
+import { purchaseRequestColumns } from "@/app/(protected pages)/purchase-request/purchase-table-columns";
 import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
 
 const PurchaseRequestPage = () => {

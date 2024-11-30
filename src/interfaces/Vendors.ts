@@ -19,4 +19,6 @@ export interface Vendor {
   pan: string;
   contact_persons: Array<ContactPerson>;
   data: unknown;
+  phone?: string;
+  email: string;
 }

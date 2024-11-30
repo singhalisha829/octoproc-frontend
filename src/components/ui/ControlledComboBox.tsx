@@ -29,6 +29,7 @@ export type ControlledComboBoxProps = {
   value: string | number;
   valueKey?: string;
   labelKey?: string;
+  addNewCta?: JSX.Element;
 };
 
 export function ControlledComboBox({
@@ -41,6 +42,7 @@ export function ControlledComboBox({
   valueKey = "value",
   labelKey = "label",
   value,
+  addNewCta,
 }: ControlledComboBoxProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -91,6 +93,7 @@ export function ControlledComboBox({
                   {option[labelKey as "label"]}
                 </CommandItem>
               ))}
+              {addNewCta && addNewCta}
             </CommandGroup>
           </CommandList>
         </Command>

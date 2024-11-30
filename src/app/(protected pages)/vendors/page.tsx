@@ -11,16 +11,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Logs, Share } from "lucide-react";
+import { Loader, Logs, Share } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { vendorListColumns } from "./vendorListColumns";
+import { useQuery } from "@tanstack/react-query";
+import { getVendors } from "@/api/masterdata/vendor";
 
 const VendorsListPage = () => {
   const [filter, setFilter] = useState({
     type: "all",
     searchKeyword: "",
   });
+
+  const { data: vendors, isLoading } = useQuery({
+    queryKey: ["vendors"],
+    queryFn: getVendors,
+  });
+
+  console.log(vendors);
+
+  if (isLoading) return <Loader className="animate-spin" />;
 
   return (
     <>
@@ -73,7 +84,7 @@ const VendorsListPage = () => {
           </div>
         </div>
 
-        <DataTable data={[]} columns={vendorListColumns} />
+        <DataTable data={vendors || []} columns={vendorListColumns} />
       </Container>
     </>
   );

@@ -1,14 +1,13 @@
 "use client";
 import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
-import { DataTable } from "@/components/table/data-table";
 import { useState } from "react";
 
+import AssignVendorTable from "@/app/(protected pages)/purchase-request/[id]/assign-vendors/AssignVendorTable";
+import { viewPrColumns } from "@/app/(protected pages)/purchase-request/[id]/view-pr-columns";
+import { Button } from "@/components/ui/button";
 import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
 import { useParams, useRouter } from "next/navigation";
-import { viewPrColumns } from "./view-pr-columns";
-import { Button } from "@/components/ui/button";
-import AssignVendorTable from "./assign-vendors/AssignVendorTable";
 
 const ViewItems = () => {
   const params = useParams<{
@@ -41,8 +40,6 @@ const ViewItems = () => {
     ],
     vendors: [{ id: 1, name: "Demo Vendor", quantity: 20 }],
   });
-
-
 
   // items table -> show the relevent columns based on the backend schema (may change)
 

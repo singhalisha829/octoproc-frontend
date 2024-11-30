@@ -20,19 +20,47 @@ export const vendorListColumns: ColumnDef<Vendor>[] = [
     ),
   },
   {
-    accessorKey: "type",
+    accessorKey: "name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Vendor Name" />
     ),
-    cell: ({ row }) => <DataTableColumnCell row={row} title={`${""}`} />,
+    cell: ({ row }) => (
+      <DataTableColumnCell row={row} title={row.original.name || ""} />
+    ),
   },
   {
-    accessorKey: "mobile",
+    accessorKey: "phone",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Mobile" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={`${row.original.name as string}`} />
+      <DataTableColumnCell
+        row={row}
+        title={`${(row.original.phone as string) || ""}`}
+      />
+    ),
+  },
+  {
+    accessorKey: "email",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Email" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell row={row} title={row.getValue("email")} />
+    ),
+  },
+  {
+    accessorKey: "contact_persons",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Contact Person Name" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell
+        row={row}
+        title={`${row.original.contact_persons[0]?.first_name || ""} ${
+          row.original.contact_persons[0]?.last_name || ""
+        }`}
+      />
     ),
   },
   {
@@ -40,6 +68,8 @@ export const vendorListColumns: ColumnDef<Vendor>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="GST IN" />
     ),
-    cell: ({ row }) => <DataTableColumnCell row={row} title={""} />,
+    cell: ({ row }) => (
+      <DataTableColumnCell row={row} title={row.getValue("gstin")} />
+    ),
   },
 ];
