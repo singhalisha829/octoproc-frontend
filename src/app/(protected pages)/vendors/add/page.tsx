@@ -12,6 +12,7 @@ import SelectWithLabel from "@/components/ui/SelectWithLabel";
 import { ContactPerson } from "@/interfaces/Vendors";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { FormEvent, useMemo, useState } from "react";
+import { toast } from "sonner";
 
 const CONTACT_PERSON_INPUTS = [
   {
@@ -47,6 +48,14 @@ const CONTACT_PERSON_INPUTS = [
     placeholder: "9597414840",
   },
   {
+    key: "address",
+    name: "Address",
+    id: "contactPersonAddress",
+    type: "input",
+    inputType: "text",
+    placeholder: "Delhi",
+  },
+  {
     key: "designation",
     name: "Designation",
     id: "contactPersonDesignation",
@@ -65,6 +74,7 @@ const AddVendorPage = () => {
     address: "",
     state: "",
     city: "",
+    country: "",
     gstIn: "",
     pan: "",
   });
@@ -76,6 +86,7 @@ const AddVendorPage = () => {
       first_name: "",
       last_name: "",
       phone: "",
+      address: "",
     });
 
   const { data: cities } = useQuery({
@@ -93,6 +104,13 @@ const AddVendorPage = () => {
 
   const { mutate } = useMutation({
     mutationFn: addVendor,
+    onSuccess: (res) => {
+      console.log(res.data);
+      toast.success("Vendor added successfully!");
+    },
+    onError: () => {
+      toast.error("Failed to add vendor!");
+    },
   });
 
   console.log(cities, countries, states);
@@ -193,24 +211,15 @@ const AddVendorPage = () => {
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutate({
-      name: "Doorpix Private Limited",
-      address: "ABC, Chattarpur, New Delhi",
-      city_id: 1,
-      state_id: 1,
-      country_id: 1,
-      pan: "QWERT1234A",
-      contact_persons: [
-        {
-          first_name: "",
-          last_name: "",
-          email: "",
-          phone: "",
-          country_code: "",
-          designation: "",
-        },
-      ],
-      data: "",
-      gstin: "",
+      name: vendorDetails.bussinessName,
+      address: vendorDetails.address,
+      city_id: Number(vendorDetails.city),
+      state_id: Number(vendorDetails.state),
+      country_id: Number(vendorDetails.country),
+      pan: vendorDetails.pan,
+      contact_persons: [contactPersonDetails],
+      data: null,
+      gstin: vendorDetails.gstIn,
     });
   };
 

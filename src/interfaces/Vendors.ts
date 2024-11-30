@@ -5,6 +5,7 @@ export interface ContactPerson {
   phone: string;
   country_code: string;
   designation: string;
+  address: string;
 }
 
 export interface Vendor {
