@@ -8,7 +8,7 @@ import { DatePicker } from "@/components/ui/DatePicker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Stock } from "@/interfaces/Stock";
-import { VENDORS } from "@/utils/constants";
+import { PO, VENDORS } from "@/utils/constants";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -30,12 +30,14 @@ const StockInPage = () => {
     ],
   });
 
+  // if po selected show the po quantity column.
+
   return (
     <>
       <Header title="Stock In" description="Add New Parts to Stock" />
       <Container className="grid gap-4">
         <p className="text-lg font-semibold">Your Stock in Items</p>
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-4 gap-5">
           <div className="grid gap-1.5">
             <Label
               htmlFor="invoice number"
@@ -62,6 +64,18 @@ const StockInPage = () => {
               Date:
             </Label>
             <DatePicker />
+          </div>
+          <div className="grid gap-1.5">
+            <Label htmlFor="Date" className="font-semibold text-gray-700">
+              Purchase Order (PO):
+            </Label>
+            <ComboBox
+              className="max-w-full"
+              searchPlaceholder="Search PO"
+              placeholder="Select Purchase Order"
+              options={PO}
+              emptyLabel="No Purchase Order found"
+            />
           </div>
         </div>
         <StockTable items={stock.items} />

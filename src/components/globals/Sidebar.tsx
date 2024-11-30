@@ -16,9 +16,24 @@ const links = [
     icon: <LayoutDashboard />,
   },
   {
+    name: "Inventory",
+    url: "/inventory",
+    icon: <LayoutDashboard />,
+  },
+  {
     name: "Purchase Request",
     url: "/purchase-request",
     icon: <ShoppingCart />,
+  },
+  {
+    name: "Purchase Order",
+    url: "/purchase-orders",
+    icon: <ShoppingCart />,
+  },
+  {
+    name: "Vendor",
+    url: "/vendor",
+    icon: <NotebookText />,
   },
   {
     name: "Ledger",

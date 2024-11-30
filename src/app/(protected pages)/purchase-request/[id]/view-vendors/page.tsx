@@ -49,7 +49,13 @@ const ViewVendorsPage = () => {
             </div>
             <div className="flex items-center gap-2">
               <Button asChild variant={"tertiary"}>
-                <Link href={"/purchase-request"}>Generate Purchase Order</Link>
+                {/* 
+                
+                TODO: request quotation-> wait -> quotation recieved ->table columns unit price, total price -> accept/reject quotation -> if accept  generete po and send to vendor
+
+                */}
+
+                <Link href={"/purchase-request"}>Request Quotation</Link>
               </Button>
             </div>
           </div>

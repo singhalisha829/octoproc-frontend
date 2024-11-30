@@ -55,6 +55,26 @@ export const VENDORS = [
     value: "Vendor 4",
   },
 ];
+export const PO = [
+  {
+    label: "PO-1",
+    value: "PO-1",
+  },
+  {
+    label: "PO-2",
+    value: "PO-2",
+  },
+  {
+    label: "PO-3",
+    value: "PO-3",
+  },
+  {
+    label: "PO-4",
+    value: "PO-4",
+  },
+
+ 
+];
 export const STATUSES = [
   {
     label: "Loss On Line",

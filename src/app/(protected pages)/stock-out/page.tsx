@@ -52,7 +52,14 @@ const StockOutPage = () => {
             <DatePicker />
           </div>
         </div>
-        <StockTable items={stock.items} />
+        <StockTable
+          items={stock.items}
+          headers={[
+            { label: "Part ID", value: "partId" },
+            { label: "Part Name", value: "partName" },
+            { label: "Quantity", value: "quantity" },
+          ]}
+        />
       </Container>
       <Container className="fixed bottom-0 left-[320px] right-0 shadow-inner flex rounded-none items-center justify-end gap-2">
         <Button
