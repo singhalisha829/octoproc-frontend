@@ -99,7 +99,6 @@ const GenericAddModal = ({ title, mutationFn }: Props) => {
                 }));
               }}
               id="Description"
-              required
             />
           )}
           <div className="grid grid-cols-2 gap-4">
