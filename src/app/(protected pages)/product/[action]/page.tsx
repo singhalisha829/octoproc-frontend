@@ -1,6 +1,9 @@
 "use client";
 import { addProduct } from "@/api/masterdata/product";
-import { addManufacturer } from "@/api/masterdata/product/manufacturer";
+import {
+  addManufacturer,
+  getManufacturers,
+} from "@/api/masterdata/product/manufacturer";
 import {
   addClass,
   addCommodity,
@@ -11,6 +14,7 @@ import {
   getFamilies,
   getSegments,
 } from "@/api/masterdata/product/unspsc";
+import { getUoms, getUomTypes } from "@/api/masterdata/product/uom";
 import { addVendor } from "@/api/masterdata/vendor";
 import Header from "@/components/globals/Header";
 import GenericAddModal from "@/components/product/GenericAddModal";
@@ -18,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import InputLabelGroup from "@/components/ui/InputLabelGroup";
 import SelectWithLabel from "@/components/ui/SelectWithLabel";
 import { transformSelectOptions } from "@/lib/utils";
+import { masterApiQuery } from "@/react-query/masterApiQueries";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { FormEvent, useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -35,6 +40,7 @@ interface ProductDetails {
   family: null | number;
   class: null | number;
   commodity: null | number;
+  uomType: string | null;
 }
 
 const AddOrEditProductPage = () => {
@@ -51,32 +57,49 @@ const AddOrEditProductPage = () => {
     family: null,
     class: null,
     commodity: null,
+    uomType: null,
+  });
+
+  const { data: manufacturers } = useQuery({
+    queryKey: [masterApiQuery.manufacturer.getManufacturers.Key],
+    queryFn: getManufacturers,
+  });
+
+  const { data: uomType } = useQuery({
+    queryKey: [masterApiQuery.uom.getUomTypes.endpoint],
+    queryFn: getUomTypes,
+  });
+  const { data: uoms } = useQuery({
+    queryKey: [masterApiQuery.uom.getUoms.endpoint, productDetails.uomType],
+    queryFn: () => getUoms(productDetails.uomType),
+    enabled: !!productDetails.uomType,
   });
 
   const { data: segments } = useQuery({
-    queryKey: ["segments"],
+    queryKey: [masterApiQuery.segment.getSegments.Key],
     queryFn: getSegments,
   });
   const { data: families } = useQuery({
-    queryKey: ["families", productDetails.segment],
+    queryKey: [masterApiQuery.family.getFamilies.Key, productDetails.segment],
     queryFn: () =>
       getFamilies(productDetails?.segment ? [productDetails?.segment] : []),
     enabled: !!productDetails.segment,
   });
   const { data: classes } = useQuery({
-    queryKey: ["classes", productDetails.family],
+    queryKey: [masterApiQuery.class.getClasses.Key, productDetails.family],
     queryFn: () =>
       getClasses(productDetails?.family ? [productDetails?.family] : []),
     enabled: !!productDetails.family,
   });
   const { data: commodities } = useQuery({
-    queryKey: ["commodities", productDetails?.class],
+    queryKey: [
+      masterApiQuery.commodity.getCommodities.Key,
+      productDetails?.class,
+    ],
     queryFn: () =>
       getCommodies(productDetails?.class ? [productDetails?.class] : []),
     enabled: !!productDetails?.class,
   });
-
-  console.log({ segments, classes, commodities, families });
 
   const { mutate, isPending } = useMutation({
     mutationFn: addProduct,
@@ -88,14 +111,6 @@ const AddOrEditProductPage = () => {
       toast.error("Failed to add product!");
     },
   });
-
-  /**
-   
-    segment: null,
-    family: null,
-    class: null,
-    commodity: null,
-   */
 
   const INPUTS = useMemo(
     () => [
@@ -129,10 +144,15 @@ const AddOrEditProductPage = () => {
         name: "Manufacturer",
         id: "manufacturer_id",
         type: "dropdown",
-        options: [],
+        options: transformSelectOptions(manufacturers, "id", "name"),
         inputType: "select",
         placeholder: "Manufacturer",
-        mutationFn: addManufacturer,
+        addNewCta: (
+          <GenericAddModal
+            title={`Add Manufacturer`}
+            mutationFn={addManufacturer}
+          />
+        ),
       },
       {
         key: "manufacturer_sku_code",
@@ -142,7 +162,24 @@ const AddOrEditProductPage = () => {
         inputType: "text",
         placeholder: "Manufacturer Sku Code",
       },
-
+      {
+        key: "uomType",
+        name: "UOM Type",
+        id: "uom-type",
+        type: "dropdown",
+        options: transformSelectOptions(uomType, "name", "name"),
+        inputType: "select",
+        placeholder: "Weight",
+      },
+      {
+        key: "uom_id",
+        name: "UOM",
+        id: "uom",
+        type: "dropdown",
+        options: transformSelectOptions(uoms, "id", "name"),
+        inputType: "select",
+        placeholder: "Weight",
+      },
       {
         key: "segment",
         name: "Segment",
@@ -151,7 +188,9 @@ const AddOrEditProductPage = () => {
         options: transformSelectOptions(segments, "id", "name"),
         inputType: "select",
         placeholder: "Segment",
-        mutationFn: addSegment,
+        addNewCta: (
+          <GenericAddModal title={`Add Segment`} mutationFn={addSegment} />
+        ),
       },
       {
         key: "family",
@@ -161,7 +200,9 @@ const AddOrEditProductPage = () => {
         options: transformSelectOptions(families, "id", "name"),
         inputType: "select",
         placeholder: "Family",
-        mutationFn: addFamily,
+        addNewCta: (
+          <GenericAddModal title={`Add Family`} mutationFn={addFamily} />
+        ),
       },
       {
         key: "class",
@@ -171,7 +212,9 @@ const AddOrEditProductPage = () => {
         options: transformSelectOptions(classes, "id", "name"),
         inputType: "select",
         placeholder: "class",
-        mutationFn: addClass,
+        addNewCta: (
+          <GenericAddModal title={`Add Class`} mutationFn={addClass} />
+        ),
       },
       {
         key: "commodity",
@@ -181,10 +224,12 @@ const AddOrEditProductPage = () => {
         options: transformSelectOptions(commodities, "id", "name"),
         inputType: "select",
         placeholder: "commodity",
-        mutationFn: addCommodity,
+        addNewCta: (
+          <GenericAddModal title={`Add Commodity`} mutationFn={addCommodity} />
+        ),
       },
     ],
-    [segments, commodities, classes, families]
+    [segments, commodities, classes, families, manufacturers, uomType, uoms]
   );
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
@@ -200,7 +245,8 @@ const AddOrEditProductPage = () => {
       data,
     } = productDetails;
 
-    if (!manufacturer_id || !uom_id) return;
+    if (!manufacturer_id || !uom_id)
+      return toast.error("Please fill all the fields.");
     mutate({
       hsn_code,
       manufacturer_id,
@@ -233,7 +279,7 @@ const AddOrEditProductPage = () => {
               placeholder,
               options,
               key,
-              mutationFn,
+              addNewCta,
             }) => {
               if (type === "input") {
                 return (
@@ -258,10 +304,14 @@ const AddOrEditProductPage = () => {
                   <SelectWithLabel
                     value={productDetails[key as "name"]}
                     onSelect={(option) => {
-                      console.log(option);
                       setProductDetails((prev) => ({
                         ...prev,
-                        [key]: option ? option["id" as "value"] : "",
+                        [key]: option ? option.value : "",
+                        unspsc:
+                          key === "commodity"
+                            ? //@ts-ignore
+                              option?.unspsc?.code
+                            : prev.unspsc,
                       }));
                     }}
                     key={id}
@@ -274,12 +324,7 @@ const AddOrEditProductPage = () => {
                     emptyLabel={`No ${name} found`}
                     valueKey="value"
                     labelKey="label"
-                    addNewCta={
-                      <GenericAddModal
-                        title={`Add ${name}`}
-                        mutationFn={mutationFn}
-                      />
-                    }
+                    addNewCta={addNewCta}
                   />
                 );
               }
