@@ -11,3 +11,9 @@ export const addManufacturer = (
     manufacturer
   );
 };
+export const getManufacturers = async () => {
+  const { data } = await axiosInstance.get(
+    masterApiQuery.manufacturer.getManufacturers.endpoint
+  );
+  return data.data;
+};

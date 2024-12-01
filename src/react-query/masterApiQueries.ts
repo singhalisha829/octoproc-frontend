@@ -38,7 +38,7 @@ export const masterApiQuery = {
     },
     getClasses: {
       Key: "get-class",
-      endpoint: `${MASTER_API_CONSTANT}${UNSPSC_CONSTANT}/class/filter`,
+      endpoint: `${MASTER_API_CONSTANT}${UNSPSC_CONSTANT}/class/filter/`,
     },
   },
   commodity: {
@@ -48,7 +48,7 @@ export const masterApiQuery = {
     },
     getCommodities: {
       Key: "get-class",
-      endpoint: `${MASTER_API_CONSTANT}${UNSPSC_CONSTANT}/commodity/filter`,
+      endpoint: `${MASTER_API_CONSTANT}${UNSPSC_CONSTANT}/commodity/filter/`,
     },
   },
   family: {
@@ -58,7 +58,7 @@ export const masterApiQuery = {
     },
     getFamilies: {
       Key: "get-family",
-      endpoint: `${MASTER_API_CONSTANT}${UNSPSC_CONSTANT}/family/filter`,
+      endpoint: `${MASTER_API_CONSTANT}${UNSPSC_CONSTANT}/family/filter/`,
     },
   },
   country: {
@@ -77,6 +77,16 @@ export const masterApiQuery = {
     getCities: {
       key: "cities",
       endpoint: `${MASTER_API_CONSTANT}/city/`,
+    },
+  },
+  uom: {
+    getUomTypes: {
+      key: "uomTypes",
+      endpoint: `${MASTER_API_CONSTANT}/uom-types/`,
+    },
+    getUoms: {
+      key: "uoms",
+      endpoint: `${MASTER_API_CONSTANT}/uom/?type=`,
     },
   },
 };

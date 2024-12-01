@@ -5,17 +5,17 @@ export const getCountriesList = async () => {
   const { data } = await axiosInstance.get(
     masterApiQuery.country.getCountries.endpoint
   );
-  return data;
+  return data.data;
 };
 export const getCitites = async () => {
   const { data } = await axiosInstance.get(
     masterApiQuery.city.getCities.endpoint
   );
-  return data;
+  return data.data;
 };
 export const getStates = async () => {
   const { data } = await axiosInstance.get(
     masterApiQuery.state.getStates.endpoint
   );
-  return data;
+  return data.data;
 };
