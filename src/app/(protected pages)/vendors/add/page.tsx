@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import InputLabelGroup from "@/components/ui/InputLabelGroup";
 import SelectWithLabel from "@/components/ui/SelectWithLabel";
 import { ContactPerson } from "@/interfaces/Vendors";
+import { transformSelectOptions } from "@/lib/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { FormEvent, useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -113,8 +114,6 @@ const AddVendorPage = () => {
     },
   });
 
-  console.log(cities, countries, states);
-
   const INPUTS = useMemo(
     () => [
       {
@@ -155,7 +154,7 @@ const AddVendorPage = () => {
         name: "Country",
         id: "country",
         type: "dropdown",
-        options: countries?.data || [],
+        options: transformSelectOptions(countries, "id", "name"),
         inputType: "select",
         placeholder: "Country",
       },
@@ -164,7 +163,7 @@ const AddVendorPage = () => {
         name: "State",
         id: "state",
         type: "dropdown",
-        options: states?.data || [],
+        options: transformSelectOptions(states, "id", "name"),
         inputType: "select",
         placeholder: "State",
       },
@@ -173,7 +172,7 @@ const AddVendorPage = () => {
         name: "City",
         id: "city",
         type: "dropdown",
-        options: cities?.data || [],
+        options: transformSelectOptions(cities, "id", "name"),
         inputType: "select",
         placeholder: "City",
       },
@@ -196,17 +195,6 @@ const AddVendorPage = () => {
     ],
     [cities, states, countries]
   );
-
-  /*
-    businessName
-    contact person name
-    mobile
-    email
-    address
-    gst-in
-
-    pan -> by abhilash
-*/
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -261,10 +249,9 @@ const AddVendorPage = () => {
                   <SelectWithLabel
                     value={vendorDetails[key as "bussinessName"]}
                     onSelect={(option) => {
-                      console.log(option);
                       setVendorDetails((prev) => ({
                         ...prev,
-                        [key]: option ? option["id" as "value"] : "",
+                        [key]: option ? option.value : "",
                       }));
                     }}
                     key={id}
@@ -275,8 +262,8 @@ const AddVendorPage = () => {
                     placeholder={placeholder}
                     options={options || []}
                     emptyLabel={`No ${name} found`}
-                    valueKey="id"
-                    labelKey="name"
+                    valueKey="value"
+                    labelKey="label"
                   />
                 );
               }

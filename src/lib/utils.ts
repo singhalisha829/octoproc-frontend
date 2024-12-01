@@ -16,18 +16,15 @@ export const isPhone = (value: string): boolean => {
   return false;
 };
 
-export const transformSelectOptions = (
-  options: Array<any> | undefined,
-  key: string,
-  label: string
-) => {
+export function transformSelectOptions<
+  TData extends { id?: string | number | undefined; name: string }[]
+>(options: TData | undefined, key: string, label: string) {
   if (!options) return [];
-  const formattedOptions = options.map((option) => ({
+  const formattedOptions = options?.map((option) => ({
     ...option,
-    value: option[key],
-    label: option[label],
+    value: option[key as "id"],
+    label: option[label as "name"],
   }));
 
-  console.log(formattedOptions);
   return formattedOptions;
-};
+}

@@ -19,7 +19,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export type Option = { value: string; label: string };
+export type Option = { value?: string | number | undefined; label: string };
 
 export type ControlledComboBoxProps<TData> = {
   options: TData;
@@ -32,6 +32,15 @@ export type ControlledComboBoxProps<TData> = {
   valueKey?: string;
   labelKey?: string;
   addNewCta?: JSX.Element;
+};
+
+const filter = (searchKeyWord: string, options: Array<Option>) => {
+  if (!searchKeyWord) return options;
+  return options.filter(
+    (option) =>
+      option.label.toLowerCase().includes(searchKeyWord.toLowerCase()) ||
+      String(option.value).toLowerCase().includes(searchKeyWord.toLowerCase())
+  );
 };
 
 export function ControlledComboBox<TData extends Option[]>({
@@ -47,6 +56,9 @@ export function ControlledComboBox<TData extends Option[]>({
   addNewCta,
 }: ControlledComboBoxProps<TData>) {
   const [open, setOpen] = React.useState(false);
+  const [searchKeyWord, setSearchKeyWord] = React.useState("");
+
+  const filterredOptions = filter(searchKeyWord, options);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -62,16 +74,31 @@ export function ControlledComboBox<TData extends Option[]>({
                 labelKey as "label"
               ]
             : placeholder}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full max-w-full p-0">
-        <Command>
-          <CommandInput placeholder={searchPlaceholder} />
+        <Command shouldFilter={false}>
+          <CommandInput
+            value={searchKeyWord}
+            onValueChange={(e) => {
+              console.log(
+                e,
+                options.filter(
+                  (option) =>
+                    option.label.toLowerCase().includes(e.toLowerCase()) ||
+                    String(option.value).toLowerCase().includes(e.toLowerCase())
+                )
+              );
+
+              setSearchKeyWord(e);
+            }}
+            placeholder={searchPlaceholder}
+          />
           <CommandList>
             <CommandEmpty>{emptyLabel}</CommandEmpty>
             <CommandGroup>
-              {options.map((option) => (
+              {filterredOptions.map((option) => (
                 <CommandItem
                   key={option[valueKey as "value"]}
                   value={String(option[valueKey as "value"])}
@@ -79,10 +106,7 @@ export function ControlledComboBox<TData extends Option[]>({
                     value === Number(currentValue)
                       ? onSelect(null)
                       : onSelect(option);
-                    // setValue(currentValue === value ? "" : currentValue);
-                    // setValueLabel(
-                    //   currentValue === value ? "" : option[labelKey as "label"]
-                    // );
+                    setSearchKeyWord("");
                     setOpen(false);
                   }}
                 >
