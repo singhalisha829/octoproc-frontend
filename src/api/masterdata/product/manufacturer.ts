@@ -1,10 +1,13 @@
 import { axiosInstance } from "@/api/axiosInstance";
-import { GenericModalData, MASTER_API_CONSTANT } from "@/api/masterdata";
+import { GenericModalData } from "@/api/masterdata";
+import { masterApiQuery } from "@/react-query/masterApiQueries";
 import { AxiosResponse } from "axios";
 
-export const addManufacturer = (manufacturer: GenericModalData): Promise<AxiosResponse<any, any>> => {
+export const addManufacturer = (
+  manufacturer: GenericModalData
+): Promise<AxiosResponse<any, any>> => {
   return axiosInstance.post(
-    `${MASTER_API_CONSTANT}/manufacturer/`,
+    masterApiQuery.manufacturer.addManufacturer.endpoint,
     manufacturer
   );
 };

@@ -1,11 +1,13 @@
 import { Vendor } from "@/interfaces/Vendors";
 import { axiosInstance } from "@/api/axiosInstance";
-import { MASTER_API_CONSTANT } from "@/api/masterdata";
+import { masterApiQuery } from "@/react-query/masterApiQueries";
 
 export const addVendor = (vendor: Vendor) => {
-  return axiosInstance.post(`${MASTER_API_CONSTANT}/vendor`, vendor);
+  return axiosInstance.post(masterApiQuery.vendor.addVendors.endpoint, vendor);
 };
 export const getVendors = async (): Promise<Vendor[]> => {
-  const { data } = await axiosInstance.get(`${MASTER_API_CONSTANT}/vendor`);
+  const { data } = await axiosInstance.get(
+    masterApiQuery.vendor.addVendors.endpoint
+  );
   return data?.data;
 };

@@ -1,10 +1,15 @@
 "use client";
+import { addProduct } from "@/api/masterdata/product";
 import { addManufacturer } from "@/api/masterdata/product/manufacturer";
 import {
   addClass,
   addCommodity,
   addFamily,
   addSegment,
+  getClasses,
+  getCommodies,
+  getFamilies,
+  getSegments,
 } from "@/api/masterdata/product/unspsc";
 import { addVendor } from "@/api/masterdata/vendor";
 import Header from "@/components/globals/Header";
@@ -12,16 +17,32 @@ import GenericAddModal from "@/components/product/GenericAddModal";
 import { Button } from "@/components/ui/button";
 import InputLabelGroup from "@/components/ui/InputLabelGroup";
 import SelectWithLabel from "@/components/ui/SelectWithLabel";
-import { useMutation } from "@tanstack/react-query";
+import { transformSelectOptions } from "@/lib/utils";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { FormEvent, useMemo, useState } from "react";
 import { toast } from "sonner";
 
+interface ProductDetails {
+  name: string;
+  description: string;
+  unspsc: string;
+  uom_id: number | null;
+  hsn_code: string;
+  manufacturer_id: null | number;
+  manufacturer_sku_code: string;
+  data: null | unknown;
+  segment: null | number;
+  family: null | number;
+  class: null | number;
+  commodity: null | number;
+}
+
 const AddOrEditProductPage = () => {
-  const [productDetails, setProductDetails] = useState({
+  const [productDetails, setProductDetails] = useState<ProductDetails>({
     name: "",
     description: "",
     unspsc: "",
-    uom_id: "",
+    uom_id: null,
     hsn_code: "",
     manufacturer_id: null,
     manufacturer_sku_code: "",
@@ -32,24 +53,36 @@ const AddOrEditProductPage = () => {
     commodity: null,
   });
 
-  //   const { data: cities } = useQuery({
-  //     queryKey: ["cities"],
-  //     queryFn: getCitites,
-  //   });
-  //   const { data: countries } = useQuery({
-  //     queryKey: ["country"],
-  //     queryFn: getCountriesList,
-  //   });
-  //   const { data: states } = useQuery({
-  //     queryKey: ["states"],
-  //     queryFn: getStates,
-  //   });
+  const { data: segments } = useQuery({
+    queryKey: ["segments"],
+    queryFn: getSegments,
+  });
+  const { data: families } = useQuery({
+    queryKey: ["families", productDetails.segment],
+    queryFn: () =>
+      getFamilies(productDetails?.segment ? [productDetails?.segment] : []),
+    enabled: !!productDetails.segment,
+  });
+  const { data: classes } = useQuery({
+    queryKey: ["classes", productDetails.family],
+    queryFn: () =>
+      getClasses(productDetails?.family ? [productDetails?.family] : []),
+    enabled: !!productDetails.family,
+  });
+  const { data: commodities } = useQuery({
+    queryKey: ["commodities", productDetails?.class],
+    queryFn: () =>
+      getCommodies(productDetails?.class ? [productDetails?.class] : []),
+    enabled: !!productDetails?.class,
+  });
+
+  console.log({ segments, classes, commodities, families });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: addVendor,
+    mutationFn: addProduct,
     onSuccess: (res) => {
-      console.log(res.data);
-      toast.success("Producr added successfully!");
+      console.log(res);
+      toast.success("Product added successfully!");
     },
     onError: () => {
       toast.error("Failed to add product!");
@@ -115,7 +148,7 @@ const AddOrEditProductPage = () => {
         name: "Segment",
         id: "segment",
         type: "dropdown",
-        options: [],
+        options: transformSelectOptions(segments, "id", "name"),
         inputType: "select",
         placeholder: "Segment",
         mutationFn: addSegment,
@@ -125,7 +158,7 @@ const AddOrEditProductPage = () => {
         name: "Family",
         id: "family",
         type: "dropdown",
-        options: [],
+        options: transformSelectOptions(families, "id", "name"),
         inputType: "select",
         placeholder: "Family",
         mutationFn: addFamily,
@@ -135,7 +168,7 @@ const AddOrEditProductPage = () => {
         name: "Class",
         id: "class",
         type: "dropdown",
-        options: [],
+        options: transformSelectOptions(classes, "id", "name"),
         inputType: "select",
         placeholder: "class",
         mutationFn: addClass,
@@ -145,18 +178,39 @@ const AddOrEditProductPage = () => {
         name: "Commodity",
         id: "commodity",
         type: "dropdown",
-        options: [],
+        options: transformSelectOptions(commodities, "id", "name"),
         inputType: "select",
         placeholder: "commodity",
         mutationFn: addCommodity,
       },
     ],
-    []
+    [segments, commodities, classes, families]
   );
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // mutate({});
+    const {
+      hsn_code,
+      manufacturer_id,
+      manufacturer_sku_code,
+      unspsc,
+      uom_id,
+      name,
+      description,
+      data,
+    } = productDetails;
+
+    if (!manufacturer_id || !uom_id) return;
+    mutate({
+      hsn_code,
+      manufacturer_id,
+      manufacturer_sku_code,
+      unspsc,
+      uom_id,
+      name,
+      description,
+      data,
+    });
   };
 
   return (
@@ -218,8 +272,8 @@ const AddOrEditProductPage = () => {
                     placeholder={placeholder}
                     options={options || []}
                     emptyLabel={`No ${name} found`}
-                    valueKey="id"
-                    labelKey="name"
+                    valueKey="value"
+                    labelKey="label"
                     addNewCta={
                       <GenericAddModal
                         title={`Add ${name}`}

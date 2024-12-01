@@ -15,3 +15,19 @@ export const isPhone = (value: string): boolean => {
   if (phoneRegex.test(value)) return true;
   return false;
 };
+
+export const transformSelectOptions = (
+  options: Array<any> | undefined,
+  key: string,
+  label: string
+) => {
+  if (!options) return [];
+  const formattedOptions = options.map((option) => ({
+    ...option,
+    value: option[key],
+    label: option[label],
+  }));
+
+  console.log(formattedOptions);
+  return formattedOptions;
+};
