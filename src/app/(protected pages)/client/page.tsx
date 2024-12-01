@@ -31,14 +31,10 @@ const ClientsListPage = () => {
     queryFn: getClients,
   });
 
-  console.log(clients);
-
-  if (isLoading) return <Loader className="animate-spin" />;
-
   return (
     <>
       <Header
-        title="Vendors"
+        title="Clients"
         description="All Clients available on platform."
       />
       <Container className=" flex items-center justify-between  gap-5">
@@ -86,7 +82,11 @@ const ClientsListPage = () => {
           </div>
         </div>
 
-        <DataTable data={clients || []} columns={clientsListColumns} />
+        <DataTable
+          isLoading={isLoading}
+          data={clients || []}
+          columns={clientsListColumns}
+        />
       </Container>
     </>
   );

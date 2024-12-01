@@ -17,6 +17,7 @@ import { useState } from "react";
 import { vendorListColumns } from "./vendorListColumns";
 import { useQuery } from "@tanstack/react-query";
 import { getVendors } from "@/api/masterdata/vendor";
+import { masterApiQuery } from "@/react-query/masterApiQueries";
 
 const VendorsListPage = () => {
   const [filter, setFilter] = useState({
@@ -25,13 +26,9 @@ const VendorsListPage = () => {
   });
 
   const { data: vendors, isLoading } = useQuery({
-    queryKey: ["vendors"],
+    queryKey: [masterApiQuery.vendor.getVendors.Key],
     queryFn: getVendors,
   });
-
-  console.log(vendors);
-
-  if (isLoading) return <Loader className="animate-spin" />;
 
   return (
     <>
@@ -84,7 +81,11 @@ const VendorsListPage = () => {
           </div>
         </div>
 
-        <DataTable data={vendors || []} columns={vendorListColumns} />
+        <DataTable
+          isLoading={isLoading}
+          data={vendors || []}
+          columns={vendorListColumns}
+        />
       </Container>
     </>
   );
