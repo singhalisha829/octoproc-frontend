@@ -26,7 +26,7 @@ const InputLabelGroup = ({
   return (
     <div className="grid gap-2">
       <Label htmlFor={id}>
-        {labelText} {<span className="text-red-500">*</span>}
+        {labelText} {required && <span className="text-red-500">*</span>}
       </Label>
       <div className="relative">
         {icon && (

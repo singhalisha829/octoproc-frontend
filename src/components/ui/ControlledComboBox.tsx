@@ -19,20 +19,22 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export type ControlledComboBoxProps = {
-  options: Array<{ value: string; label: string }>;
+export type Option = { value: string; label: string };
+
+export type ControlledComboBoxProps<TData> = {
+  options: TData;
   placeholder: string;
   emptyLabel: string;
   searchPlaceholder: string;
   className?: string;
-  onSelect: (selectedOption: { value: string; label: string } | null) => void;
+  onSelect: (selectedOption: Option | null) => void;
   value: string | number;
   valueKey?: string;
   labelKey?: string;
   addNewCta?: JSX.Element;
 };
 
-export function ControlledComboBox({
+export function ControlledComboBox<TData extends Option[]>({
   options,
   placeholder = "Select",
   emptyLabel = "No Options Found",
@@ -43,7 +45,7 @@ export function ControlledComboBox({
   labelKey = "label",
   value,
   addNewCta,
-}: ControlledComboBoxProps) {
+}: ControlledComboBoxProps<TData>) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -72,9 +74,11 @@ export function ControlledComboBox({
               {options.map((option) => (
                 <CommandItem
                   key={option[valueKey as "value"]}
-                  value={option[valueKey as "value"]}
+                  value={String(option[valueKey as "value"])}
                   onSelect={(currentValue) => {
-                    currentValue === value ? onSelect(null) : onSelect(option);
+                    value === Number(currentValue)
+                      ? onSelect(null)
+                      : onSelect(option);
                     // setValue(currentValue === value ? "" : currentValue);
                     // setValueLabel(
                     //   currentValue === value ? "" : option[labelKey as "label"]

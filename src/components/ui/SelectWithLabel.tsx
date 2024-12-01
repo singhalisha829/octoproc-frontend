@@ -1,17 +1,20 @@
-import { Button } from "@/components/ui/button";
 import {
   ControlledComboBox,
   ControlledComboBoxProps,
+  Option,
 } from "@/components/ui/ControlledComboBox";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff } from "lucide-react";
 
-interface Props extends ControlledComboBoxProps {
+interface Props<TData> extends ControlledComboBoxProps<TData> {
   labelText: string;
   id?: string;
 }
 
-const SelectWithLabel = ({ labelText, id, ...rest }: Props) => {
+export default function SelectWithLabel<TData extends Option[]>({
+  labelText,
+  id,
+  ...rest
+}: Props<TData>) {
   return (
     <div className="grid gap-2">
       <Label htmlFor={id}>
@@ -20,6 +23,4 @@ const SelectWithLabel = ({ labelText, id, ...rest }: Props) => {
       <ControlledComboBox {...rest} />
     </div>
   );
-};
-
-export default SelectWithLabel;
+}
