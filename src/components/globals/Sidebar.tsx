@@ -4,6 +4,7 @@ import {
   LogOut,
   NotebookText,
   ShoppingCart,
+  Users,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -34,6 +35,11 @@ const links = [
     name: "Vendor",
     url: "/vendors",
     icon: <NotebookText />,
+  },
+  {
+    name: "Client",
+    url: "/client",
+    icon: <Users />,
   },
   {
     name: "Ledger",
