@@ -11,84 +11,31 @@ import InputLabelGroup from "@/components/ui/InputLabelGroup";
 import SelectWithLabel from "@/components/ui/SelectWithLabel";
 import { ContactPerson } from "@/interfaces/Vendors";
 import { transformSelectOptions } from "@/lib/utils";
+import {
+  CONTACT_PERSON_INPUTS,
+  INITIAL_CONTACT_PERSON_DETAILS,
+} from "@/utils/constants";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { FormEvent, useMemo, useState } from "react";
 import { toast } from "sonner";
 
-const CONTACT_PERSON_INPUTS = [
-  {
-    key: "first_name",
-    name: "First Name",
-    id: "contactPersonaFirstName",
-    type: "input",
-    inputType: "text",
-    placeholder: "First Name",
-  },
-  {
-    key: "last_name",
-    name: "Last Name",
-    id: "contactPersonaLastName",
-    type: "input",
-    inputType: "text",
-    placeholder: "Last Name",
-  },
-  {
-    key: "email",
-    name: "Email",
-    id: "contactPersonaEmail",
-    type: "input",
-    inputType: "email",
-    placeholder: "example@gmail.com",
-  },
-  {
-    key: "phone",
-    name: "Phone",
-    id: "contactPersonaPhone",
-    type: "input",
-    inputType: "text",
-    placeholder: "9597414840",
-  },
-  {
-    key: "address",
-    name: "Address",
-    id: "contactPersonAddress",
-    type: "input",
-    inputType: "text",
-    placeholder: "Delhi",
-  },
-  {
-    key: "designation",
-    name: "Designation",
-    id: "contactPersonDesignation",
-    type: "input",
-    inputType: "text",
-    placeholder: "Manager",
-  },
-];
+const INITIAL_VENDOR_DETAILS = {
+  bussinessName: "",
+  contactPersonName: "",
+  mobileNo: "",
+  email: "",
+  address: "",
+  state: "",
+  city: "",
+  country: "",
+  gstIn: "",
+  pan: "",
+};
 
 const AddVendorPage = () => {
-  const [vendorDetails, setVendorDetails] = useState({
-    bussinessName: "",
-    contactPersonName: "",
-    mobileNo: "",
-    email: "",
-    address: "",
-    state: "",
-    city: "",
-    country: "",
-    gstIn: "",
-    pan: "",
-  });
+  const [vendorDetails, setVendorDetails] = useState(INITIAL_VENDOR_DETAILS);
   const [contactPersonDetails, setContactPersonDetails] =
-    useState<ContactPerson>({
-      country_code: "+91",
-      designation: "",
-      email: "",
-      first_name: "",
-      last_name: "",
-      phone: "",
-      address: "",
-    });
+    useState<ContactPerson>(INITIAL_CONTACT_PERSON_DETAILS);
 
   const { data: cities } = useQuery({
     queryKey: ["cities"],
@@ -105,9 +52,10 @@ const AddVendorPage = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: addVendor,
-    onSuccess: (res) => {
-      console.log(res.data);
+    onSuccess: () => {
       toast.success("Vendor added successfully!");
+      setVendorDetails(INITIAL_VENDOR_DETAILS);
+      setContactPersonDetails(INITIAL_CONTACT_PERSON_DETAILS);
     },
     onError: () => {
       toast.error("Failed to add vendor!");

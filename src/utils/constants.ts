@@ -72,8 +72,6 @@ export const PO = [
     label: "PO-4",
     value: "PO-4",
   },
-
- 
 ];
 export const STATUSES = [
   {
@@ -94,5 +92,66 @@ export const STATUSES = [
   {
     label: "Production Return",
     value: "pr",
+  },
+];
+
+export const INITIAL_CONTACT_PERSON_DETAILS = {
+  country_code: "+91",
+  designation: "",
+  email: "",
+  first_name: "",
+  last_name: "",
+  phone: "",
+  address: "",
+};
+
+export const CONTACT_PERSON_INPUTS = [
+  {
+    key: "first_name",
+    name: "First Name",
+    id: "contactPersonaFirstName",
+    type: "input",
+    inputType: "text",
+    placeholder: "First Name",
+  },
+  {
+    key: "last_name",
+    name: "Last Name",
+    id: "contactPersonaLastName",
+    type: "input",
+    inputType: "text",
+    placeholder: "Last Name",
+  },
+  {
+    key: "email",
+    name: "Email",
+    id: "contactPersonaEmail",
+    type: "input",
+    inputType: "email",
+    placeholder: "example@gmail.com",
+  },
+  {
+    key: "phone",
+    name: "Phone",
+    id: "contactPersonaPhone",
+    type: "input",
+    inputType: "text",
+    placeholder: "9597414840",
+  },
+  {
+    key: "address",
+    name: "Address",
+    id: "contactPersonAddress",
+    type: "input",
+    inputType: "text",
+    placeholder: "Delhi",
+  },
+  {
+    key: "designation",
+    name: "Designation",
+    id: "contactPersonDesignation",
+    type: "input",
+    inputType: "text",
+    placeholder: "Manager",
   },
 ];
