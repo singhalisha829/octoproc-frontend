@@ -17,6 +17,8 @@ import Header from "@/components/globals/Header";
 import Container from "@/components/globals/Container";
 import { purchaseRequestColumns } from "./purchase-table-columns";
 import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
+import { useQuery } from "@tanstack/react-query";
+import { getPurchaseRequests } from "@/api/purchaseRequest";
 
 const PurchaseRequestPage = () => {
   const [filter, setFilter] = useState({
@@ -51,6 +53,14 @@ const PurchaseRequestPage = () => {
       vendors: [],
     },
   ]);
+
+  const { data } = useQuery({
+    queryKey: [""],
+    queryFn: () => getPurchaseRequests(),
+  });
+
+  console.log(data);
+
   return (
     <>
       <Header
@@ -99,7 +109,7 @@ const PurchaseRequestPage = () => {
             </Button>
           </div>
         </div>
-        <DataTable data={purchaseRequests} columns={purchaseRequestColumns} />
+        <DataTable data={[]} columns={purchaseRequestColumns} />
       </Container>
     </>
   );

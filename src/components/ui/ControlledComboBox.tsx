@@ -28,7 +28,7 @@ export type ControlledComboBoxProps<TData> = {
   searchPlaceholder: string;
   className?: string;
   onSelect: (selectedOption: Option | null) => void;
-  value: string | number;
+  value?: string | number | null;
   valueKey?: string;
   labelKey?: string;
   addNewCta?: JSX.Element;

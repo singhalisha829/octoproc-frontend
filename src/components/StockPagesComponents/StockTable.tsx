@@ -1,4 +1,6 @@
+"use client";
 // added assigned vendors that is array of vendors
+import { getProducts } from "@/api/masterdata/product";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -10,10 +12,14 @@ import {
 } from "@/components/ui/table";
 import { Item } from "@/interfaces/Stock";
 import { PARTS, UNITS } from "@/utils/constants";
+import { useQuery } from "@tanstack/react-query";
 import { CircleCheck, Trash, X } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "../ui/badge";
 import { ComboBox } from "../ui/ComboBox";
+import { productQuery } from "@/react-query/productQueries";
+import { transformSelectOptions } from "@/lib/utils";
+import { ControlledComboBox } from "../ui/ControlledComboBox";
 
 type Props = {
   items: Item[];
@@ -25,8 +31,8 @@ type Props = {
 const StockTable = ({
   items,
   headers = [
-    { label: "Part ID", value: "partId" },
-    { label: "Part Name", value: "partName" },
+    { label: "Product ID", value: "productId" },
+    { label: "Product Name", value: "productName" },
     { label: "Unit Price", value: "unitPrice" },
     { label: "Quantity", value: "quantity" },
   ],
@@ -34,12 +40,21 @@ const StockTable = ({
   deleteItem = () => {},
 }: Props) => {
   const [itemDetails, setItemDetails] = useState<Item>({
-    partId: "",
-    partName: "",
+    productId: null,
+    productName: "",
     quantity: 0,
     unitPrice: 0,
     quantityUnit: "",
   });
+
+  const { data: products } = useQuery({
+    queryKey: [productQuery.getProducts.Key],
+    queryFn: getProducts,
+  });
+
+  const options = transformSelectOptions(products, "id", "name").filter(
+    (prod) => !items.find((item) => item.productId === prod.id)
+  );
 
   return (
     <Table>
@@ -69,22 +84,25 @@ const StockTable = ({
           }}
         >
           <TableCell className="flex items-center justify-center text-center">
-            {itemDetails.partId && (
-              <Badge variant={"tertiary"}>{itemDetails.partId}</Badge>
+            {itemDetails.productId && (
+              <Badge variant={"tertiary"}>{itemDetails.productId}</Badge>
             )}
           </TableCell>
 
           <TableCell className="flex items-center justify-center text-center">
-            <ComboBox
+            <ControlledComboBox
+              value={itemDetails.productId}
+              labelKey="label"
+              valueKey="id"
               searchPlaceholder="Search Part ID/Name"
               emptyLabel="No part found"
               placeholder="Select Part ID/Name"
-              options={PARTS}
-              onSelect={(value, valueLabel) => {
+              options={options}
+              onSelect={(option) => {
                 setItemDetails((prev) => ({
                   ...prev,
-                  partId: value,
-                  partName: valueLabel,
+                  productId: Number(option?.value),
+                  productName: option?.label,
                 }));
               }}
             />
@@ -146,8 +164,8 @@ const StockTable = ({
                 e.stopPropagation();
                 addItem(itemDetails);
                 setItemDetails({
-                  partId: "",
-                  partName: "",
+                  productId: null,
+                  productName: "",
                   quantity: 0,
                   unitPrice: 0,
                   quantityUnit: "",
@@ -161,8 +179,8 @@ const StockTable = ({
               onClick={(e) => {
                 e.stopPropagation();
                 setItemDetails({
-                  partId: "",
-                  partName: "",
+                  productId: null,
+                  productName: "",
                   quantity: 0,
                   unitPrice: 0,
                   quantityUnit: "",
@@ -175,7 +193,7 @@ const StockTable = ({
         </TableRow>
         {items.map((item) => (
           <TableRow
-            key={item.partId}
+            key={item.productId}
             className="grid"
             style={{
               gridTemplateColumns: `repeat(${headers.length + 1}, 1fr)`,

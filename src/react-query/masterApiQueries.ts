@@ -6,9 +6,25 @@ export const masterApiQuery = {
       Key: "vendors",
       endpoint: `${MASTER_API_CONSTANT}/vendor/`,
     },
+    getVendor: {
+      Key: "vendor",
+      endpoint: `${MASTER_API_CONSTANT}/vendor/`,
+    },
+    getVendorCatalogue: {
+      Key: "vendor-catalogue",
+      endpoint: `/vendor/catalog/`,
+    },
     addVendors: {
       Key: "add-vendor",
-      endpoint: `${MASTER_API_CONSTANT}/vendor/`,
+      endpoint: `${MASTER_API_CONSTANT}/vendor`,
+    },
+    addItemsToCatalogue: {
+      key: "add-items-to-cataogue",
+      endpoint: "/vendor/catalog/add",
+    },
+    removeItemsFromCatalogue: {
+      key: "remove-items-to-cataogue",
+      endpoint: "/vendor/catalog/remove",
     },
   },
   manufacturer: {

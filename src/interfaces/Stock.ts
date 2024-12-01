@@ -2,8 +2,8 @@ export type Item = {
   unitPrice: number;
   quantity: number;
   quantityUnit?: string;
-  partName: string;
-  partId: number | string;
+  productName?: string;
+  productId?: number | null;
   assignedVendors?: Vendor[];
 };
 
