@@ -61,4 +61,22 @@ export const masterApiQuery = {
       endpoint: `${MASTER_API_CONSTANT}${UNSPSC_CONSTANT}/family/filter`,
     },
   },
+  country: {
+    getCountries: {
+      key: "countries",
+      endpoint: `${MASTER_API_CONSTANT}/country/`,
+    },
+  },
+  state: {
+    getStates: {
+      key: "states",
+      endpoint: `${MASTER_API_CONSTANT}/state/`,
+    },
+  },
+  city: {
+    getCities: {
+      key: "cities",
+      endpoint: `${MASTER_API_CONSTANT}/city/`,
+    },
+  },
 };

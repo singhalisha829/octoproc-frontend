@@ -1,15 +1,21 @@
 import { axiosInstance } from "@/api/axiosInstance";
-import { MASTER_API_CONSTANT } from "@/api/masterdata";
+import { masterApiQuery } from "@/react-query/masterApiQueries";
 
 export const getCountriesList = async () => {
-  const { data } = await axiosInstance.get(`${MASTER_API_CONSTANT}/country/`);
+  const { data } = await axiosInstance.get(
+    masterApiQuery.country.getCountries.endpoint
+  );
   return data;
 };
 export const getCitites = async () => {
-  const { data } = await axiosInstance.get(`${MASTER_API_CONSTANT}/city/`);
+  const { data } = await axiosInstance.get(
+    masterApiQuery.city.getCities.endpoint
+  );
   return data;
 };
 export const getStates = async () => {
-  const { data } = await axiosInstance.get(`${MASTER_API_CONSTANT}/state/`);
+  const { data } = await axiosInstance.get(
+    masterApiQuery.state.getStates.endpoint
+  );
   return data;
 };
