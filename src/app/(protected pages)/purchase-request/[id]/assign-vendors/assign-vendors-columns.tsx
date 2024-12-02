@@ -31,9 +31,7 @@ export const assignVendorColumns: ColumnDef<Item>[] = [
       <DataTableColumnCell
         row={row}
         badge={
-          <Badge variant={"tertiary"}>{`#${
-            row.original.productId
-          }`}</Badge>
+          <Badge variant={"tertiary"}>{`#${row.original.productId}`}</Badge>
         }
       />
     ),
@@ -49,15 +47,15 @@ export const assignVendorColumns: ColumnDef<Item>[] = [
     ),
   },
 
-  {
-    accessorKey: "unitPrice",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Unit Price" />
-    ),
-    cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={String(row.original.unitPrice)} />
-    ),
-  },
+  // {
+  //   accessorKey: "unitPrice",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Unit Price" />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <DataTableColumnCell row={row} title={String(row.original.unitPrice)} />
+  //   ),
+  // },
 
   {
     accessorKey: "quantity",

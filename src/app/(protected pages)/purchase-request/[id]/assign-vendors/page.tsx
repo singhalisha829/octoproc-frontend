@@ -1,45 +1,50 @@
 "use client";
 import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
-import { DataTable } from "@/components/table/data-table";
-import { useState } from "react";
 
+import {
+  getItemWiseAssignedVendors,
+  getPurchaseRequest,
+} from "@/api/purchaseRequest";
 import { Button } from "@/components/ui/button";
-import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
+import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
+import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { assignVendorColumns } from "./assign-vendors-columns";
 import AssignVendorTable from "./AssignVendorTable";
+import { PurchaseRequestItem } from "@/interfaces/PurchaseRequest";
+import { Item } from "@/interfaces/Stock";
+
+const formatItems = (items: PurchaseRequestItem[]): Item[] => {
+  if (!items) return [];
+  const formattedItems: Item[] = items.map((item) => ({
+    quantity: item.quantity,
+    unitPrice: 0,
+    productId: item.product.id,
+    productName: item.product.name,
+    uom_id: item.product.uom_id,
+  }));
+  if (formattedItems) return formattedItems;
+  return [];
+};
 
 const AssignVendors = () => {
   const params = useParams<{
     id: string;
   }>();
   const router = useRouter();
-  const [purchaseRequest, setPurchaseRequest] = useState<PurchaseRequest>({
-    id: 1,
-    name: "Demo purchase request",
-    items: [
-      {
-        unitPrice: 20,
-        quantity: 20,
-        productName: "item",
-        quantityUnit: "V",
-        productId: 2,
-        assignedVendors: [
-          
-          { id: 1, // vendor_id, vendor_name, qunatity, assignmentID
-           name: "Demo Vendor", quantity: 20 }],
-      },
-      {
-        unitPrice: 30,
-        quantity: 10,
-        productName: "item2",
-        quantityUnit: "Kg",
-        productId: 4,
-      },
-    ],
-    vendors: [{ id: 1, name: "Demo Vendor", quantity: 20 }],
+
+  const { data: purchaseRequest } = useQuery({
+    queryKey: [purchaseRequestQueries.purchaseRequest.getPurchaseRequest.key],
+    queryFn: () => getPurchaseRequest(params.id),
   });
+  const { data: itemWiseAssignedVendors } = useQuery({
+    queryKey: [purchaseRequestQueries.purchaseRequest.getItemWiseAssignedVendor.key],
+    queryFn: () => getItemWiseAssignedVendors(params.id),
+  });
+
+  const formattedItems = formatItems(purchaseRequest?.items || []);
+  console.log(itemWiseAssignedVendors);
 
   return (
     <>
@@ -47,7 +52,7 @@ const AssignVendors = () => {
       <Container className="grid gap-2">
         <p className="text-xl font-semibold">Items:</p>
         <AssignVendorTable
-          data={purchaseRequest.items}
+          data={formattedItems}
           columns={assignVendorColumns}
         />
       </Container>
@@ -63,7 +68,9 @@ const AssignVendors = () => {
         </Button>
         <Button
           onClick={() => {
-            router.push(`/purchase-request/${purchaseRequest.id}/view-vendors`);
+            router.push(
+              `/purchase-request/${purchaseRequest?.id}/view-vendors`
+            );
           }}
           size={"lg"}
           variant={"tertiary"}

@@ -7,7 +7,15 @@ export const getPurchaseRequests = async (): Promise<PurchaseRequest[]> => {
     purchaseRequestQueries.purchaseRequest.getPurchaseRequests.endpoint,
     {}
   );
-  return data.data;
+  return data.data || null;
+};
+export const getPurchaseRequest = async (
+  id: string | number
+): Promise<PurchaseRequest> => {
+  const { data } = await axiosInstance.get(
+    purchaseRequestQueries.purchaseRequest.getPurchaseRequest.endpoint + id
+  );
+  return data.data || null;
 };
 export const createPurchaseRequest = async (data: {
   enterprise_client_id: number;
@@ -19,4 +27,15 @@ export const createPurchaseRequest = async (data: {
     purchaseRequestQueries.purchaseRequest.createPurchaseRequest.endpoint,
     data
   );
+};
+
+export const getItemWiseAssignedVendors = async (id: string | number) => {
+  const { data } = await axiosInstance.get(
+    purchaseRequestQueries.purchaseRequest.getItemWiseAssignedVendor
+      .endpoint_start +
+      id +
+      purchaseRequestQueries.purchaseRequest.getItemWiseAssignedVendor
+        .endpoint_end
+  );
+  return data.data || null;
 };

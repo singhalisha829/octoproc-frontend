@@ -5,11 +5,11 @@ export const getUomTypes = async () => {
   const { data } = await axiosInstance.get(
     masterApiQuery.uom.getUomTypes.endpoint
   );
-  return data.data;
+  return data.data || null;
 };
 export const getUoms = async (type: string | null) => {
   const { data } = await axiosInstance.get(
     masterApiQuery.uom.getUoms.endpoint + type
   );
-  return data.data;
+  return data.data || null;
 };

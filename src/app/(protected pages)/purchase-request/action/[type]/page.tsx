@@ -61,7 +61,7 @@ const CreatePurchaseRequestPage = () => {
     mutationFn: createPurchaseRequest,
     onSuccess: (response) => {
       toast.success("Purchase Request created successfully!");
-      router.push(`/purchase-request/${response.data.data.id}/assign-vendors`);
+      router.push(`/purchase-request/${response.data.data || null.id}/assign-vendors`);
     },
     onError: () => {
       toast.error("Failed to create purchase request!");

@@ -1,3 +1,5 @@
+import { PurchaseRequestItem } from "@/interfaces/PurchaseRequest";
+import { Item } from "@/interfaces/Stock";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -28,3 +30,16 @@ export function transformSelectOptions<
 
   return formattedOptions;
 }
+
+export const formatItems = (items: PurchaseRequestItem[]): Item[] => {
+  if (!items) return [];
+  const formattedItems: Item[] = items.map((item) => ({
+    quantity: item.quantity,
+    unitPrice: 0,
+    productId: item.product.id,
+    productName: item.product.name,
+    uom_id: item.product.uom_id,
+  }));
+  if (formattedItems) return formattedItems;
+  return [];
+};

@@ -4,7 +4,7 @@ export type Item = {
   quantityUnit?: string;
   productName?: string;
   uom_id?: number;
-  productId?: number | null;
+  productId?: number | null | string;
   assignedVendors?: Vendor[];
 };
 

@@ -6,7 +6,7 @@ const getProducts = async (): Promise<Product[]> => {
   const { data } = await axiosInstance.post(productQuery.getProducts.endpoint, {
     unspsc_codes: [],
   });
-  return data.data;
+  return data.data || null;
 };
 const addProduct = (product: Product) => {
   return axiosInstance.post(productQuery.addProduct.endpoint, product);

@@ -25,7 +25,7 @@ export const getSegments = async (): Promise<UNSPSC[]> => {
   const { data } = await axiosInstance.get(
     masterApiQuery.segment.getSegments.endpoint
   );
-  return data.data;
+  return data.data || null;
 };
 
 export const getFamilies = async (ids: number[]): Promise<Family[]> => {
@@ -35,7 +35,7 @@ export const getFamilies = async (ids: number[]): Promise<Family[]> => {
       segment_ids: ids,
     }
   );
-  return data.data;
+  return data.data || null;
 };
 export const getClasses = async (ids: number[]): Promise<Class[]> => {
   const { data } = await axiosInstance.post(
@@ -44,7 +44,7 @@ export const getClasses = async (ids: number[]): Promise<Class[]> => {
       family_ids: ids,
     }
   );
-  return data.data;
+  return data.data || null;
 };
 
 export const getCommodies = async (ids: number[]): Promise<Commodity[]> => {
@@ -54,5 +54,5 @@ export const getCommodies = async (ids: number[]): Promise<Commodity[]> => {
       class_ids: ids,
     }
   );
-  return data.data;
+  return data.data || null;
 };

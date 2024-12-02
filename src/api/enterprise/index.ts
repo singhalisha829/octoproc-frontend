@@ -7,7 +7,7 @@ export const getClients = async (): Promise<Client[]> => {
     enterpriseQueries.client.getClients.endpoint,
     { country_ids: [], state_id: [], city_id: [], pan_number: "" }
   );
-  return data.data;
+  return data.data || null;
 };
 export const addClient = async (data: ClientDetails): Promise<Client[]> => {
   return await axiosInstance.post(
