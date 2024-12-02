@@ -10,37 +10,44 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
 const ViewVendorsPage = () => {
-  const [purchaseRequest, setPurchaseRequest] = useState<PurchaseRequest>({
-    id: 1,
-    name: "Demo purchase request",
-    items: [
-      {
-        unitPrice: 20,
-        quantity: 20,
-        productName: "item",
-        productId: 2,
-      },
-      {
-        unitPrice: 20,
-        quantity: 20,
-        productName: "item",
-        productId: 4,
-      },
-    ],
-    vendors: [
-      { id: 1, name: "Demo Vendor", quantity: 20 },
-      {
-        id: 2,
-        name: "ABC PVT LTD",
-        quantity: 10,
-      },
-    ],
-  });
+  // const [purchaseRequest, setPurchaseRequest] = useState<PurchaseRequest>({
+  //   id: 1,
+  //   name: "Demo purchase request",
+  //   items: [
+  //     {
+  //       unitPrice: 20,
+  //       quantity: 20,
+  //       productName: "item",
+  //       productId: 2,
+  //     },
+  //     {
+  //       unitPrice: 20,
+  //       quantity: 20,
+  //       productName: "item",
+  //       productId: 4,
+  //     },
+  //   ],
+  // vendors: [
+  //   { id: 1, name: "Demo Vendor", quantity: 20 },
+  //   {
+  //     id: 2,
+  //     name: "ABC PVT LTD",
+  //     quantity: 10,
+  //   },
+  // ],
+  // });
   return (
     <>
       <Header title="View Assigned Vendors" description="" />
 
-      {purchaseRequest.vendors.map((vendor) => (
+      {[
+        { id: 1, name: "Demo Vendor", quantity: 20 },
+        {
+          id: 2,
+          name: "ABC PVT LTD",
+          quantity: 10,
+        },
+      ].map((vendor) => (
         <Container className="grid gap-4 " key={vendor.id}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -59,7 +66,7 @@ const ViewVendorsPage = () => {
               </Button>
             </div>
           </div>
-          <DataTable data={purchaseRequest.items} columns={viewVendorColumns} />
+          <DataTable data={[]} columns={viewVendorColumns} />
         </Container>
       ))}
     </>

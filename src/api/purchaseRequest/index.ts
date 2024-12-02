@@ -21,7 +21,11 @@ export const createPurchaseRequest = async (data: {
   enterprise_client_id: number;
   reference_no: string;
   created_by: 1;
-  items: { product_id?: number | null; uom_id?: number; quantity: number }[];
+  items: {
+    product_id?: number | null | string;
+    uom_id?: number;
+    quantity: number;
+  }[];
 }) => {
   return axiosInstance.post(
     purchaseRequestQueries.purchaseRequest.createPurchaseRequest.endpoint,

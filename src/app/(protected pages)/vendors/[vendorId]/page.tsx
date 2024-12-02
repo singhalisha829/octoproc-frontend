@@ -39,7 +39,7 @@ const VendorDetailsPage = () => {
   });
 
   const { mutate: addItems, isPending: isAddingItems } = useMutation({
-    mutationFn: (productIds: number[]) =>
+    mutationFn: (productIds: Array<number | string>) =>
       addItemToCatalogue({
         product_ids: productIds,
         vendor_id: Number(params.vendorId),
@@ -53,7 +53,7 @@ const VendorDetailsPage = () => {
     },
   });
   const { mutate: removeItems, isPending: isRemovingItems } = useMutation({
-    mutationFn: (productIds: number[]) =>
+    mutationFn: (productIds: Array<number | string>) =>
       removeItemFromCatalogue({
         product_ids: productIds,
         vendor_id: Number(params.vendorId),

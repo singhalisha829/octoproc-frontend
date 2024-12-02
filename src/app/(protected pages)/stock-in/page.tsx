@@ -22,8 +22,8 @@ const StockInPage = () => {
     date: "",
     items: [
       {
-        partId: 1,
-        partName: "test",
+        productId: 1,
+        productName: "test",
         quantity: 10,
         unitPrice: 10,
       },
