@@ -3,6 +3,8 @@ import {
   LayoutDashboard,
   LogOut,
   NotebookText,
+  PackageOpen,
+  ShoppingBag,
   ShoppingCart,
   Users,
 } from "lucide-react";
@@ -19,7 +21,7 @@ const links = [
   {
     name: "Inventory",
     url: "/inventory",
-    icon: <LayoutDashboard />,
+    icon: <PackageOpen />,
   },
   {
     name: "Purchase Request",
@@ -29,7 +31,7 @@ const links = [
   {
     name: "Purchase Order",
     url: "/purchase-orders",
-    icon: <ShoppingCart />,
+    icon: <ShoppingBag />,
   },
   {
     name: "Vendor",
