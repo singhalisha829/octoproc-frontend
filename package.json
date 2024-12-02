@@ -30,7 +30,8 @@
     "react-dom": "19.0.0-rc-02c0e824-20241028",
     "sonner": "^1.7.0",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.61.6",

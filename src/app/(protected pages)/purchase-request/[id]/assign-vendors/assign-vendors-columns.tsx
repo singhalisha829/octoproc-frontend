@@ -23,16 +23,16 @@ export const assignVendorColumns: ColumnDef<Item>[] = [
   },
 
   {
-    accessorKey: "partId",
+    accessorKey: "productId",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Part ID" />
+      <DataTableColumnHeader column={column} title="Product ID" />
     ),
     cell: ({ row }) => (
       <DataTableColumnCell
         row={row}
         badge={
           <Badge variant={"tertiary"}>{`#${
-            row.original.partId as string
+            row.original.productId
           }`}</Badge>
         }
       />
@@ -40,12 +40,12 @@ export const assignVendorColumns: ColumnDef<Item>[] = [
   },
 
   {
-    accessorKey: "name",
+    accessorKey: "productName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Part Name" />
+      <DataTableColumnHeader column={column} title="Product Name" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={row.original.partName} />
+      <DataTableColumnCell row={row} title={row.original.productName} />
     ),
   },
 

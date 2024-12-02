@@ -82,15 +82,6 @@ export function ControlledComboBox<TData extends Option[]>({
           <CommandInput
             value={searchKeyWord}
             onValueChange={(e) => {
-              console.log(
-                e,
-                options.filter(
-                  (option) =>
-                    option.label.toLowerCase().includes(e.toLowerCase()) ||
-                    String(option.value).toLowerCase().includes(e.toLowerCase())
-                )
-              );
-
               setSearchKeyWord(e);
             }}
             placeholder={searchPlaceholder}

@@ -1,4 +1,4 @@
-const purchaseRequestQueries = {
+export const purchaseRequestQueries = {
   purchaseRequest: {
     getPurchaseRequests: {
       key: "purchase-requests",

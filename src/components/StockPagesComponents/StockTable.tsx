@@ -43,6 +43,7 @@ const StockTable = ({
     productId: null,
     productName: "",
     quantity: 0,
+    uom_id: undefined,
     unitPrice: 0,
     quantityUnit: "",
   });
@@ -93,16 +94,18 @@ const StockTable = ({
             <ControlledComboBox
               value={itemDetails.productId}
               labelKey="label"
-              valueKey="id"
+              valueKey="value"
               searchPlaceholder="Search Part ID/Name"
-              emptyLabel="No part found"
-              placeholder="Select Part ID/Name"
+              emptyLabel="No product found"
+              placeholder="Select Product ID/Name"
               options={options}
               onSelect={(option) => {
                 setItemDetails((prev) => ({
                   ...prev,
                   productId: Number(option?.value),
                   productName: option?.label,
+                  //@ts-ignore
+                  uom_id: option?.uom_id,
                 }));
               }}
             />
@@ -128,7 +131,8 @@ const StockTable = ({
             <TableCell className="flex items-center justify-center text-center">
               <div className="flex items-center">
                 <Input
-                  className="rounded-r-none max-w-20"
+                  // rounded-r-none
+                  className="max-w-20"
                   id="Quantity"
                   type="number"
                   placeholder="0.00"
@@ -140,7 +144,7 @@ const StockTable = ({
                     }))
                   }
                 />
-                <ComboBox
+                {/* <ComboBox
                   className="rounded-l-none border-l-0"
                   searchPlaceholder="Search Unit"
                   placeholder="Select Unit"
@@ -152,7 +156,7 @@ const StockTable = ({
                       quantityUnit: value,
                     }));
                   }}
-                />
+                /> */}
               </div>
             </TableCell>
           )}

@@ -3,6 +3,7 @@ export type Item = {
   quantity: number;
   quantityUnit?: string;
   productName?: string;
+  uom_id?: number;
   productId?: number | null;
   assignedVendors?: Vendor[];
 };

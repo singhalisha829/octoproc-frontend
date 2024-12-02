@@ -9,57 +9,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Logs, Share } from "lucide-react";
+import { Share } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 
-import Header from "@/components/globals/Header";
-import Container from "@/components/globals/Container";
-import { purchaseRequestColumns } from "./purchase-table-columns";
-import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
-import { useQuery } from "@tanstack/react-query";
 import { getPurchaseRequests } from "@/api/purchaseRequest";
+import Container from "@/components/globals/Container";
+import Header from "@/components/globals/Header";
+import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
+import { useQuery } from "@tanstack/react-query";
+import { purchaseRequestColumns } from "./purchase-table-columns";
 
 const PurchaseRequestPage = () => {
   const [filter, setFilter] = useState({
     type: "all",
     searchKeyword: "",
   });
-  const [purchaseRequests, setPurchaseRequests] = useState<PurchaseRequest[]>([
-    {
-      id: 1,
-      name: "Demo purchase request",
-      items: [
-        {
-          unitPrice: 20,
-          quantity: 20,
-          partName: "item",
-          partId: 2,
-        },
-      ],
-      vendors: [{ id: 1, name: "vendor", quantity: 20 }],
-    },
-    {
-      id: 2,
-      name: "Demo purchase request 2",
-      items: [
-        {
-          unitPrice: 20,
-          quantity: 20,
-          partName: "item",
-          partId: 2,
-        },
-      ],
-      vendors: [],
-    },
-  ]);
 
   const { data } = useQuery({
-    queryKey: [""],
+    queryKey: [purchaseRequestQueries.purchaseRequest.getPurchaseRequests.key],
     queryFn: () => getPurchaseRequests(),
   });
-
-  console.log(data);
 
   return (
     <>
@@ -109,7 +79,7 @@ const PurchaseRequestPage = () => {
             </Button>
           </div>
         </div>
-        <DataTable data={[]} columns={purchaseRequestColumns} />
+        <DataTable data={data || []} columns={purchaseRequestColumns} />
       </Container>
     </>
   );

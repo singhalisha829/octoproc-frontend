@@ -17,17 +17,15 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
     cell: ({ row }) => (
       <DataTableColumnCell
         row={row}
-        badge={
-          <Badge variant={"tertiary"}>{`#${row.original.id as string}`}</Badge>
-        }
+        badge={<Badge variant={"tertiary"}>{`#${row.original.id}`}</Badge>}
       />
     ),
   },
 
   {
-    accessorKey: "name",
+    accessorKey: "enterprise_client",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="NAME" />
+      <DataTableColumnHeader column={column} title="Client Name" />
     ),
     cell: ({ row }) => (
       <DataTableColumnCell
@@ -35,7 +33,7 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
           router.push(`/purchase-request/${row.original.id}`);
         }}
         row={row}
-        title={row.original.name}
+        title={row.original.enterprise_client.name}
       />
     ),
   },

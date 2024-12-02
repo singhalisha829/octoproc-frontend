@@ -31,7 +31,7 @@ export const addItemToCatalogue = async (data: {
   vendor_id: number;
   product_ids: Array<number>;
 }) => {
-  return await axiosInstance.post(
+  return axiosInstance.post(
     masterApiQuery.vendor.addItemsToCatalogue.endpoint,
     data
   );
@@ -41,7 +41,7 @@ export const removeItemFromCatalogue = async (data: {
   vendor_id: number;
   product_ids: Array<number>;
 }) => {
-  return await axiosInstance.post(
+  return axiosInstance.post(
     masterApiQuery.vendor.removeItemsFromCatalogue.endpoint,
     data
   );

@@ -17,14 +17,14 @@ const ViewVendorsPage = () => {
       {
         unitPrice: 20,
         quantity: 20,
-        partName: "item",
-        partId: 2,
+        productName: "item",
+        productId: 2,
       },
       {
         unitPrice: 20,
         quantity: 20,
-        partName: "item",
-        partId: 4,
+        productName: "item",
+        productId: 4,
       },
     ],
     vendors: [

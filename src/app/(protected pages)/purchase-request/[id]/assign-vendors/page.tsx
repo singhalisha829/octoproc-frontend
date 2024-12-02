@@ -22,17 +22,20 @@ const AssignVendors = () => {
       {
         unitPrice: 20,
         quantity: 20,
-        partName: "item",
+        productName: "item",
         quantityUnit: "V",
-        partId: 2,
-        assignedVendors: [{ id: 1, name: "Demo Vendor", quantity: 20 }],
+        productId: 2,
+        assignedVendors: [
+          
+          { id: 1, // vendor_id, vendor_name, qunatity, assignmentID
+           name: "Demo Vendor", quantity: 20 }],
       },
       {
         unitPrice: 30,
         quantity: 10,
-        partName: "item2",
+        productName: "item2",
         quantityUnit: "Kg",
-        partId: 4,
+        productId: 4,
       },
     ],
     vendors: [{ id: 1, name: "Demo Vendor", quantity: 20 }],

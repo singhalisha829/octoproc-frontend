@@ -8,16 +8,16 @@ const getProducts = async (): Promise<Product[]> => {
   });
   return data.data;
 };
-const addProduct = async (product: Product) => {
-  return await axiosInstance.post(productQuery.addProduct.endpoint, product);
+const addProduct = (product: Product) => {
+  return axiosInstance.post(productQuery.addProduct.endpoint, product);
 };
-const deleteProduct = async (product: Product) => {
-  return await axiosInstance.delete(
+const deleteProduct = (product: Product) => {
+  return axiosInstance.delete(
     `${productQuery.deleteProduct.endpoint}/${product.id}`
   );
 };
-const updateProduct = async () => {
-  return await axiosInstance.put(productQuery.updateProduct.endpoint);
+const updateProduct = () => {
+  return axiosInstance.put(productQuery.updateProduct.endpoint);
 };
 
 export { getProducts, addProduct, deleteProduct, updateProduct };
