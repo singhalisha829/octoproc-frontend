@@ -3,30 +3,20 @@ import { GenericModalData } from "@/api/masterdata";
 import { Class, Commodity, Family, UNSPSC } from "@/interfaces/Product";
 import { masterApiQuery } from "@/react-query/masterApiQueries";
 
-import { AxiosResponse } from "axios";
-
 //create new api's
-export const addSegment = (
-  data: GenericModalData
-): Promise<AxiosResponse<any, any>> => {
+export const addSegment = (data: GenericModalData) => {
   return axiosInstance.post(masterApiQuery.segment.addSegment.endpoint, data);
 };
-export const addClass = (
-  data: GenericModalData
-): Promise<AxiosResponse<any, any>> => {
+export const addClass = (data: GenericModalData) => {
   return axiosInstance.post(masterApiQuery.class.addClass.endpoint, data);
 };
-export const addCommodity = (
-  data: GenericModalData
-): Promise<AxiosResponse<any, any>> => {
+export const addCommodity = (data: GenericModalData) => {
   return axiosInstance.post(
     masterApiQuery.commodity.addCommodity.endpoint,
     data
   );
 };
-export const addFamily = (
-  data: GenericModalData
-): Promise<AxiosResponse<any, any>> => {
+export const addFamily = (data: GenericModalData) => {
   return axiosInstance.post(masterApiQuery.family.addFamily.endpoint, data);
 };
 

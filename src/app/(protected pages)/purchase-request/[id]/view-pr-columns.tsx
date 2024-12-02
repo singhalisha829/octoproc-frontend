@@ -33,9 +33,7 @@ export const viewPrColumns: ColumnDef<Item>[] = [
       <DataTableColumnCell
         row={row}
         badge={
-          <Badge variant={"tertiary"}>{`#${
-            row.original.partId as string
-          }`}</Badge>
+          <Badge variant={"tertiary"}>{`#${row.original.productId}`}</Badge>
         }
       />
     ),
@@ -47,7 +45,7 @@ export const viewPrColumns: ColumnDef<Item>[] = [
       <DataTableColumnHeader column={column} title="Part Name" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={row.original.partName} />
+      <DataTableColumnCell row={row} title={row.original.productName} />
     ),
   },
 

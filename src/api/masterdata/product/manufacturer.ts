@@ -3,9 +3,7 @@ import { GenericModalData } from "@/api/masterdata";
 import { masterApiQuery } from "@/react-query/masterApiQueries";
 import { AxiosResponse } from "axios";
 
-export const addManufacturer = (
-  manufacturer: GenericModalData
-): Promise<AxiosResponse<any, any>> => {
+export const addManufacturer = (manufacturer: GenericModalData) => {
   return axiosInstance.post(
     masterApiQuery.manufacturer.addManufacturer.endpoint,
     manufacturer

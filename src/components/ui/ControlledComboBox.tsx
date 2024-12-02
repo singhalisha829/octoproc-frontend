@@ -94,9 +94,12 @@ export function ControlledComboBox<TData extends Option[]>({
                   key={option[valueKey as "value"]}
                   value={String(option[valueKey as "value"])}
                   onSelect={(currentValue) => {
-                    value === Number(currentValue)
-                      ? onSelect(null)
-                      : onSelect(option);
+                    if (value === Number(currentValue)) {
+                      onSelect(null);
+                    } else {
+                      onSelect(option);
+                    }
+
                     setSearchKeyWord("");
                     setOpen(false);
                   }}
