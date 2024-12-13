@@ -13,11 +13,11 @@ import Link from "next/link";
 import StyledLink from "./StyledLink";
 
 const links = [
-  {
-    name: "Dashboard",
-    url: "/dashboard",
-    icon: <LayoutDashboard />,
-  },
+  // {
+  //   name: "Dashboard",
+  //   url: "/dashboard",
+  //   icon: <LayoutDashboard />,
+  // },
   {
     name: "Inventory",
     url: "/inventory",
