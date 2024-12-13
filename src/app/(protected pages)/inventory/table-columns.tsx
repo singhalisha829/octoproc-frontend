@@ -39,12 +39,24 @@ export const stocksColumns: ColumnDef<Stock>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="NAME & DESCRIPTION" />
+      <DataTableColumnHeader column={column} title="NAME" />
     ),
     cell: ({ row }) => (
       <DataTableColumnCell
         row={row}
-        title={`${row.original.name as string} & ${row.original.description}`}
+        title={row.original.name}
+      />
+    ),
+  },
+  {
+    accessorKey: "description",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="DESCRIPTION" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell
+        row={row}
+        title={row.original.description}
       />
     ),
   },
