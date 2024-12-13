@@ -66,7 +66,23 @@ const ViewVendorsPage = () => {
               </Button>
             </div>
           </div>
-          <DataTable data={[]} columns={viewVendorColumns} />
+          <DataTable
+            data={[
+              {
+                unitPrice: 20,
+                quantity: 20,
+                productName: "item",
+                productId: 2,
+              },
+              {
+                unitPrice: 20,
+                quantity: 20,
+                productName: "item",
+                productId: 4,
+              },
+            ]}
+            columns={viewVendorColumns}
+          />
         </Container>
       ))}
     </>

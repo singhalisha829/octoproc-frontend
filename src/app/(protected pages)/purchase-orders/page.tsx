@@ -39,8 +39,8 @@ const PurchaseRequestPage = () => {
   return (
     <>
       <Header
-        title="Purchase Requests"
-        description="Database for all Purchase Requests"
+        title="Purchase Orders"
+        description="Database for all Purchase Orders"
       />
       <Container className=" flex items-center justify-between  gap-5">
         <div className="flex items-center gap-4 grow">
@@ -74,15 +74,15 @@ const PurchaseRequestPage = () => {
       <Container className="grid gap-4 ">
         <div className="flex items-center justify-between">
           <p className="font-semibold text-lg">
-            Your Available Purchase Requests
+            Your Available Purchase Orders
           </p>
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <Button asChild variant={"tertiary"}>
               <Link href={"/purchase-request/action/create"}>
                 Create Purchase Request
               </Link>
             </Button>
-          </div>
+          </div> */}
         </div>
         <DataTable data={[]} columns={purchaseRequestColumns} />
       </Container>

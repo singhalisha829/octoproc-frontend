@@ -75,7 +75,7 @@ const AssignVendors = () => {
           size={"lg"}
           variant={"tertiary"}
         >
-          Create Purchase Request
+          View Vendors
         </Button>
       </Container>
     </>
