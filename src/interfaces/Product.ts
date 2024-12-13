@@ -12,9 +12,9 @@ export interface Product {
 
 export interface BASE_UNSPSC_HELPER_TYPE {
   code: string;
-  description: string | null;
+  description?: string | null;
   id?: number | string;
-  is_deleted: boolean;
+  is_deleted?: boolean;
   name: string;
 }
 
@@ -35,7 +35,7 @@ export interface Class extends BASE_UNSPSC_HELPER_TYPE {
 
 export interface Commodity extends BASE_UNSPSC_HELPER_TYPE {
   class_id: number;
-  unspsc: UNSPSC;
+  unspsc?: UNSPSC;
 }
 
 // unspsc (segment, family, class, commodity),

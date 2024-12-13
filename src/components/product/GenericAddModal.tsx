@@ -5,15 +5,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 import InputLabelGroup from "../ui/InputLabelGroup";
 import { Button } from "../ui/button";
 import { AxiosResponse } from "axios";
 import { GenericModalData } from "@/api/masterdata";
+import { masterApiQuery } from "@/react-query/masterApiQueries";
 
 type Props = {
+  name: string;
   title: string;
   mutationFn?: (info: {
     name: string;
@@ -21,7 +23,7 @@ type Props = {
   }) => Promise<AxiosResponse<any, any>>;
 };
 
-const GenericAddModal = ({ title, mutationFn }: Props) => {
+const GenericAddModal = ({ name, title, mutationFn }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [info, setInfo] = useState<GenericModalData>({
     name: "",
@@ -29,20 +31,31 @@ const GenericAddModal = ({ title, mutationFn }: Props) => {
     description: "",
   });
 
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: mutationFn,
     onSuccess: () => {
-      toast.success("Manufacturer added successfully!");
+      toast.success(`${name} added successfully!`);
+      queryClient.invalidateQueries({
+        queryKey: [masterApiQuery.class.getClasses.Key],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [masterApiQuery.family.getFamilies.Key],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [masterApiQuery.commodity.getCommodities.Key],
+      });
       setIsOpen(false);
     },
 
     onError: () => {
-      toast.error("Failed to add manufacturer!");
+      toast.error(`Failed to add ${name}!`);
     },
   });
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const submitHandler = () => {
+    // e.preventDefault();
     mutate(info);
   };
 
@@ -60,7 +73,7 @@ const GenericAddModal = ({ title, mutationFn }: Props) => {
       </DialogTrigger>
       <DialogContent>
         <DialogTitle className="text-2xl text-primary">{title}</DialogTitle>
-        <form onSubmit={submitHandler} className="grid gap-3">
+        <div className="grid gap-3">
           <InputLabelGroup
             labelText="Name"
             value={info.name}
@@ -107,11 +120,16 @@ const GenericAddModal = ({ title, mutationFn }: Props) => {
                 Cancel
               </Button>
             </DialogClose>
-            <Button isLoading={isPending} variant={"tertiary"}>
+            <Button
+              onClick={() => submitHandler()}
+              type="button"
+              isLoading={isPending}
+              variant={"tertiary"}
+            >
               Add
             </Button>
           </div>
-        </form>
+        </div>
       </DialogContent>
     </Dialog>
   );

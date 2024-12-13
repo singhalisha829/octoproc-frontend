@@ -7,16 +7,16 @@ import { masterApiQuery } from "@/react-query/masterApiQueries";
 export const addSegment = (data: GenericModalData) => {
   return axiosInstance.post(masterApiQuery.segment.addSegment.endpoint, data);
 };
-export const addClass = (data: GenericModalData) => {
+export const addClass = (data: Class) => {
   return axiosInstance.post(masterApiQuery.class.addClass.endpoint, data);
 };
-export const addCommodity = (data: GenericModalData) => {
+export const addCommodity = (data: Commodity) => {
   return axiosInstance.post(
     masterApiQuery.commodity.addCommodity.endpoint,
     data
   );
 };
-export const addFamily = (data: GenericModalData) => {
+export const addFamily = (data: Family) => {
   return axiosInstance.post(masterApiQuery.family.addFamily.endpoint, data);
 };
 
