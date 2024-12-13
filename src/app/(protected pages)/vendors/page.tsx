@@ -18,6 +18,7 @@ import { vendorListColumns } from "./vendorListColumns";
 import { useQuery } from "@tanstack/react-query";
 import { getVendors } from "@/api/masterdata/vendor";
 import { masterApiQuery } from "@/react-query/masterApiQueries";
+import { dummyVendors } from "@/utils/constants";
 
 const VendorsListPage = () => {
   const [filter, setFilter] = useState({
@@ -83,7 +84,8 @@ const VendorsListPage = () => {
 
         <DataTable
           isLoading={isLoading}
-          data={vendors || []}
+          // data={vendors || []}
+          data={dummyVendors || []}
           columns={vendorListColumns}
         />
       </Container>

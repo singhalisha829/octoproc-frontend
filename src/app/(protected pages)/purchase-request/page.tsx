@@ -19,6 +19,10 @@ import Header from "@/components/globals/Header";
 import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
 import { useQuery } from "@tanstack/react-query";
 import { purchaseRequestColumns } from "./purchase-table-columns";
+import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
+import { dummyData } from "@/utils/constants";
+
+
 
 const PurchaseRequestPage = () => {
   const [filter, setFilter] = useState({
@@ -79,7 +83,7 @@ const PurchaseRequestPage = () => {
             </Button>
           </div>
         </div>
-        <DataTable data={data || []} columns={purchaseRequestColumns} />
+        <DataTable data={dummyData || []} columns={purchaseRequestColumns} />
       </Container>
     </>
   );

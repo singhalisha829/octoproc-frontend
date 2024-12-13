@@ -10,7 +10,7 @@ export interface Client {
   country_id: number;
   pincode: string;
   pan_number: string;
-  gst_number: null | number;
+  gst_number: null | number | string;
   id: number;
   contact_persons: Array<ContactPerson>;
 }

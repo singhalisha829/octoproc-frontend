@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Product } from "@/interfaces/Product";
 import { Item } from "@/interfaces/Stock";
 import { masterApiQuery } from "@/react-query/masterApiQueries";
+import { dummyVendors } from "@/utils/constants";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -27,11 +28,16 @@ const VendorDetailsPage = () => {
   const [addedProducts, setAddedProducts] = useState<Item[]>([]);
   const [deletedProducts, setDeletedProducts] = useState<Item[]>([]);
 
-  const { data: vendor, isLoading } = useQuery({
-    queryKey: [masterApiQuery.vendor.getVendor.Key],
-    queryFn: () => getVendor(params.vendorId),
-    enabled: !!params.vendorId,
-  });
+  // const { data: vendor, isLoading } = useQuery({
+  //   queryKey: [masterApiQuery.vendor.getVendor.Key],
+  //   queryFn: () => getVendor(params.vendorId),
+  //   enabled: !!params.vendorId,
+  // });
+
+  const vendor = dummyVendors.find(
+    (v) => v.id === Number(params.vendorId || 1)
+  );
+
   const { data: catalogue } = useQuery({
     queryKey: [masterApiQuery.vendor.getVendorCatalogue.Key],
     queryFn: () => getVendorCatalogue(params.vendorId),

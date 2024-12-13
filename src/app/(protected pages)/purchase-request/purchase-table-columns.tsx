@@ -25,7 +25,7 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
   {
     accessorKey: "enterprise_client",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Client Name" />
+      <DataTableColumnHeader column={column} title="Unit Name" />
     ),
     cell: ({ row }) => (
       <DataTableColumnCell
