@@ -9,7 +9,7 @@ export type Stock = {
   type: string;
   name: string;
   description: string;
-  quantity: number;
+  quantity: number | string;
 };
 
 export const stocksColumns: ColumnDef<Stock>[] = [
