@@ -1,4 +1,5 @@
 import {
+  BookOpenText,
   FileText,
   LayoutDashboard,
   LogOut,
@@ -46,7 +47,7 @@ const links = [
   {
     name: "Ledger",
     url: "/ledger",
-    icon: <NotebookText />,
+    icon: <BookOpenText />,
   },
 ];
 
