@@ -544,3 +544,41 @@ export const dummyVendors: Vendor[] = [
     email: "contact@constructionworld.com",
   },
 ];
+
+export const dummyPO = [
+  {
+    poNo: 1001,
+    date: "2024-12-01",
+    vendor: "Tech Solutions",
+    amount: 25000.5,
+    status: "Pending",
+  },
+  {
+    poNo: 1002,
+    date: "2024-12-02",
+    vendor: "Industrial Supplies Inc.",
+    amount: 48900.0,
+    status: "Approved",
+  },
+  {
+    poNo: 1003,
+    date: "2024-12-03",
+    vendor: "Construction World",
+    amount: 31000.75,
+    status: "Shipped",
+  },
+  {
+    poNo: 1004,
+    date: "2024-12-04",
+    vendor: "Tech Solutions",
+    amount: 15000.0,
+    status: "Delivered",
+  },
+  {
+    poNo: 1005,
+    date: "2024-12-05",
+    vendor: "Industrial Supplies Inc.",
+    amount: 52000.25,
+    status: "Pending",
+  },
+];

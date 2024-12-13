@@ -10,12 +10,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Share } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
 
-import { purchaseRequestColumns } from "@/app/(protected pages)/purchase-request/purchase-table-columns";
 import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
+import { dummyPO } from "@/utils/constants";
+import { purchaseOrderColumns } from "./purchase-order-columns";
 
 const PurchaseRequestPage = () => {
   const [filter, setFilter] = useState({
@@ -84,7 +84,7 @@ const PurchaseRequestPage = () => {
             </Button>
           </div> */}
         </div>
-        <DataTable data={[]} columns={purchaseRequestColumns} />
+        <DataTable data={dummyPO} columns={purchaseOrderColumns} />
       </Container>
     </>
   );
