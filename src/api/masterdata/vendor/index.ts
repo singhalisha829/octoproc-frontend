@@ -10,13 +10,13 @@ export const getVendors = async (): Promise<Vendor[]> => {
   const { data } = await axiosInstance.get(
     masterApiQuery.vendor.getVendor.endpoint
   );
-  return data?.data;
+  return data?.data || null || null;
 };
 export const getVendor = async (vendorId: string): Promise<Vendor> => {
   const { data } = await axiosInstance.get(
     masterApiQuery.vendor.getVendor.endpoint + vendorId
   );
-  return data?.data;
+  return data?.data || null;
 };
 export const getVendorCatalogue = async (
   vendorId: string
@@ -24,7 +24,7 @@ export const getVendorCatalogue = async (
   const { data } = await axiosInstance.get(
     masterApiQuery.vendor.getVendorCatalogue.endpoint + vendorId
   );
-  return data?.data;
+  return data?.data || null;
 };
 
 export const addItemToCatalogue = async (data: {
