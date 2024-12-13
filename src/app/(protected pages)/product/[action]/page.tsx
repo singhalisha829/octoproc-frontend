@@ -149,6 +149,7 @@ const AddOrEditProductPage = () => {
         placeholder: "Manufacturer",
         addNewCta: (
           <GenericAddModal
+            name={"Manufacturer"}
             title={`Add Manufacturer`}
             mutationFn={addManufacturer}
           />
@@ -189,7 +190,11 @@ const AddOrEditProductPage = () => {
         inputType: "select",
         placeholder: "Segment",
         addNewCta: (
-          <GenericAddModal title={`Add Segment`} mutationFn={addSegment} />
+          <GenericAddModal
+            name={"Segment"}
+            title={`Add Segment`}
+            mutationFn={addSegment}
+          />
         ),
       },
       {
@@ -201,7 +206,13 @@ const AddOrEditProductPage = () => {
         inputType: "select",
         placeholder: "Family",
         addNewCta: (
-          <GenericAddModal title={`Add Family`} mutationFn={addFamily} />
+          <GenericAddModal
+            name={"Family"}
+            title={`Add Family`}
+            mutationFn={(info) =>
+              addFamily({ ...info, segment_id: Number(productDetails.segment) })
+            }
+          />
         ),
       },
       {
@@ -213,7 +224,13 @@ const AddOrEditProductPage = () => {
         inputType: "select",
         placeholder: "class",
         addNewCta: (
-          <GenericAddModal title={`Add Class`} mutationFn={addClass} />
+          <GenericAddModal
+            name={"Class"}
+            title={`Add Class`}
+            mutationFn={(info) =>
+              addClass({ ...info, family_id: Number(productDetails.family) })
+            }
+          />
         ),
       },
       {
@@ -225,7 +242,13 @@ const AddOrEditProductPage = () => {
         inputType: "select",
         placeholder: "commodity",
         addNewCta: (
-          <GenericAddModal title={`Add Commodity`} mutationFn={addCommodity} />
+          <GenericAddModal
+            name={"Commodity"}
+            title={`Add Commodity`}
+            mutationFn={(info) =>
+              addCommodity({ ...info, class_id: Number(productDetails.class) })
+            }
+          />
         ),
       },
     ],
