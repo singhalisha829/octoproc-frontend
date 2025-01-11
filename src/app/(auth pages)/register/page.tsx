@@ -76,8 +76,8 @@ const RegisterPage = () => {
   });
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const isPhoneValid = isPhone(registerInfo.phone);
-    const isEmailValid = isEmail(registerInfo.email);
+    const isPhoneValid = isPhone(registerInfo.phone || "");
+    const isEmailValid = isEmail(registerInfo.email || "");
 
     if (!isEmailValid) return toast.error("Please enter valid email!");
     if (!isPhoneValid) return toast.error("Please enter valid mobile!");
@@ -100,7 +100,7 @@ const RegisterPage = () => {
           {registerFields.map((field) => (
             <InputLabelGroup
               key={field.name}
-              value={registerInfo[field.name as "email"]}
+              value={registerInfo[field.name as "email"] || ""}
               onChange={(e) => {
                 const { value } = e.target;
                 setRegisterInfo((prev) => ({
