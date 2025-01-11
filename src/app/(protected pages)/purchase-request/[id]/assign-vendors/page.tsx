@@ -7,14 +7,13 @@ import {
   getPurchaseRequest,
 } from "@/api/purchaseRequest";
 import { Button } from "@/components/ui/button";
+import { PurchaseRequestItem } from "@/interfaces/PurchaseRequest";
+import { Item } from "@/interfaces/Stock";
 import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { assignVendorColumns } from "./assign-vendors-columns";
 import AssignVendorTable from "./AssignVendorTable";
-import { PurchaseRequestItem } from "@/interfaces/PurchaseRequest";
-import { Item } from "@/interfaces/Stock";
-import { dummyData } from "@/utils/constants";
 
 const formatItems = (items: PurchaseRequestItem[]): Item[] => {
   if (!items) return [];
@@ -24,6 +23,7 @@ const formatItems = (items: PurchaseRequestItem[]): Item[] => {
     productId: item.product.id,
     productName: item.product.name,
     uom_id: item.product.uom_id,
+    id: item.id,
   }));
   if (formattedItems) return formattedItems;
   return [];
@@ -35,13 +35,10 @@ const AssignVendors = () => {
   }>();
   const router = useRouter();
 
-  // const { data: purchaseRequest } = useQuery({
-  //   queryKey: [purchaseRequestQueries.purchaseRequest.getPurchaseRequest.key],
-  //   queryFn: () => getPurchaseRequest(params.id),
-  // });
-  const purchaseRequest = dummyData.find(
-    (pr) => pr.id === Number(params?.id || 1)
-  );
+  const { data: purchaseRequest } = useQuery({
+    queryKey: [purchaseRequestQueries.purchaseRequest.getPurchaseRequest.key],
+    queryFn: () => getPurchaseRequest(params.id),
+  });
 
   const { data: itemWiseAssignedVendors } = useQuery({
     queryKey: [
@@ -50,7 +47,6 @@ const AssignVendors = () => {
     queryFn: () => getItemWiseAssignedVendors(params.id),
   });
 
-  // const formattedItems = formatItems(purchaseRequest?.items || []);
   const formattedItems = formatItems(purchaseRequest?.items || []);
 
   return (

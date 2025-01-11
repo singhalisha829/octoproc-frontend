@@ -1,4 +1,5 @@
 "use client";
+import { getVendors } from "@/api/masterdata/vendor";
 import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
 import { DataTable } from "@/components/table/data-table";
@@ -11,14 +12,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader, Logs, Share } from "lucide-react";
+import { masterApiQuery } from "@/react-query/masterApiQueries";
+import { useQuery } from "@tanstack/react-query";
+import { Logs, Share } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { vendorListColumns } from "./vendorListColumns";
-import { useQuery } from "@tanstack/react-query";
-import { getVendors } from "@/api/masterdata/vendor";
-import { masterApiQuery } from "@/react-query/masterApiQueries";
-import { dummyVendors } from "@/utils/constants";
 
 const VendorsListPage = () => {
   const [filter, setFilter] = useState({
@@ -84,8 +83,7 @@ const VendorsListPage = () => {
 
         <DataTable
           isLoading={isLoading}
-          // data={vendors || []}
-          data={dummyVendors || []}
+          data={vendors || []}
           columns={vendorListColumns}
         />
       </Container>

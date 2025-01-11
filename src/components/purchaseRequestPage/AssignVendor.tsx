@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { VENDORS } from "@/utils/constants";
 import { CircleCheck } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { toast } from "sonner";
@@ -22,24 +22,76 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Vendor } from "@/interfaces/Stock";
+import { Item, Vendor } from "@/interfaces/Stock";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { assignVendor } from "@/api/purchaseRequest";
+import { useParams } from "next/navigation";
+import { masterApiQuery } from "@/react-query/masterApiQueries";
+import { getVendors } from "@/api/masterdata/vendor";
+import { transformSelectOptions } from "@/lib/utils";
+import { ControlledComboBox } from "../ui/ControlledComboBox";
 
 type Props = {
   vendors: Array<Vendor>;
   maxQuantity: number;
+  row: Item;
 };
 
-const AssignVendor = ({ vendors, maxQuantity }: Props) => {
+const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
+  const params = useParams();
   const [assignedVendors, setAssignedVendors] = useState<Vendor[]>(vendors);
-  const [vendorInfo, setVendorInfo] = useState({
+  const [vendorInfo, setVendorInfo] = useState<{
+    name: string;
+    id?: null | number;
+    quantity: number | null;
+  }>({
     name: "",
-    id: "",
+    id: null,
     quantity: 0,
   });
 
-  const onVendorSelect = useCallback((value: string, valueLabel: string) => {
-    setVendorInfo((prev) => ({ ...prev, id: value, name: valueLabel }));
-  }, []);
+  const { mutate } = useMutation({
+    mutationFn: assignVendor,
+  });
+
+  const { data: vendorsList, isLoading } = useQuery({
+    queryKey: [masterApiQuery.vendor.getVendors.Key],
+    queryFn: getVendors,
+  });
+
+  const onVendorSelect = useCallback(
+    (value: number | undefined | null, valueLabel: string | undefined) => {
+      if (!value || !valueLabel) {
+        return;
+      }
+      console.log(value, valueLabel);
+      setVendorInfo((prev) => ({
+        ...prev,
+        id: value,
+        name: String(valueLabel),
+      }));
+    },
+    []
+  );
+
+  const handleAssign = () => {
+    if (!row.productId || !params.id) return;
+    mutate({
+      purchase_request_id: Number(params?.id),
+      purchase_request_item_id: Number(row?.id),
+      assignments: assignedVendors.map((vendor) => ({
+        quantity: Number(vendor.quantity),
+        vendor_id: Number(vendor.id),
+        uom_id: row.uom_id,
+      })),
+    });
+  };
+  console.log(row);
+
+  const vendorsOptions = useMemo(
+    () => transformSelectOptions(vendorsList, "id", "name"),
+    [vendorsList]
+  );
 
   return (
     <Dialog>
@@ -59,12 +111,15 @@ const AssignVendor = ({ vendors, maxQuantity }: Props) => {
                 <p>Vendor:</p>
               </Label>
 
-              <ComboBox
+              <ControlledComboBox
                 searchPlaceholder="Search Vendor"
                 placeholder="Select Vendor"
-                options={VENDORS}
+                options={vendorsOptions}
                 emptyLabel="No vendor found"
-                onSelect={onVendorSelect}
+                onSelect={(option) =>
+                  onVendorSelect(Number(option?.value), option?.label)
+                }
+                value={vendorInfo.id}
               />
             </div>
 
@@ -88,7 +143,7 @@ const AssignVendor = ({ vendors, maxQuantity }: Props) => {
                     0
                   )
                 }
-                value={vendorInfo.quantity}
+                value={String(vendorInfo.quantity)}
                 onChange={(e) => {
                   if (Number(e.target.value) > maxQuantity) {
                     return toast.error(
@@ -161,11 +216,17 @@ const AssignVendor = ({ vendors, maxQuantity }: Props) => {
               ))}
             </TableBody>
           </Table>
-          <DialogClose asChild>
-            <Button className="mt-5" variant={"tertiary"} size={"lg"}>
-              Submit
-            </Button>
-          </DialogClose>
+
+          <Button
+            onClick={() => {
+              handleAssign();
+            }}
+            className="mt-5"
+            variant={"tertiary"}
+            size={"lg"}
+          >
+            Submit
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

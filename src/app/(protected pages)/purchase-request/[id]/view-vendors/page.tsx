@@ -2,40 +2,12 @@
 import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
 import { DataTable } from "@/components/table/data-table";
-import { Button } from "@/components/ui/button";
-import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
-import { useState } from "react";
-import { viewVendorColumns } from "./view-vendor-columns";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { viewVendorColumns } from "./view-vendor-columns";
 
 const ViewVendorsPage = () => {
-  // const [purchaseRequest, setPurchaseRequest] = useState<PurchaseRequest>({
-  //   id: 1,
-  //   name: "Demo purchase request",
-  //   items: [
-  //     {
-  //       unitPrice: 20,
-  //       quantity: 20,
-  //       productName: "item",
-  //       productId: 2,
-  //     },
-  //     {
-  //       unitPrice: 20,
-  //       quantity: 20,
-  //       productName: "item",
-  //       productId: 4,
-  //     },
-  //   ],
-  // vendors: [
-  //   { id: 1, name: "Demo Vendor", quantity: 20 },
-  //   {
-  //     id: 2,
-  //     name: "ABC PVT LTD",
-  //     quantity: 10,
-  //   },
-  // ],
-  // });
   return (
     <>
       <Header title="View Assigned Vendors" description="" />

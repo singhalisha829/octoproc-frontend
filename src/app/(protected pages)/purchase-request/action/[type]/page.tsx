@@ -79,6 +79,10 @@ const CreatePurchaseRequestPage = () => {
   }, []);
 
   const handleCreatePr = () => {
+    if (!selectedEnterprise) {
+      return toast.error("Please Select Enterprise.");
+    }
+
     const formattedAddedProducts = addedProducts
       .filter((product) => product.productId)
       .map((product) => ({
@@ -86,9 +90,16 @@ const CreatePurchaseRequestPage = () => {
         uom_id: product.uom_id,
         quantity: product.quantity,
       }));
+
+    if (formattedAddedProducts.length === 0) {
+      return toast.error("Please add atleast one item.");
+    }
+
     mutate({
       created_by: 1,
-      enterprise_client_id: Number(selectedEnterprise),
+      enterprise_client_id: selectedEnterprise
+        ? Number(selectedEnterprise)
+        : null,
       items: formattedAddedProducts,
       reference_no: uuidv4(),
     });

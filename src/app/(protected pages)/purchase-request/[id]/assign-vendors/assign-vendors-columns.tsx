@@ -76,6 +76,7 @@ export const assignVendorColumns: ColumnDef<Item>[] = [
           <AssignVendor
             vendors={row.original.assignedVendors || []}
             maxQuantity={row.original.quantity}
+            row={row.original}
           />
         </div>
       );

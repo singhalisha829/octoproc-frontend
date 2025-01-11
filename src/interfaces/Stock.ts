@@ -1,4 +1,5 @@
 export type Item = {
+  id?: number;
   unitPrice: number;
   quantity: number;
   quantityUnit?: string;
@@ -17,6 +18,6 @@ export type Stock = {
 
 export type Vendor = {
   name: string;
-  id: number | string;
-  quantity: number;
+  id?: null | number;
+  quantity: number | null;
 };

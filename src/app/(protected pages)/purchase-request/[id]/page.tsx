@@ -10,7 +10,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import AssignVendorTable from "./assign-vendors/AssignVendorTable";
 import { viewPrColumns } from "./view-pr-columns";
-import { dummyData } from "@/utils/constants";
 
 const ViewItems = () => {
   const params = useParams<{
@@ -18,24 +17,24 @@ const ViewItems = () => {
   }>();
   const router = useRouter();
 
-  // const { data: purchaseRequest } = useQuery({
-  //   queryKey: [purchaseRequestQueries.purchaseRequest.getPurchaseRequest.key],
-  //   queryFn: () => getPurchaseRequest(params.id),
-  //   enabled: !!params.id,
-  // });
+  const { data: purchaseRequest } = useQuery({
+    queryKey: [purchaseRequestQueries.purchaseRequest.getPurchaseRequest.key],
+    queryFn: () => getPurchaseRequest(params.id),
+    enabled: !!params.id,
+  });
 
-  const dummyPR = dummyData.find((pr) => pr.id === Number(params?.id || 1));
+  // const dummyPR = dummyData.find((pr) => pr.id === Number(params?.id || 1));
 
-  // const formattedItems = formatItems(purchaseRequest?.items || []);
-  const formattedDummyItems = formatItems(dummyPR?.items || []);
+  const formattedItems = formatItems(purchaseRequest?.items || []);
+  // const formattedDummyItems = formatItems(dummyPR?.items || []);
 
   return (
     <>
       <Header title={params?.id} description="" />
       <Container className="grid gap-2">
         <p className="text-xl font-semibold">Items:</p>
-        {/* <AssignVendorTable data={formattedItems} columns={viewPrColumns} /> */}
-        <AssignVendorTable data={formattedDummyItems} columns={viewPrColumns} />
+        <AssignVendorTable data={formattedItems} columns={viewPrColumns} />
+        {/* <AssignVendorTable data={formattedDummyItems} columns={viewPrColumns} /> */}
       </Container>
       <Container className="fixed bottom-0 left-[320px] right-0 shadow-inner flex rounded-none items-center justify-end gap-2">
         <Button

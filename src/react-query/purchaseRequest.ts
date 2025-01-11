@@ -13,6 +13,15 @@ export const purchaseRequestQueries = {
       endpoint_start: "/purchase-request/",
       endpoint_end: "/vendor/assignments/itemwise",
     },
+    getVendorsAssignments: {
+      key: "getVendorsAssignments",
+      endpoint_start: "/purchase-request/",
+      endpoint_end: "/vendor/assignments",
+    },
+    assignVendors: {
+      key: "assignVendor",
+      endpoint: "/purchase-request/vendor/assign/item",
+    },
     createPurchaseRequest: {
       key: "create-pr",
       endpoint: "/purchase-request/",
