@@ -1,6 +1,6 @@
 export interface LoginInfo {
-  email: string;
-  phone: string;
+  email: string | null;
+  phone: string | null;
   password: string;
 }
 export interface RegisterInfo extends LoginInfo {

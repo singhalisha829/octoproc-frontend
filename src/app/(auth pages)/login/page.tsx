@@ -33,22 +33,22 @@ const LoginPage = () => {
   });
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const isPhoneValid = isPhone(loginInfo.email);
-    const isEmailValid = isEmail(loginInfo.email);
+    const isPhoneValid = isPhone(loginInfo?.email || "");
+    const isEmailValid = isEmail(loginInfo.email || "");
 
     if (isEmailValid || isPhoneValid) {
       if (isEmailValid) {
         mutate({
           password: loginInfo.password,
           email: loginInfo.email,
-          phone: "",
+          phone: null,
         });
         return;
       }
       if (isPhoneValid) {
         mutate({
           password: loginInfo.password,
-          email: "",
+          email: null,
           phone: loginInfo.email,
         });
         return;
@@ -66,7 +66,7 @@ const LoginPage = () => {
 
         <form onSubmit={submitHandler} className="flex flex-col gap-5 mt-5">
           <InputLabelGroup
-            value={loginInfo.email}
+            value={loginInfo.email || ""}
             onChange={(e) => {
               const { value } = e.target;
               setLoginInfo((prev) => ({
