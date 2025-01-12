@@ -1,8 +1,8 @@
+import QueryProvider from "@/contexts/QueryContext";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Toaster } from "sonner";
 import "./globals.css";
-import QueryProvider from "@/contexts/QueryContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
