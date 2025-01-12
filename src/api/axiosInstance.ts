@@ -1,6 +1,7 @@
 import { ACCESS_TOKEN_KEY } from "@/data/constants";
 import { LocalStorageService } from "@/services/LocalStorageService";
 import axios, { AxiosError } from "axios";
+import { getAccessToken } from "./auth";
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_BASE_URL,
@@ -29,7 +30,10 @@ axiosInstance.interceptors.response.use(
       console.log(error);
     }
     if (error.response) {
-      if (error.response.status === 401 || error.response.status === 403) {
+      if (error.response.status === 401) {
+        getAccessToken();
+      }
+      if (error.response.status === 403) {
         window.location.href = "/login";
       }
     }

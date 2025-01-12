@@ -3,6 +3,7 @@ import { LoginInfo, RegisterInfo } from "@/interfaces/auth";
 import { LocalStorageService } from "@/services/LocalStorageService";
 import axios from "axios";
 import { axiosInstance } from "../axiosInstance";
+import { ACCESS_TOKEN_KEY } from "../../data/constants";
 
 export const login = (loginInfo: LoginInfo) => {
   return axiosInstance.post("/iam/auth/login", loginInfo);
@@ -20,18 +21,23 @@ export const register = (registerInfo: RegisterInfo) => {
 export const getAccessToken = async () => {
   try {
     const refreshToken = LocalStorageService.get(REFRESH_TOKEN_KEY);
-    if (!refreshToken) return null;
+    if (!refreshToken) {
+      window.location.href = "/login";
+      return;
+    }
 
-    const { data } = await axios.post(
+    const { data } = await axios.get(
       `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/iam/auth/token/refresh`,
+
       {
         headers: {
           Authorization: `Bearer ${refreshToken}`,
         },
       }
     );
-    console.log(data);
+    LocalStorageService.set(ACCESS_TOKEN_KEY, data.data.access_token);
+    window.location.reload();
   } catch (error) {
-    console.log(error);
+    window.location.href = "/login";
   }
 };
