@@ -1,3 +1,12 @@
+export interface AssignedVendorInItemwise {
+  id: number;
+  quantity: number;
+  vendor: {
+    id: number;
+    name: string;
+  };
+}
+
 export type Item = {
   id?: number;
   unitPrice: number;
@@ -7,6 +16,7 @@ export type Item = {
   uom_id?: number;
   productId?: number | null | string;
   assignedVendors?: Vendor[];
+  assignments?: Array<AssignedVendorInItemwise>;
 };
 
 export type Stock = {

@@ -39,6 +39,8 @@ export const formatItems = (items: PurchaseRequestItem[]): Item[] => {
     productId: item.product.id,
     productName: item.product.name,
     uom_id: item.product.uom_id,
+    assignments: item?.assignments || [],
+    id: item.id,
   }));
   if (formattedItems) return formattedItems;
   return [];

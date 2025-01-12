@@ -12,7 +12,13 @@ declare module "@tanstack/react-query" {
   }
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+    },
+  },
+});
 
 export default function QueryProvider({ children }: { children: ReactNode }) {
   return (

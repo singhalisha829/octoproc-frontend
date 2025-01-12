@@ -1,7 +1,9 @@
+import {
+  PurchaseRequest,
+  VendorAssignment,
+} from "@/interfaces/PurchaseRequest";
 import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
 import { axiosInstance } from "../axiosInstance";
-import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
-import { Vendor } from "@/interfaces/Stock";
 
 export const getPurchaseRequests = async (): Promise<PurchaseRequest[]> => {
   const { data } = await axiosInstance.post(
@@ -44,7 +46,9 @@ export const getItemWiseAssignedVendors = async (id: string | number) => {
   );
   return data.data || null;
 };
-export const getVendorsAssignments = async (id: string | number) => {
+export const getVendorsAssignments = async (
+  id: string | number
+): Promise<VendorAssignment[]> => {
   const { data } = await axiosInstance.get(
     purchaseRequestQueries.purchaseRequest.getVendorsAssignments
       .endpoint_start +
@@ -64,6 +68,17 @@ export const assignVendor = async (body: {
 }) => {
   const { data } = await axiosInstance.post(
     purchaseRequestQueries.purchaseRequest.assignVendors.endpoint,
+    body
+  );
+  return data.data || null;
+};
+
+export const requestQuotation = async (body: {
+  purchase_request_id: number;
+  pr_vendor_assignment_ids: number[];
+}) => {
+  const { data } = await axiosInstance.post(
+    purchaseRequestQueries.purchaseRequest.requestQuotation.endpoint,
     body
   );
   return data.data || null;

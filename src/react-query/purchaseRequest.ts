@@ -26,5 +26,9 @@ export const purchaseRequestQueries = {
       key: "create-pr",
       endpoint: "/purchase-request/",
     },
+    requestQuotation: {
+      key: "requestQuotation",
+      endpoint: "/purchase-request/quotation/request/",
+    },
   },
 };

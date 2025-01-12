@@ -1,19 +1,13 @@
+import { getVendors } from "@/api/masterdata/vendor";
+import { assignVendor } from "@/api/purchaseRequest";
 import { Button } from "@/components/ui/button";
-import { ComboBox } from "@/components/ui/ComboBox";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 } from "@/components/ui/dialog";
-import { VENDORS } from "@/utils/constants";
-import { CircleCheck } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { toast } from "sonner";
 import {
   Table,
   TableBody,
@@ -22,24 +16,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Item, Vendor } from "@/interfaces/Stock";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { assignVendor } from "@/api/purchaseRequest";
-import { useParams } from "next/navigation";
-import { masterApiQuery } from "@/react-query/masterApiQueries";
-import { getVendors } from "@/api/masterdata/vendor";
+import { AssignedVendorInItemwise, Item } from "@/interfaces/Stock";
 import { transformSelectOptions } from "@/lib/utils";
+import { masterApiQuery } from "@/react-query/masterApiQueries";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { CircleCheck } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useCallback, useMemo, useState } from "react";
+import { toast } from "sonner";
 import { ControlledComboBox } from "../ui/ControlledComboBox";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 type Props = {
-  vendors: Array<Vendor>;
+  vendors: Array<AssignedVendorInItemwise>;
   maxQuantity: number;
   row: Item;
 };
 
 const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
   const params = useParams();
-  const [assignedVendors, setAssignedVendors] = useState<Vendor[]>(vendors);
+  const [assignedVendors, setAssignedVendors] = useState<
+    AssignedVendorInItemwise[]
+  >([]);
   const [vendorInfo, setVendorInfo] = useState<{
     name: string;
     id?: null | number;
@@ -64,6 +63,8 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
       if (!value || !valueLabel) {
         return;
       }
+      console.log(value);
+
       console.log(value, valueLabel);
       setVendorInfo((prev) => ({
         ...prev,
@@ -76,12 +77,14 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
 
   const handleAssign = () => {
     if (!row.productId || !params.id) return;
+    console.log(row);
+
     mutate({
       purchase_request_id: Number(params?.id),
-      purchase_request_item_id: Number(row?.id),
+      purchase_request_item_id: Number(row.id),
       assignments: assignedVendors.map((vendor) => ({
         quantity: Number(vendor.quantity),
-        vendor_id: Number(vendor.id),
+        vendor_id: Number(vendor.vendor.id),
         uom_id: row.uom_id,
       })),
     });
@@ -177,7 +180,17 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
                   if (!vendorInfo.quantity) {
                     return toast.error("Please enter quantity.");
                   }
-                  setAssignedVendors((prev) => [...prev, vendorInfo]);
+                  setAssignedVendors((prev) => [
+                    ...prev,
+                    {
+                      quantity: Number(vendorInfo.quantity),
+                      vendor: {
+                        id: Number(vendorInfo.id),
+                        name: vendorInfo.name,
+                      },
+                      id: Number(vendorInfo.id),
+                    },
+                  ]);
                 }}
               >
                 <CircleCheck color="white" size={30} />
@@ -207,7 +220,7 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
                   }}
                 >
                   <TableCell className="flex items-center ">
-                    {vendor.name}
+                    {vendor.vendor.name}
                   </TableCell>
                   <TableCell className="flex items-center">
                     {vendor.quantity}

@@ -1,12 +1,13 @@
 "use client";
-import AssignVendor from "@/components/purchaseRequestPage/AssignVendor";
 import { DataTableColumnCell } from "@/components/table/DataTableColumnCell";
 import { DataTableColumnHeader } from "@/components/table/DataTableColumnHeader";
 import { Badge } from "@/components/ui/badge";
-import { Item } from "@/interfaces/Stock";
+import {
+  VendorAssigmentItem
+} from "@/interfaces/PurchaseRequest";
 import { ColumnDef } from "@tanstack/react-table";
 
-export const viewVendorColumns: ColumnDef<Item>[] = [
+export const viewVendorColumns: ColumnDef<VendorAssigmentItem>[] = [
   {
     accessorKey: "productId",
     header: ({ column }) => (
@@ -16,9 +17,9 @@ export const viewVendorColumns: ColumnDef<Item>[] = [
       <DataTableColumnCell
         row={row}
         badge={
-          <Badge variant={"tertiary"}>{`#${
-            row.original.productId
-          }`}</Badge>
+          <Badge
+            variant={"tertiary"}
+          >{`#${row.original.purchase_request_item.product.id}`}</Badge>
         }
       />
     ),
@@ -30,7 +31,10 @@ export const viewVendorColumns: ColumnDef<Item>[] = [
       <DataTableColumnHeader column={column} title="Product Name" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={row.original.productName} />
+      <DataTableColumnCell
+        row={row}
+        title={row.original.purchase_request_item.product.name}
+      />
     ),
   },
 

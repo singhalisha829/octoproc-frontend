@@ -7,27 +7,12 @@ import {
   getPurchaseRequest,
 } from "@/api/purchaseRequest";
 import { Button } from "@/components/ui/button";
-import { PurchaseRequestItem } from "@/interfaces/PurchaseRequest";
-import { Item } from "@/interfaces/Stock";
+import { formatItems } from "@/lib/utils";
 import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { assignVendorColumns } from "./assign-vendors-columns";
 import AssignVendorTable from "./AssignVendorTable";
-
-const formatItems = (items: PurchaseRequestItem[]): Item[] => {
-  if (!items) return [];
-  const formattedItems: Item[] = items.map((item) => ({
-    quantity: item.quantity,
-    unitPrice: 0,
-    productId: item.product.id,
-    productName: item.product.name,
-    uom_id: item.product.uom_id,
-    id: item.id,
-  }));
-  if (formattedItems) return formattedItems;
-  return [];
-};
 
 const AssignVendors = () => {
   const params = useParams<{
@@ -47,11 +32,11 @@ const AssignVendors = () => {
     queryFn: () => getItemWiseAssignedVendors(params.id),
   });
 
-  const formattedItems = formatItems(purchaseRequest?.items || []);
+  const formattedItems = formatItems(itemWiseAssignedVendors?.items || []);
 
   return (
     <>
-      <Header title={params?.id} description="" />
+      <Header title={purchaseRequest?.reference_no || ""} description="" />
       <Container className="grid gap-2">
         <p className="text-xl font-semibold">Items:</p>
         <AssignVendorTable

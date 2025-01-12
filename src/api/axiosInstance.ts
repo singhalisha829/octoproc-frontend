@@ -1,6 +1,6 @@
 import { ACCESS_TOKEN_KEY } from "@/data/constants";
 import { LocalStorageService } from "@/services/LocalStorageService";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_BASE_URL,
@@ -24,15 +24,14 @@ axiosInstance.interceptors.request.use(
 );
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response) {
-      console.log(error.response);
+  (error: AxiosError) => {
+    if (error) {
+      console.log(error);
     }
-    if (
-      error?.response?.data?.statusCode === 401 ||
-      error?.response?.data?.statusCode === 403
-    ) {
-      window.location.href = "/login";
+    if (error.response) {
+      if (error.response.status === 401 || error.response.status === 403) {
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   }

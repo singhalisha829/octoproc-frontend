@@ -74,7 +74,7 @@ export const assignVendorColumns: ColumnDef<Item>[] = [
       return (
         <div className="flex items-center justify-end">
           <AssignVendor
-            vendors={row.original.assignedVendors || []}
+            vendors={row?.original?.assignments || []}
             maxQuantity={row.original.quantity}
             row={row.original}
           />
