@@ -28,15 +28,16 @@ const ViewVendorsPage = () => {
     queryFn: () => getVendorsAssignments(params.id),
   });
 
-  const { mutate: requestQuotationMutation } = useMutation({
-    mutationFn: requestQuotation,
-    onSuccess: () => {
-      toast.success("Quotation requested successfully!");
-    },
-    onError: () => {
-      toast.error("Failed to request quotation!");
-    },
-  });
+  const { mutate: requestQuotationMutation, isPending: requestingQuotation } =
+    useMutation({
+      mutationFn: requestQuotation,
+      onSuccess: () => {
+        toast.success("Quotation requested successfully!");
+      },
+      onError: () => {
+        toast.error("Failed to request quotation!");
+      },
+    });
 
   return (
     <>
@@ -54,6 +55,7 @@ const ViewVendorsPage = () => {
             <div className="flex items-center gap-2">
               {vendorAssignment.status === "PENDING" && (
                 <Button
+                  isLoading={requestingQuotation}
                   variant={"tertiary"}
                   onClick={() => {
                     requestQuotationMutation({
@@ -70,15 +72,22 @@ const ViewVendorsPage = () => {
               )}
               {vendorAssignment.status === "RFQ" && (
                 <Button variant={"tertiary"} asChild>
-                  {/* 
-                TODO: request quotation-> wait -> quotation recieved ->table columns unit price, total price -> accept/reject quotation -> if accept  generete po and send to vendor
-                */}
                   <Link
                     href={`/purchase-request/${params.id}/upload-quotation/${vendorAssignment.id}`}
                   >
                     Upload Quotation
                   </Link>
                 </Button>
+              )}
+              {vendorAssignment.status === "QUOTATION_RECIEVED" && (
+                <>
+                  <Button variant={"secondary"} onClick={() => {}}>
+                    Reject
+                  </Button>
+                  <Button variant={"tertiary"} onClick={() => {}}>
+                    Accept
+                  </Button>
+                </>
               )}
             </div>
           </div>
