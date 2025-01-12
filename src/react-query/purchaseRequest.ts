@@ -18,6 +18,11 @@ export const purchaseRequestQueries = {
       endpoint_start: "/purchase-request/",
       endpoint_end: "/vendor/assignments",
     },
+    getVendorsAssignment: {
+      key: "getVendorsAssignment",
+      endpoint_start: "/purchase-request/",
+      endpoint_end: "/vendor/assignment/",
+    },
     assignVendors: {
       key: "assignVendor",
       endpoint: "/purchase-request/vendor/assign/item",
@@ -29,6 +34,10 @@ export const purchaseRequestQueries = {
     requestQuotation: {
       key: "requestQuotation",
       endpoint: "/purchase-request/quotation/request/",
+    },
+    uploadQuotation: {
+      key: "uploadQuotation",
+      endpoint: "/purchase-request/quotation/upsert/",
     },
   },
 };

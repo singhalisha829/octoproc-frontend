@@ -4,6 +4,7 @@ import {
 } from "@/interfaces/PurchaseRequest";
 import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
 import { axiosInstance } from "../axiosInstance";
+import { QuotationInfo } from "@/app/(protected pages)/purchase-request/[id]/upload-quotation/[assignmentId]/page";
 
 export const getPurchaseRequests = async (): Promise<PurchaseRequest[]> => {
   const { data } = await axiosInstance.post(
@@ -57,6 +58,19 @@ export const getVendorsAssignments = async (
   );
   return data.data || null;
 };
+
+export const getVendorsAssignment = async (
+  id: string | number,
+  assigmentId: string | number
+): Promise<VendorAssignment> => {
+  const { data } = await axiosInstance.get(
+    purchaseRequestQueries.purchaseRequest.getVendorsAssignment.endpoint_start +
+      id +
+      purchaseRequestQueries.purchaseRequest.getVendorsAssignment.endpoint_end +
+      assigmentId
+  );
+  return data.data || null;
+};
 export const assignVendor = async (body: {
   purchase_request_id: number;
   purchase_request_item_id: number;
@@ -79,6 +93,13 @@ export const requestQuotation = async (body: {
 }) => {
   const { data } = await axiosInstance.post(
     purchaseRequestQueries.purchaseRequest.requestQuotation.endpoint,
+    body
+  );
+  return data.data || null;
+};
+export const uploadQuotation = async (body: QuotationInfo) => {
+  const { data } = await axiosInstance.post(
+    purchaseRequestQueries.purchaseRequest.uploadQuotation.endpoint,
     body
   );
   return data.data || null;

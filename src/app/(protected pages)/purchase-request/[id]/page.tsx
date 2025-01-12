@@ -23,18 +23,14 @@ const ViewItems = () => {
     enabled: !!params.id,
   });
 
-  // const dummyPR = dummyData.find((pr) => pr.id === Number(params?.id || 1));
-
   const formattedItems = formatItems(purchaseRequest?.items || []);
-  // const formattedDummyItems = formatItems(dummyPR?.items || []);
 
   return (
     <>
-      <Header title={params?.id} description="" />
+      <Header title={purchaseRequest?.reference_no || ""} description="" />
       <Container className="grid gap-2">
         <p className="text-xl font-semibold">Items:</p>
         <AssignVendorTable data={formattedItems} columns={viewPrColumns} />
-        {/* <AssignVendorTable data={formattedDummyItems} columns={viewPrColumns} /> */}
       </Container>
       <Container className="fixed bottom-0 left-[320px] right-0 shadow-inner flex rounded-none items-center justify-end gap-2">
         <Button
