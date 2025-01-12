@@ -10,7 +10,9 @@ import {
   useState,
 } from "react";
 
-interface UserContextType {}
+interface UserContextType {
+  logout: () => void;
+}
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({
@@ -31,8 +33,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     setToken(_token);
   }, []);
 
+  const logout = () => {
+    LocalStorageService.clear();
+  };
   return (
-    <UserContext.Provider value={{}}>
+    <UserContext.Provider value={{ logout }}>
       {token ? children : null}
     </UserContext.Provider>
   );
