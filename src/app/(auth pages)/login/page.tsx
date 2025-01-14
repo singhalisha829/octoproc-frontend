@@ -59,7 +59,7 @@ const LoginPage = () => {
 
   return (
     <div className="flex items-center justify-center h-full">
-      <div className="flex flex-col border border-secondary gap-2.5 p-4 rounded aspect-video shadow-lg">
+      <div className="flex flex-col border border-secondary gap-2.5 p-4 rounded shadow-lg w-full max-w-md">
         <div className="text-3xl font-bold leading-6 text-center text-primary">
           Login
         </div>
