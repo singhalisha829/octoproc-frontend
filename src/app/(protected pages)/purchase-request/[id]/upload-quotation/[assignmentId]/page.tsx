@@ -108,7 +108,11 @@ const UploadQuotationPage = () => {
     });
   }, [vendorAssignment]);
 
-  const handleChangeInput = (name: string, value: string, id: number) => {
+  const handleChangeInput = (
+    name: string,
+    value: number | string,
+    id: number
+  ) => {
     const itemIndex = quotationInfo.items.findIndex(
       (item) => item.pr_vendor_assignment_item_id === id
     );
@@ -132,7 +136,9 @@ const UploadQuotationPage = () => {
             <p className="font-bold text-lg">
               {vendorAssignment?.vendor?.name}
             </p>
-            <Badge variant={"tertiary"}>{vendorAssignment?.status}</Badge>
+            <Badge variant={"tertiary"}>
+              {vendorAssignment?.status.replaceAll("_", " ")}
+            </Badge>
           </div>
           <div className="flex items-center gap-2">
             <Button variant={"tertiary"} asChild>
@@ -184,11 +190,12 @@ const UploadQuotationPage = () => {
                   <TableCell className="text-center">{item.quantity}</TableCell>
                   <TableCell className="">
                     <Input
-                      value={itemValues?.unit_price || ""}
+                      value={String(itemValues?.unit_price) || ""}
+                      type="number"
                       onChange={(e) => {
                         handleChangeInput(
                           "unit_price",
-                          e.target.value,
+                          Number(e.target.value),
                           item.id
                         );
                       }}
@@ -198,9 +205,14 @@ const UploadQuotationPage = () => {
                   </TableCell>
                   <TableCell>
                     <Input
-                      value={itemValues?.tax_rate || ""}
+                      type="number"
+                      value={String(itemValues?.tax_rate) || ""}
                       onChange={(e) => {
-                        handleChangeInput("tax_rate", e.target.value, item.id);
+                        handleChangeInput(
+                          "tax_rate",
+                          Number(e.target.value),
+                          item.id
+                        );
                       }}
                       inputMode="numeric"
                       className="max-w-[100px] mx-auto"

@@ -32,7 +32,13 @@ const AssignVendors = () => {
     queryFn: () => getItemWiseAssignedVendors(params.id),
   });
 
-  const formattedItems = formatItems(itemWiseAssignedVendors?.items || []);
+  console.log(itemWiseAssignedVendors);
+
+  const formattedItems = formatItems(
+    itemWiseAssignedVendors
+      ? itemWiseAssignedVendors?.items || []
+      : purchaseRequest?.items || []
+  );
 
   return (
     <>

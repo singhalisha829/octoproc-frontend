@@ -1,0 +1,58 @@
+"use client";
+import { DataTableColumnCell } from "@/components/table/DataTableColumnCell";
+import { DataTableColumnHeader } from "@/components/table/DataTableColumnHeader";
+import { Badge } from "@/components/ui/badge";
+import { MergedVendorAssignmentItem, VendorAssigmentItem } from "@/interfaces/PurchaseRequest";
+import { ColumnDef } from "@tanstack/react-table";
+
+export const quotationRecievedColumns: ColumnDef<MergedVendorAssignmentItem>[] = [
+  {
+    accessorKey: "productId",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Product ID" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell
+        row={row}
+        badge={
+          <Badge
+            variant={"tertiary"}
+          >{`#${row.original.purchase_request_item.product.id}`}</Badge>
+        }
+      />
+    ),
+  },
+
+  {
+    accessorKey: "productName",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Product Name" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell
+        row={row}
+        title={row.original.purchase_request_item.product.name}
+      />
+    ),
+  },
+
+  {
+    accessorKey: "unitPrice",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Unit Price" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell row={row} title={String(row.original.quotationItems)} />
+    ),
+  },
+
+  {
+    accessorKey: "quantity",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Quantity" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell row={row} title={String(row.original.quantity)} />
+    ),
+  },
+];

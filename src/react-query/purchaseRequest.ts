@@ -39,5 +39,16 @@ export const purchaseRequestQueries = {
       key: "uploadQuotation",
       endpoint: "/purchase-request/quotation/upsert/",
     },
+
+    acceptQuotation: {
+      key: "acceptQuotation",
+      endpoint_start: "/purchase-request/quotation/",
+      endpoint_end: "/approve",
+    },
+    rejectQuotation: {
+      key: "rejectQuotation",
+      endpoint_start: "/purchase-request/quotation/",
+      endpoint_end: "/reject",
+    },
   },
 };

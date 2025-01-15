@@ -104,3 +104,19 @@ export const uploadQuotation = async (body: QuotationInfo) => {
   );
   return data.data || null;
 };
+export const acceptQuotation = async (quotationId: number) => {
+  const { data } = await axiosInstance.post(
+    purchaseRequestQueries.purchaseRequest.acceptQuotation.endpoint_start +
+      quotationId +
+      purchaseRequestQueries.purchaseRequest.acceptQuotation.endpoint_end
+  );
+  return data.data || null;
+};
+export const rejectQuotation = async (quotationId: number) => {
+  const { data } = await axiosInstance.post(
+    purchaseRequestQueries.purchaseRequest.rejectQuotation.endpoint_start +
+      quotationId +
+      purchaseRequestQueries.purchaseRequest.rejectQuotation.endpoint_end
+  );
+  return data.data || null;
+};
