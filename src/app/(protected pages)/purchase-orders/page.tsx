@@ -12,9 +12,12 @@ import {
 import { Share } from "lucide-react";
 import { useState } from "react";
 
+import { getPurchaseOrders } from "@/api/purchaseRequest/purchaseOrder";
 import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
+import { purchaseOrderQueries } from "@/react-query/purchaseOrderQueries";
 import { dummyPO } from "@/utils/constants";
+import { useQuery } from "@tanstack/react-query";
 import { purchaseOrderColumns } from "./purchase-order-columns";
 
 const PurchaseRequestPage = () => {
@@ -22,6 +25,13 @@ const PurchaseRequestPage = () => {
     type: "all",
     searchKeyword: "",
   });
+
+  const { data: purchaseOrders } = useQuery({
+    queryKey: [purchaseOrderQueries.getPurchaseOrders.key],
+    queryFn: () => getPurchaseOrders({}),
+  });
+
+  console.log(purchaseOrders);
 
   // p-order table columns
   // po-no ,date, vendor, value/amount, Status,
