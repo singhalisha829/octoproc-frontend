@@ -32,7 +32,14 @@ export interface ClientDetails {
 
 
 export interface Warehouse {
-
+  name: string
+  code: string
+  address: string
+  country_id: number | null
+  state_id: number | null
+  city_id: number | null
+  enterprise_client_id: number
+  warehouse_id?: number
 }
 
 

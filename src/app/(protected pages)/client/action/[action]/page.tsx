@@ -6,6 +6,7 @@ import {
   getStates,
 } from "@/api/masterdata/common";
 import AddContantPersonModal from "@/components/clientPageComponents/AddContantPersonModal";
+import AddWarehouseModel from "@/components/clientPageComponents/AddWarehouseModel";
 import Header from "@/components/globals/Header";
 import { Button } from "@/components/ui/button";
 import InputLabelGroup from "@/components/ui/InputLabelGroup";
@@ -350,10 +351,11 @@ const AddOrEditClient = () => {
             Warehouses
           </p>
           {action !== "view" && (
-            <AddContantPersonModal
-              onSuccess={(person) => {
-                setContactPersons((prev) => [...prev, person]);
-              }}
+            <AddWarehouseModel
+              states={states}
+              cities={cities}
+              countries={countries}
+              onSuccess={(warehouse) => {}}
             />
           )}
         </div>
