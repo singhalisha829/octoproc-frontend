@@ -9,6 +9,13 @@ export const getClients = async (): Promise<Client[]> => {
   );
   return data.data || null;
 };
+
+export const getClient = async (id: string): Promise<Client[]> => {
+  const { data } = await axiosInstance.post(
+    enterpriseQueries.client.getClient.endpoint + id
+  );
+  return data.data || null;
+};
 export const addClient = async (data: ClientDetails): Promise<Client[]> => {
   return await axiosInstance.post(
     enterpriseQueries.client.addClient.endpoint,

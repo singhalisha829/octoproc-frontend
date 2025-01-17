@@ -5,7 +5,7 @@ import {
   getCountriesList,
   getStates,
 } from "@/api/masterdata/common";
-import { addVendor } from "@/api/masterdata/vendor";
+import AddContantPersonModal from "@/components/clientPageComponents/AddContantPersonModal";
 import Header from "@/components/globals/Header";
 import { Button } from "@/components/ui/button";
 import InputLabelGroup from "@/components/ui/InputLabelGroup";
@@ -13,11 +13,9 @@ import SelectWithLabel from "@/components/ui/SelectWithLabel";
 import { ClientDetails } from "@/interfaces/Client";
 import { ContactPerson } from "@/interfaces/Vendors";
 import { transformSelectOptions } from "@/lib/utils";
-import {
-  CONTACT_PERSON_INPUTS,
-  INITIAL_CONTACT_PERSON_DETAILS,
-} from "@/utils/constants";
+import { CONTACT_PERSON_INPUTS } from "@/utils/constants";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { Trash2 } from "lucide-react";
 import { FormEvent, useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -38,8 +36,9 @@ const AddOrEditClient = () => {
   const [clientDetails, setClientDetails] = useState<ClientDetails>(
     INITIAL_CLIENT_DETAILS
   );
-  const [contactPersonDetails, setContactPersonDetails] =
-    useState<ContactPerson>(INITIAL_CONTACT_PERSON_DETAILS);
+  const [contactPersons, setContactPersons] = useState<Array<ContactPerson>>(
+    []
+  );
 
   const { data: cities } = useQuery({
     queryKey: ["cities"],
@@ -57,12 +56,12 @@ const AddOrEditClient = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: addClient,
     onSuccess: (res) => {
-      toast.success("Vendor added successfully!");
+      toast.success("Client added successfully!");
       setClientDetails(INITIAL_CLIENT_DETAILS);
-      setContactPersonDetails(INITIAL_CONTACT_PERSON_DETAILS);
+      // setContactPersonDetails(INITIAL_CONTACT_PERSON_DETAILS);
     },
     onError: () => {
-      toast.error("Failed to add vendor!");
+      toast.error("Failed to add client!");
     },
   });
 
@@ -159,14 +158,14 @@ const AddOrEditClient = () => {
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutate({
-      contact_persons: [contactPersonDetails],
+      contact_persons: contactPersons,
       ...clientDetails,
     });
   };
 
   return (
     <>
-      <Header title="Add Vendor" description="" />
+      <Header title="Add Client" description="" />
       <form
         className=" grid gap-5 bg-white rounded-md p-5 shadow-lg "
         onSubmit={submitHandler}
@@ -221,40 +220,65 @@ const AddOrEditClient = () => {
             }
           )}
         </div>
-        <p className="text-xl leading-8 font-bold text-primary underline">
-          Contact Person Details
-        </p>
-        <div className="grid grid-cols-3 gap-4">
-          {CONTACT_PERSON_INPUTS.map(
-            ({ id, name, type, inputType, placeholder, key }) => {
-              if (type === "input") {
-                return (
-                  <InputLabelGroup
-                    value={contactPersonDetails[key as keyof ContactPerson]}
-                    onChange={(e) => {
-                      setContactPersonDetails((prev) => ({
-                        ...prev,
-                        [key]: e.target.value,
-                      }));
-                    }}
-                    key={id}
-                    id={id}
-                    labelText={name}
-                    type={inputType}
-                    placeholder={placeholder}
-                  />
-                );
-              }
-            }
-          )}
+        <div className="flex items-center justify-between">
+          <p className="text-xl leading-8 font-bold text-primary underline">
+            Contact Persons
+          </p>
+          <AddContantPersonModal
+            onSuccess={(person) => {
+              setContactPersons((prev) => [...prev, person]);
+            }}
+          />
         </div>
-
+        {contactPersons.length > 0 && (
+          <div className="grid gap-4">
+            {contactPersons.map((person, index) => (
+              <div
+                className="grid grid-cols-3 gap-3 p-4 border rounded-md relative"
+                key={index}
+              >
+                <Button
+                  type="button"
+                  onClick={() => {
+                    setContactPersons((prev) =>
+                      prev.filter((cp) => cp.email !== person.email)
+                    );
+                  }}
+                  variant={"destructive"}
+                  size={"icon"}
+                  className="absolute top-1 right-1"
+                >
+                  <Trash2 />
+                </Button>
+                {CONTACT_PERSON_INPUTS.map((input) => (
+                  <div className="flex items-center gap-3" key={input.key}>
+                    <p className=" font-semibold text-primary">{input.name}:</p>
+                    <p className="font-medium">
+                      {person[input.key as "email"]}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="flex items-center justify-between">
+          <p className="text-xl leading-8 font-bold text-primary underline">
+            Warehouses
+          </p>
+          <AddContantPersonModal
+            onSuccess={(person) => {
+              setContactPersons((prev) => [...prev, person]);
+            }}
+          />
+        </div>
         <Button
           isLoading={isPending}
           type="submit"
           className="max-w-fit ml-auto"
+          variant={"tertiary"}
         >
-          Add Vendor
+          Add Client
         </Button>
       </form>
     </>

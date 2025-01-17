@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader, Logs, Share } from "lucide-react";
+import { Logs, Share } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -77,7 +77,7 @@ const ClientsListPage = () => {
               <Logs size={26} />
             </Button>
             <Button asChild variant={"tertiary"}>
-              <Link href={"/client/add"}>Add Client</Link>
+              <Link href={"/client/action/add"}>Add Client</Link>
             </Button>
           </div>
         </div>

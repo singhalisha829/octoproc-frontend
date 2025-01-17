@@ -47,18 +47,18 @@ export const clientsListColumns: ColumnDef<Client>[] = [
       <DataTableColumnCell row={row} title={row.getValue("gst_number")} />
     ),
   },
-  {
-    accessorKey: "contact_persons",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Contact Person Name" />
-    ),
-    cell: ({ row }) => (
-      <DataTableColumnCell
-        row={row}
-        title={`${row.original.contact_persons[0]?.first_name || ""} ${
-          row.original.contact_persons[0]?.last_name || ""
-        }`}
-      />
-    ),
-  },
+  // {
+  //   accessorKey: "contact_persons",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Contact Person Name" />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <DataTableColumnCell
+  //       row={row}
+  //       title={`${row.original.contact_persons[0]?.first_name || ""} ${
+  //         row.original.contact_persons[0]?.last_name || ""
+  //       }`}
+  //     />
+  //   ),
+  // },
 ];
