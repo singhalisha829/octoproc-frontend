@@ -25,6 +25,19 @@ export interface ClientDetails {
   country_id: number | null;
   pincode: string;
   pan_number: string;
-  gst_number: string;
+  gst_number: null | number | string;
   contact_persons?: Array<ContactPerson>;
+  id?: number
+}
+
+
+export interface Warehouse {
+
+}
+
+
+export interface ClientDetailApiResponse {
+  "client": Client,
+  "contact_persons": ContactPerson[],
+  "warehouses": Warehouse[]
 }

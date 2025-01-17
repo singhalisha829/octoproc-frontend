@@ -1,5 +1,5 @@
 "use client";
-import { addClient } from "@/api/enterprise";
+import { addClient, getClient, updateClient } from "@/api/enterprise";
 import {
   getCitites,
   getCountriesList,
@@ -10,13 +10,15 @@ import Header from "@/components/globals/Header";
 import { Button } from "@/components/ui/button";
 import InputLabelGroup from "@/components/ui/InputLabelGroup";
 import SelectWithLabel from "@/components/ui/SelectWithLabel";
-import { ClientDetails } from "@/interfaces/Client";
+import { ClientDetailApiResponse, ClientDetails } from "@/interfaces/Client";
 import { ContactPerson } from "@/interfaces/Vendors";
 import { transformSelectOptions } from "@/lib/utils";
+import { enterpriseQueries } from "@/react-query/enterpriseQueries";
 import { CONTACT_PERSON_INPUTS } from "@/utils/constants";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
-import { FormEvent, useMemo, useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 const INITIAL_CLIENT_DETAILS = {
@@ -32,7 +34,21 @@ const INITIAL_CLIENT_DETAILS = {
   gst_number: "",
 };
 
+const isDisabled = (
+  action: string,
+  clientApiResponse: ClientDetailApiResponse
+) => {
+  if (!clientApiResponse) return false;
+  if (action === "view") return true;
+};
+
 const AddOrEditClient = () => {
+  const { action } = useParams<{
+    action: string;
+  }>();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
   const [clientDetails, setClientDetails] = useState<ClientDetails>(
     INITIAL_CLIENT_DETAILS
   );
@@ -53,15 +69,32 @@ const AddOrEditClient = () => {
     queryFn: getStates,
   });
 
-  const { mutate, isPending } = useMutation({
+  const { data: client, isLoading } = useQuery({
+    queryKey: [enterpriseQueries.client.getClient.key],
+    queryFn: () => getClient(id as string),
+    enabled: !!id,
+  });
+
+  // Separate mutations for add and edit
+  const addClientMutation = useMutation({
     mutationFn: addClient,
-    onSuccess: (res) => {
+    onSuccess: () => {
       toast.success("Client added successfully!");
       setClientDetails(INITIAL_CLIENT_DETAILS);
-      // setContactPersonDetails(INITIAL_CONTACT_PERSON_DETAILS);
+      setContactPersons([]);
     },
     onError: () => {
       toast.error("Failed to add client!");
+    },
+  });
+
+  const editClientMutation = useMutation({
+    mutationFn: updateClient,
+    onSuccess: () => {
+      toast.success("Client updated successfully!");
+    },
+    onError: () => {
+      toast.error("Failed to update client!");
     },
   });
 
@@ -155,13 +188,59 @@ const AddOrEditClient = () => {
     [cities, states, countries]
   );
 
+  useEffect(() => {
+    if (!client) return;
+    const {
+      id: _,
+      contact_persons,
+      name,
+      address_line_1,
+      address_line_2,
+      city_id,
+      code,
+      country_id,
+      gst_number,
+      pan_number,
+      pincode,
+      state_id,
+    } = client?.client;
+    setClientDetails((prev) => ({
+      ...prev,
+      address_line_1,
+      address_line_2,
+      city_id,
+      code,
+      country_id,
+      gst_number,
+      pan_number,
+      pincode,
+      name,
+      state_id,
+      contact_persons,
+    }));
+    setContactPersons(contactPersons);
+  }, [client, id]);
+
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate({
+    const submissionData = {
       contact_persons: contactPersons,
       ...clientDetails,
-    });
+    };
+
+    if (action === "edit" && id) {
+      editClientMutation.mutate({
+        id: +id,
+        ...submissionData,
+        contact_persons: contactPersons,
+      });
+    } else {
+      addClientMutation.mutate(submissionData);
+    }
   };
+
+  const isEditMode = action === "edit" && !!id;
+  const isPending = addClientMutation.isPending || editClientMutation.isPending;
 
   return (
     <>
@@ -191,6 +270,7 @@ const AddOrEditClient = () => {
                     labelText={name}
                     type={inputType}
                     placeholder={placeholder}
+                    disabled={action === "view"}
                   />
                 );
               }
@@ -214,6 +294,7 @@ const AddOrEditClient = () => {
                     emptyLabel={`No ${name} found`}
                     valueKey="value"
                     labelKey="label"
+                    disabled={action === "view"}
                   />
                 );
               }
@@ -224,11 +305,13 @@ const AddOrEditClient = () => {
           <p className="text-xl leading-8 font-bold text-primary underline">
             Contact Persons
           </p>
-          <AddContantPersonModal
-            onSuccess={(person) => {
-              setContactPersons((prev) => [...prev, person]);
-            }}
-          />
+          {action !== "view" && (
+            <AddContantPersonModal
+              onSuccess={(person) => {
+                setContactPersons((prev) => [...prev, person]);
+              }}
+            />
+          )}
         </div>
         {contactPersons.length > 0 && (
           <div className="grid gap-4">
@@ -266,20 +349,24 @@ const AddOrEditClient = () => {
           <p className="text-xl leading-8 font-bold text-primary underline">
             Warehouses
           </p>
-          <AddContantPersonModal
-            onSuccess={(person) => {
-              setContactPersons((prev) => [...prev, person]);
-            }}
-          />
+          {action !== "view" && (
+            <AddContantPersonModal
+              onSuccess={(person) => {
+                setContactPersons((prev) => [...prev, person]);
+              }}
+            />
+          )}
         </div>
-        <Button
-          isLoading={isPending}
-          type="submit"
-          className="max-w-fit ml-auto"
-          variant={"tertiary"}
-        >
-          Add Client
-        </Button>
+        {action !== "view" && (
+          <Button
+            isLoading={isPending}
+            type="submit"
+            className="max-w-fit ml-auto"
+            variant="tertiary"
+          >
+            {isEditMode ? "Update Client" : "Add Client"}
+          </Button>
+        )}
       </form>
     </>
   );

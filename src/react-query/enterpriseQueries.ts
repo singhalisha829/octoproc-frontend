@@ -6,13 +6,17 @@ export const enterpriseQueries = {
       key: "add-client",
       endpoint: `${ENTERPRISE_API_CONSTANT}/client/`,
     },
+    updateClient: {
+      key: "update-client",
+      endpoint: `${ENTERPRISE_API_CONSTANT}/client/`,
+    },
     getClients: {
       key: "get-clients",
       endpoint: `${ENTERPRISE_API_CONSTANT}/client/filter/`,
     },
     getClient: {
-      key: "get-clients",
-      endpoint: `${ENTERPRISE_API_CONSTANT}/client/`,
+      key: "get-client",
+      endpoint: `${ENTERPRISE_API_CONSTANT}/`,
     },
   },
 };

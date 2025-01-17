@@ -32,6 +32,7 @@ export type ControlledComboBoxProps<TData> = {
   valueKey?: string;
   labelKey?: string;
   addNewCta?: JSX.Element;
+  disabled?: boolean;
 };
 
 const filter = (searchKeyWord: string, options: Array<Option>) => {
@@ -54,6 +55,7 @@ export function ControlledComboBox<TData extends Option[]>({
   labelKey = "label",
   value,
   addNewCta,
+  disabled,
 }: ControlledComboBoxProps<TData>) {
   const [open, setOpen] = React.useState(false);
   const [searchKeyWord, setSearchKeyWord] = React.useState("");
@@ -64,6 +66,7 @@ export function ControlledComboBox<TData extends Option[]>({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
+          disabled={disabled}
           variant="outline"
           role="combobox"
           aria-expanded={open}
