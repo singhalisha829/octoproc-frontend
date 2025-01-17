@@ -25,9 +25,9 @@ export const viewPrColumns: ColumnDef<Item>[] = [
   },
 
   {
-    accessorKey: "partId",
+    accessorKey: "productId",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Part ID" />
+      <DataTableColumnHeader column={column} title="Product ID" />
     ),
     cell: ({ row }) => (
       <DataTableColumnCell

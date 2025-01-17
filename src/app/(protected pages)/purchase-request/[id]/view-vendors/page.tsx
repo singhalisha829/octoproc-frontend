@@ -166,6 +166,11 @@ const ViewVendorsPage = () => {
                     </Button>
                   </>
                 )}
+                {vendorAssignment.status === "QUOTATION_APPROVED" && (
+                  <Button variant={"tertiary"} onClick={() => {}}>
+                    Generate Purchase Order
+                  </Button>
+                )}
               </div>
             </div>
             <DataTable

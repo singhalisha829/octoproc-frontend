@@ -12,7 +12,7 @@ export const assignVendorColumns: ColumnDef<Item>[] = [
     id: "expander",
     header: () => null,
     cell: ({ row }) =>
-      (row.original.assignedVendors?.length || 0) > 0 && (
+      (row.original.assignments?.length || 0) > 0 && (
         <button
           onClick={row.getToggleExpandedHandler()}
           className="text-primary"
