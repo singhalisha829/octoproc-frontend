@@ -14,7 +14,7 @@ export const viewPrColumns: ColumnDef<Item>[] = [
     id: "expander",
     header: () => null,
     cell: ({ row }) =>
-      (row.original.assignedVendors?.length || 0) > 0 && (
+      (row.original.assignments?.length || 0) > 0 && (
         <button
           onClick={row.getToggleExpandedHandler()}
           className="text-primary"
@@ -76,7 +76,9 @@ export const viewPrColumns: ColumnDef<Item>[] = [
     cell: ({ row }) => (
       <DataTableColumnCell
         row={row}
-        title={`${row.original.quantity}/${String(row.original.quantity)}`}
+        title={`${row.original.assigned_quantity}/${String(
+          row.original.quantity
+        )}`}
       />
     ),
   },

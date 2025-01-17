@@ -2,7 +2,10 @@
 import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
 
-import { getPurchaseRequest } from "@/api/purchaseRequest";
+import {
+  getItemWiseAssignedVendors,
+  getPurchaseRequest,
+} from "@/api/purchaseRequest";
 import { Button } from "@/components/ui/button";
 import { formatItems } from "@/lib/utils";
 import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
@@ -23,7 +26,19 @@ const ViewItems = () => {
     enabled: !!params.id,
   });
 
-  const formattedItems = formatItems(purchaseRequest?.items || []);
+  const { data: itemWiseAssignedVendors } = useQuery({
+    queryKey: [
+      purchaseRequestQueries.purchaseRequest.getItemWiseAssignedVendor.key,
+    ],
+    queryFn: () => getItemWiseAssignedVendors(params.id),
+    enabled: !!params.id,
+  });
+
+  const formattedItems = formatItems(
+    itemWiseAssignedVendors
+      ? itemWiseAssignedVendors?.items || []
+      : purchaseRequest?.items || []
+  );
 
   return (
     <>

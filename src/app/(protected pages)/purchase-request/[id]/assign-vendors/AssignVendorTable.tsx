@@ -31,7 +31,7 @@ export default function AssignVendorTable({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
-    getRowCanExpand: (row) => (row?.original?.assignedVendors?.length || 0) > 0,
+    getRowCanExpand: (row) => (row?.original?.assignments?.length || 0) > 0,
   });
 
   return (
@@ -66,16 +66,18 @@ export default function AssignVendorTable({
               <TableRow>
                 <TableCell colSpan={columns.length}>
                   <div className="grid grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-3">
-                    {(row.original.assignedVendors?.length || 0) > 0 ? (
-                      row.original.assignedVendors?.map((vendor) => (
+                    {(row.original.assignments?.length || 0) > 0 ? (
+                      row.original.assignments?.map((assignment) => (
                         <div
-                          key={vendor.id}
+                          key={assignment.id}
                           className="border rounded-md px-3 py-2 flex items-center justify-between"
                         >
                           <div className="flex flex-col gap-1.5">
-                            <h4 className="font-bold">{vendor.name}</h4>
+                            <h4 className="font-bold">
+                              {assignment.vendor.name}
+                            </h4>
                             {/* <p>Contact: {vendor.name}</p> */}
-                            <p>Quantity Assigned: {vendor.quantity}</p>
+                            <p>Quantity Assigned: {assignment.quantity}</p>
                           </div>
                           <Button size={"icon"} variant={"outline"}>
                             <EllipsisVertical />

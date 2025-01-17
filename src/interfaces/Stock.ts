@@ -17,6 +17,7 @@ export type Item = {
   productId?: number | null | string;
   assignedVendors?: Vendor[];
   assignments?: Array<AssignedVendorInItemwise>;
+  assigned_quantity: number
 };
 
 export type Stock = {
