@@ -224,8 +224,8 @@ const AddOrEditClient = () => {
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const submissionData = {
-      contact_persons: contactPersons,
       ...clientDetails,
+      contact_persons: contactPersons,
     };
 
     if (action === "edit" && id) {
