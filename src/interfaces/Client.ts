@@ -17,7 +17,7 @@ export interface Client {
 
 export interface ClientDetails {
   name: string;
-  code: string;
+  code?: string;
   address_line_1: string;
   address_line_2: string;
   city_id: number | null;

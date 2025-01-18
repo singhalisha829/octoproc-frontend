@@ -81,7 +81,10 @@ export interface VendorAssignment {
   quotations: Array<Quotation>;
 }
 
-// New interface for merged data
-export interface MergedVendorAssignmentItem extends VendorAssigmentItem {
-  quotationItems: QuotationItem[]; // Array of related QuotationItems
+export interface MergedVendorAssignment extends Omit<VendorAssignment, "items"> {
+  items: Array<
+    VendorAssigmentItem & {
+      quotation?: Quotation;
+    }
+  >;
 }

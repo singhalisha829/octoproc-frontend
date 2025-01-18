@@ -19,4 +19,10 @@ export const enterpriseQueries = {
       endpoint: `${ENTERPRISE_API_CONSTANT}/`,
     },
   },
+  warehouse: {
+    addWarehouse: {
+      key: "add-warehouse",
+      endpoint: `${ENTERPRISE_API_CONSTANT}/warehouse/`
+    }
+  }
 };

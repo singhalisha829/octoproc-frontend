@@ -1,4 +1,4 @@
-import { Client, ClientDetailApiResponse, ClientDetails } from "@/interfaces/Client";
+import { Client, ClientDetailApiResponse, ClientDetails, Warehouse } from "@/interfaces/Client";
 import { enterpriseQueries } from "@/react-query/enterpriseQueries";
 import { axiosInstance } from "../axiosInstance";
 
@@ -28,3 +28,8 @@ export const updateClient = async (data: ClientDetails): Promise<ClientDetails> 
     data
   );
 };
+
+
+export const addWarehouse = async (data: Warehouse) => {
+  return await axiosInstance.post(enterpriseQueries.warehouse.addWarehouse.endpoint, data)
+}

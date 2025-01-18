@@ -1,3 +1,5 @@
+import { addWarehouse } from "@/api/enterprise";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -5,18 +7,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useMemo, useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  CONTACT_PERSON_INPUTS,
-  INITIAL_CONTACT_PERSON_DETAILS,
-} from "@/utils/constants";
-import { ContactPerson } from "@/interfaces/Vendors";
 import InputLabelGroup from "@/components/ui/InputLabelGroup";
 import { Warehouse } from "@/interfaces/Client";
-import { useSearchParams } from "next/navigation";
-import { transformSelectOptions } from "@/lib/utils";
 import { City, Country, State } from "@/interfaces/common";
+import { transformSelectOptions } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
 import SelectWithLabel from "../ui/SelectWithLabel";
 
 type Props = {
@@ -38,6 +35,16 @@ const AddWarehouseModel = ({ onSuccess, states, cities, countries }: Props) => {
     state_id: null,
     country_id: null,
     enterprise_client_id: Number(id),
+  });
+
+  const { mutate } = useMutation({
+    mutationFn: addWarehouse,
+    onSuccess: ({ data }) => {
+      if (onSuccess) {
+        onSuccess({ ...warehouseDetails, warehouse_id: data?.data?.id });
+        setIsOpen(false);
+      }
+    },
   });
 
   const INPUTS = useMemo(
@@ -98,11 +105,7 @@ const AddWarehouseModel = ({ onSuccess, states, cities, countries }: Props) => {
   );
 
   const submitHandler = () => {
-    if (onSuccess) {
-      onSuccess(warehouseDetails);
-
-      setIsOpen(false);
-    }
+    mutate(warehouseDetails);
   };
 
   return (

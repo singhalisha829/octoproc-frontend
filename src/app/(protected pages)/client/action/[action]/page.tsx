@@ -11,7 +11,7 @@ import Header from "@/components/globals/Header";
 import { Button } from "@/components/ui/button";
 import InputLabelGroup from "@/components/ui/InputLabelGroup";
 import SelectWithLabel from "@/components/ui/SelectWithLabel";
-import { ClientDetailApiResponse, ClientDetails } from "@/interfaces/Client";
+import { ClientDetails, Warehouse } from "@/interfaces/Client";
 import { ContactPerson } from "@/interfaces/Vendors";
 import { transformSelectOptions } from "@/lib/utils";
 import { enterpriseQueries } from "@/react-query/enterpriseQueries";
@@ -22,9 +22,63 @@ import { useParams, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
+const WAREHOUSE_INPUTS = [
+  {
+    key: "name",
+    name: "Name",
+    id: "warehouseName",
+    type: "input",
+    inputType: "text",
+    placeholder: "Name",
+  },
+  {
+    key: "address",
+    name: "Address",
+    id: "address",
+    type: "input",
+    inputType: "text",
+    placeholder: "Address",
+  },
+  {
+    key: "code",
+    name: "Code",
+    id: "code",
+    type: "input",
+    inputType: "text",
+    placeholder: "DEL",
+  },
+  {
+    key: "country_id",
+    name: "Country",
+    id: "country",
+    type: "dropdown",
+    options: [],
+    inputType: "select",
+    placeholder: "Country",
+  },
+  {
+    key: "state_id",
+    name: "State",
+    id: "state",
+    type: "dropdown",
+    options: [],
+    inputType: "select",
+    placeholder: "State",
+  },
+  {
+    key: "city_id",
+    name: "City",
+    id: "city",
+    type: "dropdown",
+    options: [],
+    inputType: "select",
+    placeholder: "City",
+  },
+];
+
 const INITIAL_CLIENT_DETAILS = {
   name: "",
-  code: "",
+  // code: "",
   address_line_1: "",
   address_line_2: "",
   city_id: null,
@@ -33,14 +87,6 @@ const INITIAL_CLIENT_DETAILS = {
   pincode: "",
   pan_number: "",
   gst_number: "",
-};
-
-const isDisabled = (
-  action: string,
-  clientApiResponse: ClientDetailApiResponse
-) => {
-  if (!clientApiResponse) return false;
-  if (action === "view") return true;
 };
 
 const AddOrEditClient = () => {
@@ -56,6 +102,7 @@ const AddOrEditClient = () => {
   const [contactPersons, setContactPersons] = useState<Array<ContactPerson>>(
     []
   );
+  const [warehouses, setWarehouses] = useState<Array<Warehouse>>([]);
 
   const { data: cities } = useQuery({
     queryKey: ["cities"],
@@ -110,14 +157,14 @@ const AddOrEditClient = () => {
         placeholder: "Name",
       },
 
-      {
-        key: "code",
-        name: "Code",
-        id: "code",
-        type: "input",
-        inputType: "text",
-        placeholder: "Code",
-      },
+      // {
+      //   key: "code",
+      //   name: "Code",
+      //   id: "code",
+      //   type: "input",
+      //   inputType: "text",
+      //   placeholder: "Code",
+      // },
       {
         key: "address_line_1",
         name: "Address Line 1",
@@ -220,23 +267,25 @@ const AddOrEditClient = () => {
       contact_persons,
     }));
     setContactPersons(contactPersons);
+    setWarehouses(client.warehouses);
   }, [client, id]);
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const submissionData = {
       ...clientDetails,
-      contact_persons: contactPersons,
     };
 
     if (action === "edit" && id) {
       editClientMutation.mutate({
         id: +id,
         ...submissionData,
-        contact_persons: contactPersons,
       });
     } else {
-      addClientMutation.mutate(submissionData);
+      addClientMutation.mutate({
+        ...submissionData,
+        contact_persons: contactPersons,
+      });
     }
   };
 
@@ -355,10 +404,48 @@ const AddOrEditClient = () => {
               states={states}
               cities={cities}
               countries={countries}
-              onSuccess={(warehouse) => {}}
+              onSuccess={(warehouse) => {
+                setWarehouses((prev) => [...prev, warehouse]);
+              }}
             />
           )}
         </div>
+
+        {warehouses.length > 0 && (
+          <div className="grid gap-4">
+            {warehouses.map((warehouse, index) => (
+              <div
+                className="grid grid-cols-3 gap-3 p-4 border rounded-md relative"
+                key={index}
+              >
+                <Button
+                  type="button"
+                  onClick={() => {
+                    setWarehouses((prev) =>
+                      prev.filter(
+                        (w) => w.warehouse_id !== warehouse.warehouse_id
+                      )
+                    );
+                  }}
+                  variant={"destructive"}
+                  size={"icon"}
+                  className="absolute top-1 right-1"
+                >
+                  <Trash2 />
+                </Button>
+                {WAREHOUSE_INPUTS.map((input) => (
+                  <div className="flex items-center gap-3" key={input.key}>
+                    <p className=" font-semibold text-primary">{input.name}:</p>
+                    <p className="font-medium">
+                      {warehouse[input.key as "warehouse_id"]}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+
         {action !== "view" && (
           <Button
             isLoading={isPending}
