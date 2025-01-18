@@ -61,6 +61,12 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
           purchaseRequestQueries.purchaseRequest.getItemWiseAssignedVendor.key,
         ],
       });
+      setAssignedVendors([]);
+      setVendorInfo({
+        name: "",
+        id: null,
+        quantity: 0,
+      });
       setIsOpen(false);
     },
     onError: () => {
