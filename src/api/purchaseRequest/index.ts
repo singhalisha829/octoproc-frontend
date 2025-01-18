@@ -23,8 +23,6 @@ export const getPurchaseRequest = async (
 };
 export const createPurchaseRequest = async (data: {
   enterprise_client_id: number | null;
-  reference_no: string;
-  created_by: 1;
   items: {
     product_id?: number | null | string;
     uom_id?: number;
@@ -36,14 +34,41 @@ export const createPurchaseRequest = async (data: {
     data
   );
 };
+export const addItemInPR = async (data: {
+  purchase_request_id: number | null;
+  product_id?: number | null | string;
+  uom_id?: number;
+  quantity: number;
+}) => {
+  return axiosInstance.post(
+    purchaseRequestQueries.purchaseRequest.addItemInPR.endpoint,
+    data
+  );
+};
+export const updateItemInPR = async (data: {
+  purchase_request_id: number | null;
+  product_id?: number | null | string;
+  uom_id?: number;
+  quantity: number;
+}) => {
+  return axiosInstance.put(
+    purchaseRequestQueries.purchaseRequest.addItemInPR.endpoint,
+    data
+  );
+};
+export const removeItemFromPR = async (itemId: string) => {
+  return axiosInstance.delete(
+    purchaseRequestQueries.purchaseRequest.removeItemFromPR.endpoint + itemId,
+  );
+};
 
 export const getItemWiseAssignedVendors = async (id: string | number) => {
   const { data } = await axiosInstance.get(
     purchaseRequestQueries.purchaseRequest.getItemWiseAssignedVendor
       .endpoint_start +
-      id +
-      purchaseRequestQueries.purchaseRequest.getItemWiseAssignedVendor
-        .endpoint_end
+    id +
+    purchaseRequestQueries.purchaseRequest.getItemWiseAssignedVendor
+      .endpoint_end
   );
   return data.data || null;
 };
@@ -53,8 +78,8 @@ export const getVendorsAssignments = async (
   const { data } = await axiosInstance.get(
     purchaseRequestQueries.purchaseRequest.getVendorsAssignments
       .endpoint_start +
-      id +
-      purchaseRequestQueries.purchaseRequest.getVendorsAssignments.endpoint_end
+    id +
+    purchaseRequestQueries.purchaseRequest.getVendorsAssignments.endpoint_end
   );
   return data.data || null;
 };
@@ -65,9 +90,9 @@ export const getVendorsAssignment = async (
 ): Promise<VendorAssignment> => {
   const { data } = await axiosInstance.get(
     purchaseRequestQueries.purchaseRequest.getVendorsAssignment.endpoint_start +
-      id +
-      purchaseRequestQueries.purchaseRequest.getVendorsAssignment.endpoint_end +
-      assigmentId
+    id +
+    purchaseRequestQueries.purchaseRequest.getVendorsAssignment.endpoint_end +
+    assigmentId
   );
   return data.data || null;
 };
@@ -107,16 +132,16 @@ export const uploadQuotation = async (body: QuotationInfo) => {
 export const acceptQuotation = async (quotationId: number) => {
   const { data } = await axiosInstance.post(
     purchaseRequestQueries.purchaseRequest.acceptQuotation.endpoint_start +
-      quotationId +
-      purchaseRequestQueries.purchaseRequest.acceptQuotation.endpoint_end
+    quotationId +
+    purchaseRequestQueries.purchaseRequest.acceptQuotation.endpoint_end
   );
   return data.data || null;
 };
 export const rejectQuotation = async (quotationId: number) => {
   const { data } = await axiosInstance.post(
     purchaseRequestQueries.purchaseRequest.rejectQuotation.endpoint_start +
-      quotationId +
-      purchaseRequestQueries.purchaseRequest.rejectQuotation.endpoint_end
+    quotationId +
+    purchaseRequestQueries.purchaseRequest.rejectQuotation.endpoint_end
   );
   return data.data || null;
 };

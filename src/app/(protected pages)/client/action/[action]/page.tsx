@@ -266,7 +266,7 @@ const AddOrEditClient = () => {
       state_id,
       contact_persons,
     }));
-    setContactPersons(contactPersons);
+    setContactPersons(client.contact_persons);
     setWarehouses(client.warehouses);
   }, [client, id]);
 
@@ -395,55 +395,61 @@ const AddOrEditClient = () => {
             ))}
           </div>
         )}
-        <div className="flex items-center justify-between">
-          <p className="text-xl leading-8 font-bold text-primary underline">
-            Warehouses
-          </p>
-          {action !== "view" && (
-            <AddWarehouseModel
-              states={states}
-              cities={cities}
-              countries={countries}
-              onSuccess={(warehouse) => {
-                setWarehouses((prev) => [...prev, warehouse]);
-              }}
-            />
-          )}
-        </div>
-
-        {warehouses.length > 0 && (
-          <div className="grid gap-4">
-            {warehouses.map((warehouse, index) => (
-              <div
-                className="grid grid-cols-3 gap-3 p-4 border rounded-md relative"
-                key={index}
-              >
-                <Button
-                  type="button"
-                  onClick={() => {
-                    setWarehouses((prev) =>
-                      prev.filter(
-                        (w) => w.warehouse_id !== warehouse.warehouse_id
-                      )
-                    );
+        {action !== "add" && !client?.client && (
+          <>
+            <div className="flex items-center justify-between">
+              <p className="text-xl leading-8 font-bold text-primary underline">
+                Warehouses
+              </p>
+              {action !== "view" && (
+                <AddWarehouseModel
+                  states={states}
+                  cities={cities}
+                  countries={countries}
+                  onSuccess={(warehouse) => {
+                    setWarehouses((prev) => [...prev, warehouse]);
                   }}
-                  variant={"destructive"}
-                  size={"icon"}
-                  className="absolute top-1 right-1"
-                >
-                  <Trash2 />
-                </Button>
-                {WAREHOUSE_INPUTS.map((input) => (
-                  <div className="flex items-center gap-3" key={input.key}>
-                    <p className=" font-semibold text-primary">{input.name}:</p>
-                    <p className="font-medium">
-                      {warehouse[input.key as "warehouse_id"]}
-                    </p>
+                />
+              )}
+            </div>
+
+            {warehouses.length > 0 && (
+              <div className="grid gap-4">
+                {warehouses.map((warehouse, index) => (
+                  <div
+                    className="grid grid-cols-3 gap-3 p-4 border rounded-md relative"
+                    key={index}
+                  >
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        setWarehouses((prev) =>
+                          prev.filter(
+                            (w) => w.warehouse_id !== warehouse.warehouse_id
+                          )
+                        );
+                      }}
+                      variant={"destructive"}
+                      size={"icon"}
+                      className="absolute top-1 right-1"
+                    >
+                      <Trash2 />
+                    </Button>
+                    {WAREHOUSE_INPUTS.map((input) => (
+                      <div className="flex items-center gap-3" key={input.key}>
+                        <p className=" font-semibold text-primary">
+                          {input.name}:
+                        </p>
+                        <p className="font-medium">
+                          {warehouse[input.key as "warehouse_id"]}
+                        </p>
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
 
         {action !== "view" && (

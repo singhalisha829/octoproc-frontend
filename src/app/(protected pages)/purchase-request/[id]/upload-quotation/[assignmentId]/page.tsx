@@ -77,8 +77,13 @@ const UploadQuotationPage = () => {
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: [purchaseRequestQueries.purchaseRequest.getVendorsAssignment.key],
+    queryKey: [
+      purchaseRequestQueries.purchaseRequest.getVendorsAssignment.key,
+      params.id,
+      params.assignmentId,
+    ],
     queryFn: () => getVendorsAssignment(params.id, params.assignmentId),
+    enabled : !!params.id && !!params.assignmentId
   });
 
   const { mutate, isPending } = useMutation({

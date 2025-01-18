@@ -19,7 +19,7 @@ import {
 import { AssignedVendorInItemwise, Item } from "@/interfaces/Stock";
 import { transformSelectOptions } from "@/lib/utils";
 import { masterApiQuery } from "@/react-query/masterApiQueries";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CircleCheck } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
@@ -27,6 +27,8 @@ import { toast } from "sonner";
 import { ControlledComboBox } from "../ui/ControlledComboBox";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { enterpriseQueries } from "@/react-query/enterpriseQueries";
+import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
 
 type Props = {
   vendors: Array<AssignedVendorInItemwise>;
@@ -49,11 +51,16 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
     id: null,
     quantity: 0,
   });
-
+  const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: assignVendor,
     onSuccess: () => {
       toast.success("Vendor assigned successfully");
+      queryClient.invalidateQueries({
+        queryKey: [
+          purchaseRequestQueries.purchaseRequest.getItemWiseAssignedVendor.key,
+        ],
+      });
       setIsOpen(false);
     },
     onError: () => {

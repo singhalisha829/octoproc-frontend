@@ -1,6 +1,12 @@
 "use client";
 import { getClients } from "@/api/enterprise";
-import { createPurchaseRequest } from "@/api/purchaseRequest";
+import {
+  addItemInPR,
+  createPurchaseRequest,
+  getPurchaseRequest,
+  removeItemFromPR,
+  updateItemInPR,
+} from "@/api/purchaseRequest";
 import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
 import StockTable from "@/components/StockPagesComponents/StockTable";
@@ -9,11 +15,11 @@ import { ControlledComboBox } from "@/components/ui/ControlledComboBox";
 import { Item } from "@/interfaces/Stock";
 import { transformSelectOptions } from "@/lib/utils";
 import { enterpriseQueries } from "@/react-query/enterpriseQueries";
+import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useParams, useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { v4 as uuidv4 } from "uuid";
 
 // const [purchaseRequest, setPurchaseRequest] = useState<PurchaseRequest>({
 //   id: 1,
@@ -42,9 +48,8 @@ import { v4 as uuidv4 } from "uuid";
 
 const CreatePurchaseRequestPage = () => {
   const router = useRouter();
-  const { type } = useParams<{
-    type: string;
-  }>();
+
+  const id = useSearchParams().get("id");
 
   const [selectedEnterprise, setSelectedEnterprise] = useState<
     null | string | number
@@ -52,12 +57,21 @@ const CreatePurchaseRequestPage = () => {
 
   const [addedProducts, setAddedProducts] = useState<Item[]>([]);
 
+  const { data: purchaseRequest, refetch } = useQuery({
+    queryKey: [
+      purchaseRequestQueries.purchaseRequest.getPurchaseRequest.key,
+      id,
+    ],
+    queryFn: () => getPurchaseRequest(id as string),
+    enabled: !!id,
+  });
+
   const { data: enterprises } = useQuery({
     queryKey: [enterpriseQueries.client.getClients],
     queryFn: getClients,
   });
 
-  const { mutate, isPending } = useMutation({
+  const { mutate: createPR, isPending: isCreatingPR } = useMutation({
     mutationFn: createPurchaseRequest,
     onSuccess: (response) => {
       toast.success("Purchase Request created successfully!");
@@ -67,22 +81,90 @@ const CreatePurchaseRequestPage = () => {
       toast.error("Failed to create purchase request!");
     },
   });
+  const addItemMutation = useMutation({
+    mutationFn: addItemInPR,
+    onSuccess: (response) => {
+      refetch();
+      toast.success("Item added successfully!");
+    },
+    onError: () => {
+      toast.error("Failed to add item in purchase request!");
+    },
+  });
+  const removeItemMutation = useMutation({
+    mutationFn: removeItemFromPR,
+    onSuccess: (response) => {
+      refetch();
+      toast.success("Item removed successfully!");
+    },
+    onError: () => {
+      toast.error("Failed to remove item from purchase request!");
+    },
+  });
+  const updateItemMutation = useMutation({
+    mutationFn: updateItemInPR,
+    onSuccess: (response) => {
+      refetch();
+      toast.success("Item updated successfully!");
+    },
+    onError: () => {
+      toast.error("Failed to update item in purchase request!");
+    },
+  });
 
-  const addItem = useCallback((item: Item) => {
-    setAddedProducts((prev) => [...prev, item]);
-  }, []);
-
-  const deleteItem = useCallback((item: Item) => {
-    setAddedProducts((prev) =>
-      prev.filter((i) => i.productId !== item.productId)
+  useEffect(() => {
+    if (!purchaseRequest) return;
+    setSelectedEnterprise(purchaseRequest.enterprise_client_id);
+    setAddedProducts(
+      purchaseRequest.items.map((item) => ({
+        id: item.id,
+        productId: item.product.id,
+        productName: item.product.name,
+        quantity: item.quantity,
+        uom_id: item.product.uom_id,
+        unitPrice: 0,
+        quantityUnit: "",
+      }))
     );
-  }, []);
+  }, [purchaseRequest, id]);
+
+  const addItem = useCallback(
+    (item: Item) => {
+      if (id && purchaseRequest) {
+        addItemMutation.mutate({
+          purchase_request_id: purchaseRequest.id,
+          quantity: item.quantity,
+          product_id: item.productId,
+          uom_id: item.uom_id,
+        });
+        return;
+      }
+      setAddedProducts((prev) => [...prev, item]);
+    },
+    [id, purchaseRequest]
+  );
+
+  const deleteItem = useCallback(
+    (item: Item) => {
+      if (id && purchaseRequest && item.id) {
+        removeItemMutation.mutate(String(item.id));
+        return;
+      }
+      setAddedProducts((prev) =>
+        prev.filter((i) => i.productId !== item.productId)
+      );
+    },
+    [id, purchaseRequest]
+  );
 
   const handleCreatePr = () => {
     if (!selectedEnterprise) {
       return toast.error("Please Select Enterprise.");
     }
-
+    if (id && purchaseRequest) {
+      router.push(`/purchase-request/${purchaseRequest.id}/assign-vendors`);
+      return;
+    }
     const formattedAddedProducts = addedProducts
       .filter((product) => product.productId)
       .map((product) => ({
@@ -95,13 +177,11 @@ const CreatePurchaseRequestPage = () => {
       return toast.error("Please add atleast one item.");
     }
 
-    mutate({
-      created_by: 1,
+    createPR({
       enterprise_client_id: selectedEnterprise
         ? Number(selectedEnterprise)
         : null,
       items: formattedAddedProducts,
-      reference_no: uuidv4(),
     });
   };
 
@@ -151,7 +231,7 @@ const CreatePurchaseRequestPage = () => {
           Cancel
         </Button>
         <Button
-          isLoading={isPending}
+          isLoading={isCreatingPR}
           onClick={() => {
             handleCreatePr();
           }}

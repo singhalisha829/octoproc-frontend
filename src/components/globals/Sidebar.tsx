@@ -39,11 +39,11 @@ const links = [
     url: "/vendors",
     icon: <NotebookText />,
   },
-  // {
-  //   name: "Client",
-  //   url: "/client",
-  //   icon: <Users />,
-  // },
+  {
+    name: "Client",
+    url: "/client",
+    icon: <Users />,
+  },
   {
     name: "Ledger",
     url: "/ledger",

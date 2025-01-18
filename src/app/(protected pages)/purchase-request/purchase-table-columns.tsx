@@ -21,11 +21,20 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
       />
     ),
   },
-
+  {
+    accessorKey: "reference_no",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Reference No." />
+    ),
+    cell: ({ row }) => {
+      const reference_no = row.original.reference_no;
+      return <DataTableColumnCell row={row} title={reference_no || ""} />;
+    },
+  },
   {
     accessorKey: "enterprise_client",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Unit Name" />
+      <DataTableColumnHeader column={column} title="Client Name" />
     ),
     cell: ({ row }) => (
       <DataTableColumnCell
@@ -34,28 +43,6 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
       />
     ),
   },
-  // {
-  //   accessorKey: "items",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="ITEMS ASSIGNED" />
-  //   ),
-  //   cell: ({ row }) => {
-  //     const items = row.original.items;
-
-  //     let totalItems = 0;
-  //     items.forEach((item) => (totalItems += item.quantity));
-  //     const vendors = row.original.vendors;
-  //     let assignedItems = 0;
-  //     vendors.forEach((vendor) => (assignedItems += vendor.quantity));
-
-  //     return (
-  //       <DataTableColumnCell
-  //         row={row}
-  //         title={`${assignedItems}/${totalItems}`}
-  //       />
-  //     );
-  //   },
-  // },
 
   {
     id: "actions",
@@ -92,7 +79,7 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
             variant="link"
             className="text-zinc-950 font-semibold"
           >
-            <Link href={"/purchase-request/action/edit"}>
+            <Link href={`/purchase-request/action/edit?id=${row.original.id}`}>
               Edit <Pen />
             </Link>
           </Button>

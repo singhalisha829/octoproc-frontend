@@ -31,6 +31,18 @@ export const purchaseRequestQueries = {
       key: "create-pr",
       endpoint: "/purchase-request/",
     },
+    addItemInPR: {
+      key: "add-item",
+      endpoint: "/purchase-request/item",
+    },
+    removeItemFromPR: {
+      key: "remove-item",
+      endpoint: "/purchase-request/item/",
+    },
+    updateItemInPR: {
+      key: "update-item",
+      endpoint: "/purchase-request/item",
+    },
     requestQuotation: {
       key: "requestQuotation",
       endpoint: "/purchase-request/quotation/request/",

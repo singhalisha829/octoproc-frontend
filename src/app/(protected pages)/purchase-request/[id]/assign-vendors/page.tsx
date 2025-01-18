@@ -21,15 +21,21 @@ const AssignVendors = () => {
   const router = useRouter();
 
   const { data: purchaseRequest } = useQuery({
-    queryKey: [purchaseRequestQueries.purchaseRequest.getPurchaseRequest.key],
+    queryKey: [
+      purchaseRequestQueries.purchaseRequest.getPurchaseRequest.key,
+      params.id,
+    ],
     queryFn: () => getPurchaseRequest(params.id),
+    enabled: !!params.id,
   });
 
   const { data: itemWiseAssignedVendors } = useQuery({
     queryKey: [
       purchaseRequestQueries.purchaseRequest.getItemWiseAssignedVendor.key,
+      params.id,
     ],
     queryFn: () => getItemWiseAssignedVendors(params.id),
+    enabled: !!params.id,
   });
 
   const formattedItems = formatItems(

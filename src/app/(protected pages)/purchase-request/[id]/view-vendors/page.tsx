@@ -10,20 +10,17 @@ import Header from "@/components/globals/Header";
 import { DataTable } from "@/components/table/data-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  MergedVendorAssignment,
+  VendorAssignment
+} from "@/interfaces/PurchaseRequest";
 import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
-import { viewVendorColumns } from "./view-vendor-columns";
 import { quotationRecievedColumns } from "./quotationRecievedColumns";
-import {
-  MergedVendorAssignment,
-  PurchaseRequestItem,
-  Quotation,
-  VendorAssigmentItem,
-  VendorAssignment,
-} from "@/interfaces/PurchaseRequest";
+import { viewVendorColumns } from "./view-vendor-columns";
 
 export const mergeVendorAssignmentWithQuotations = (
   vendorAssignment: VendorAssignment
@@ -54,8 +51,10 @@ const ViewVendorsPage = () => {
   const { data: vendorAssignments, refetch } = useQuery({
     queryKey: [
       purchaseRequestQueries.purchaseRequest.getVendorsAssignments.key,
+      params.id,
     ],
     queryFn: () => getVendorsAssignments(params.id),
+    enabled: !!params.id,
   });
 
   const { mutate: requestQuotationMutation, isPending: requestingQuotation } =

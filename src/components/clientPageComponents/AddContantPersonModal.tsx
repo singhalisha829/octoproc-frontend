@@ -16,9 +16,13 @@ import InputLabelGroup from "@/components/ui/InputLabelGroup";
 
 type Props = {
   onSuccess?: (person: ContactPerson) => void;
+  trigger?: JSX.Element;
 };
 
-const AddContantPersonModal = ({ onSuccess }: Props) => {
+const AddContantPersonModal = ({
+  onSuccess,
+  trigger = <Button variant={"tertiary"}>Add Contacts</Button>,
+}: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [contactPersonDetails, setContactPersonDetails] =
     useState<ContactPerson>(INITIAL_CONTACT_PERSON_DETAILS);
@@ -38,9 +42,7 @@ const AddContantPersonModal = ({ onSuccess }: Props) => {
         setIsOpen(change);
       }}
     >
-      <DialogTrigger asChild>
-        <Button variant={"tertiary"}>Add Person</Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogTitle className="text-2xl text-primary underline">
           Contact Person Details
