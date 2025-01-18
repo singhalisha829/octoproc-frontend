@@ -64,7 +64,6 @@ const RegisterPage = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: register,
     onSuccess: ({ data }) => {
-      console.log(data);
       LocalStorageService.set(ACCESS_TOKEN_KEY, data?.data?.access_token);
       LocalStorageService.set(REFRESH_TOKEN_KEY, data?.data?.refresh_token);
       toast.success("Registered Successfully!.");

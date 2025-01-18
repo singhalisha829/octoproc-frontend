@@ -104,7 +104,6 @@ const AddOrEditProductPage = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: addProduct,
     onSuccess: (res) => {
-      console.log(res);
       toast.success("Product added successfully!");
     },
     onError: () => {

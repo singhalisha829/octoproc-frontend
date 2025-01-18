@@ -117,7 +117,7 @@ const UploadQuotationPage = () => {
       (item) => item.pr_vendor_assignment_item_id === id
     );
     if (itemIndex < 0) return toast.error("Something went wrong. ");
-    console.log(itemIndex);
+
     setQuotationInfo((prev) => {
       const updatedItems = [...prev.items];
       updatedItems[itemIndex] = { ...updatedItems[itemIndex], [name]: value };

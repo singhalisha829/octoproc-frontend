@@ -31,8 +31,6 @@ const PurchaseRequestPage = () => {
     queryFn: () => getPurchaseOrders({}),
   });
 
-  console.log(purchaseOrders);
-
   // p-order table columns
   // po-no ,date, vendor, value/amount, Status,
 

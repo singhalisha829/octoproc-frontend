@@ -26,9 +26,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    if (error) {
-      console.log(error);
-    }
+
     if (error.response) {
       if (error.response.status === 401) {
         getAccessToken();
