@@ -13,6 +13,7 @@ import { QuotationItem } from "@/interfaces/PurchaseRequest";
 import { useMutation } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { DatePicker } from "../ui/DatePicker";
+import { toast } from "sonner";
 
 type Props = {
   onSuccess?: (po: GeneratePurchaseOrderDetails) => void;
@@ -37,9 +38,14 @@ const GeneratePoModal = ({ onSuccess, vendorQuotationId, items }: Props) => {
     onSuccess: (response) => {
       if (onSuccess) {
         onSuccess(response.data);
-        setIsOpen(false);
       }
+
+      setIsOpen(false);
+      toast.success("Purchase Order create successfully");
     },
+    onError:()=>{
+      toast.error("Failed to create purchase order")
+    }
   });
 
   const INPUTS = useMemo(
@@ -110,8 +116,8 @@ const GeneratePoModal = ({ onSuccess, vendorQuotationId, items }: Props) => {
   return (
     <Dialog
       open={isOpen}
-      onOpenChange={(change) => {
-        setIsOpen(change);
+      onOpenChange={() => {
+        setIsOpen((prev) => !prev);
       }}
     >
       <DialogTrigger asChild>
