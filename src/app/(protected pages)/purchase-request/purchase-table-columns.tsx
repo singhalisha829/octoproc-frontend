@@ -29,9 +29,6 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
     ),
     cell: ({ row }) => (
       <DataTableColumnCell
-        onRowClick={(router) => {
-          router.push(`/purchase-request/${row.original.id}`);
-        }}
         row={row}
         title={row.original.enterprise_client.name}
       />

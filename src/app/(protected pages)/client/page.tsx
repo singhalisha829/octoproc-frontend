@@ -86,6 +86,11 @@ const ClientsListPage = () => {
           isLoading={isLoading}
           data={clients || []}
           columns={clientsListColumns}
+          onRowClick={(row) => {
+            if (!row.original) return null;
+            const id = row.original.id;
+            return `/client/action/view?id=${id}`;
+          }}
         />
       </Container>
     </>

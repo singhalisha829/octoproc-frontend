@@ -85,6 +85,9 @@ const VendorsListPage = () => {
           isLoading={isLoading}
           data={vendors || []}
           columns={vendorListColumns}
+          onRowClick={(row) => {
+            return `/vendors/${row.original.id}`;
+          }}
         />
       </Container>
     </>

@@ -10,6 +10,7 @@ import {
 import {
   ColumnDef,
   ColumnFiltersState,
+  Row,
   SortingState,
   VisibilityState,
   flexRender,
@@ -20,6 +21,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import React from "react";
 
@@ -27,13 +29,16 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   isLoading?: boolean;
+  onRowClick?: (row: Row<TData>) => string | null;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   isLoading = false,
+  onRowClick = () => null,
 }: DataTableProps<TData, TValue>) {
+  const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -98,6 +103,12 @@ export function DataTable<TData, TValue>({
               !isLoading &&
               table.getRowModel().rows.map((row) => (
                 <TableRow
+                  onClick={() => {
+                    const path = onRowClick(row);
+                    if (path) {
+                      router.push(path);
+                    }
+                  }}
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >

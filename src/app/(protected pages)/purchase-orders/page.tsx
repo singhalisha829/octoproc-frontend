@@ -94,7 +94,13 @@ const PurchaseRequestPage = () => {
             </Button>
           </div> */}
         </div>
-        <DataTable data={dummyPO} columns={purchaseOrderColumns} />
+        <DataTable
+          data={dummyPO}
+          columns={purchaseOrderColumns}
+          onRowClick={(row) => {
+            return `/purchase-orders/${row.original.poNo}`;
+          }}
+        />
       </Container>
     </>
   );

@@ -36,13 +36,7 @@ export const purchaseOrderColumns: ColumnDef<PurchaseOrder>[] = [
       <DataTableColumnHeader column={column} title="Vendor" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell
-        onRowClick={(router) => {
-          router.push(`/purchase-orders/${row.original.poNo}`);
-        }}
-        row={row}
-        title={row.original.vendor}
-      />
+      <DataTableColumnCell row={row} title={row.original.vendor} />
     ),
   },
   {

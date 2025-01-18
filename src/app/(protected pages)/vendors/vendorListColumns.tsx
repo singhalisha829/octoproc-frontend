@@ -25,13 +25,7 @@ export const vendorListColumns: ColumnDef<Vendor>[] = [
       <DataTableColumnHeader column={column} title="Vendor Name" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell
-        row={row}
-        title={row.original.name || ""}
-        onRowClick={(router) => {
-          router.push(`/vendors/${row.original.id}`);
-        }}
-      />
+      <DataTableColumnCell row={row} title={row.original.name || ""} />
     ),
   },
   {
