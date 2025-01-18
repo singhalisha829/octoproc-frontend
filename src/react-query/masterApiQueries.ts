@@ -105,4 +105,11 @@ export const masterApiQuery = {
       endpoint: `${MASTER_API_CONSTANT}/uom/?type=`,
     },
   },
+
+  file: {
+    uploadFle: {
+      key: "uploadFile",
+      endpoint: "/document/upload"
+    }
+  }
 };

@@ -4,6 +4,7 @@ import {
   getVendorsAssignments,
   uploadQuotation,
 } from "@/api/purchaseRequest";
+import SingleFileUpload from "@/components/file-upload/SingleFileUpload";
 import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
 import { Badge } from "@/components/ui/badge";
@@ -17,26 +18,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { masterApiQuery } from "@/react-query/masterApiQueries";
 import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-
-const json = {
-  pr_vendor_assignment_id: 1,
-  file_url: "",
-  additional_notes: "...",
-  items: [
-    {
-      pr_vendor_assignment_item_id: 1,
-      unit_price: 1,
-      uom_id: 1,
-      tax_rate: 18.0,
-      additional_notes: "...",
-    },
-  ],
-};
 
 export interface QuotationInfo {
   pr_vendor_assignment_id: number;
@@ -83,7 +70,7 @@ const UploadQuotationPage = () => {
       params.assignmentId,
     ],
     queryFn: () => getVendorsAssignment(params.id, params.assignmentId),
-    enabled : !!params.id && !!params.assignmentId
+    enabled: !!params.id && !!params.assignmentId,
   });
 
   const { mutate, isPending } = useMutation({
@@ -131,6 +118,7 @@ const UploadQuotationPage = () => {
   };
 
   if (isLoading || isFetching) return null;
+
   return (
     <>
       <Header title="Upload Quotation" description="" />
@@ -146,12 +134,17 @@ const UploadQuotationPage = () => {
             </Badge>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant={"tertiary"} asChild>
-              <label className="cursor-pointer" htmlFor="file">
-                Upload file
-              </label>
-            </Button>
-            <input className="sr-only" type="file" id="file" />
+            <SingleFileUpload
+              onUploadSuccess={(data) => {
+                setQuotationInfo((prev) => ({
+                  ...prev,
+                  file_url: data?.data?.[0] || "",
+                }));
+              }}
+              endpoint={masterApiQuery.file.uploadFle.endpoint}
+              contextId="PR/ABHE/2425/001"
+              contextType="pr"
+            />
           </div>
         </div>
         <Table className="rounded-md border">
