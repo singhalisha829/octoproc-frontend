@@ -18,6 +18,7 @@ import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { quotationRecievedColumns } from "./quotationRecievedColumns";
 import { viewVendorColumns } from "./view-vendor-columns";
+import GeneratePoModal from "@/components/purchaseRequestPage/GeneratePoModal";
 
 const ViewVendorsPage = () => {
   const params = useParams<{
@@ -77,6 +78,10 @@ const ViewVendorsPage = () => {
         const latestQuotationRecieved =
           vendorAssignment.quotations.find(
             (quotation) => quotation.status === "PENDING"
+          ) || null;
+        const approvedQuotation =
+          vendorAssignment.quotations.find(
+            (quotation) => quotation.status === "APPROVED"
           ) || null;
 
         const mergedItems =
@@ -150,9 +155,13 @@ const ViewVendorsPage = () => {
                   </>
                 )}
                 {vendorAssignment.status === "QUOTATION_APPROVED" && (
-                  <Button variant={"tertiary"} onClick={() => {}}>
-                    Generate Purchase Order
-                  </Button>
+                  <GeneratePoModal
+                    onSuccess={() => {
+                      refetch()
+                    }}
+                    vendorQuotationId={approvedQuotation?.id as number}
+                    items={approvedQuotation?.items}
+                  />
                 )}
               </div>
             </div>

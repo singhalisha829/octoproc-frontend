@@ -1,5 +1,6 @@
 import { purchaseOrderQueries } from "@/react-query/purchaseOrderQueries";
 import { axiosInstance } from "../axiosInstance";
+import { GeneratePurchaseOrderDetails } from "@/interfaces/PurchaseOrder";
 
 export const getPurchaseOrders = async (filters = {}) => {
   const { data } = await axiosInstance.post(
@@ -14,7 +15,7 @@ export const getPurchaseOrder = async (id: number) => {
   );
   return data.data || null;
 };
-export const createPurchaseOrder = async (body = null) => {
+export const createPurchaseOrder = async (body: GeneratePurchaseOrderDetails) => {
   const { data } = await axiosInstance.post(
     purchaseOrderQueries.createPurchaseOrder.endpoint,
     body
