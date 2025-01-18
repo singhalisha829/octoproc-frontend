@@ -16,28 +16,35 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { viewVendorColumns } from "./view-vendor-columns";
-import { VendorAssignment } from "@/interfaces/PurchaseRequest";
+import { quotationRecievedColumns } from "./quotationRecievedColumns";
+import {
+  MergedVendorAssignment,
+  PurchaseRequestItem,
+  Quotation,
+  VendorAssigmentItem,
+  VendorAssignment,
+} from "@/interfaces/PurchaseRequest";
 
-function mergeItemsWithQuotations(vendorAssignment: VendorAssignment) {
-  // Flatten all quotation items into a single array
-  const allQuotationItems = vendorAssignment.quotations.flatMap((q) => q.items);
-
-  // Map VendorAssignmentItem with its matching QuotationItem(s)
-  const mergedItems = vendorAssignment.items.map((assignmentItem) => {
-    // Find all quotation items matching this assignment item's id
-    const matchingQuotationItems = allQuotationItems.filter(
-      (quotationItem) => quotationItem.assignment_item_id === assignmentItem.id
+export const mergeVendorAssignmentWithQuotations = (
+  vendorAssignment: VendorAssignment
+): MergedVendorAssignment => {
+  const mergedItems = vendorAssignment.items.map((item) => {
+    // Find matching quotation item
+    const matchingQuotation = vendorAssignment.quotations.find((quotation) =>
+      quotation.items.some((qItem) => qItem.assignment_item_id === item.id)
     );
 
-    // Add matching quotation items to the assignment item
     return {
-      ...assignmentItem,
-      quotationItems: matchingQuotationItems, // Add an array of matching quotation items
+      ...item,
+      quotation: matchingQuotation,
     };
   });
 
-  return mergedItems;
-}
+  return {
+    ...vendorAssignment,
+    items: mergedItems,
+  };
+};
 
 const ViewVendorsPage = () => {
   const params = useParams<{
@@ -62,6 +69,7 @@ const ViewVendorsPage = () => {
         toast.error("Failed to request quotation!");
       },
     });
+
   const { mutate: acceptQuotationMutation, isPending: isAccepting } =
     useMutation({
       mutationFn: acceptQuotation,
@@ -73,6 +81,7 @@ const ViewVendorsPage = () => {
         toast.error("Failed to accepted quotation!");
       },
     });
+
   const { mutate: rejectQuotationMutation, isPending: isRejecting } =
     useMutation({
       mutationFn: rejectQuotation,
@@ -95,9 +104,8 @@ const ViewVendorsPage = () => {
             (quotation) => quotation.status === "PENDING"
           ) || null;
 
-        const mergedItems = mergeItemsWithQuotations(vendorAssignment);
-        console.log(vendorAssignment);
-        console.log(mergedItems);
+        const mergedItems =
+          mergeVendorAssignmentWithQuotations(vendorAssignment);
 
         return (
           <Container className="grid gap-4 " key={vendorAssignment.id}>
@@ -128,16 +136,16 @@ const ViewVendorsPage = () => {
                     Request Quotation
                   </Button>
                 )}
-                {vendorAssignment.status === "RFQ" ||
-                  (vendorAssignment.status === "QUOTATION_REJECTED" && (
-                    <Button variant={"tertiary"} asChild>
-                      <Link
-                        href={`/purchase-request/${params.id}/upload-quotation/${vendorAssignment.id}`}
-                      >
-                        Upload Quotation
-                      </Link>
-                    </Button>
-                  ))}
+                {(vendorAssignment.status === "RFQ" ||
+                  vendorAssignment.status === "QUOTATION_REJECTED") && (
+                  <Button variant={"tertiary"} asChild>
+                    <Link
+                      href={`/purchase-request/${params.id}/upload-quotation/${vendorAssignment.id}`}
+                    >
+                      Upload Quotation
+                    </Link>
+                  </Button>
+                )}
                 {vendorAssignment.status === "QUOTATION_RECIEVED" && (
                   <>
                     <Button
@@ -174,8 +182,16 @@ const ViewVendorsPage = () => {
               </div>
             </div>
             <DataTable
-              data={vendorAssignment?.items || []}
-              columns={viewVendorColumns}
+              data={
+                latestQuotationRecieved
+                  ? mergedItems.items || []
+                  : vendorAssignment?.items || []
+              }
+              columns={
+                latestQuotationRecieved
+                  ? quotationRecievedColumns
+                  : viewVendorColumns
+              }
             />
           </Container>
         );

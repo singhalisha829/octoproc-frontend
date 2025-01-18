@@ -2,10 +2,14 @@
 import { DataTableColumnCell } from "@/components/table/DataTableColumnCell";
 import { DataTableColumnHeader } from "@/components/table/DataTableColumnHeader";
 import { Badge } from "@/components/ui/badge";
-import { MergedVendorAssignmentItem, VendorAssigmentItem } from "@/interfaces/PurchaseRequest";
+import { Quotation, VendorAssigmentItem } from "@/interfaces/PurchaseRequest";
 import { ColumnDef } from "@tanstack/react-table";
 
-export const quotationRecievedColumns: ColumnDef<MergedVendorAssignmentItem>[] = [
+export const quotationRecievedColumns: ColumnDef<
+  VendorAssigmentItem & {
+    quotation?: Quotation;
+  }
+>[] = [
   {
     accessorKey: "productId",
     header: ({ column }) => (
@@ -35,17 +39,6 @@ export const quotationRecievedColumns: ColumnDef<MergedVendorAssignmentItem>[] =
       />
     ),
   },
-
-  {
-    accessorKey: "unitPrice",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Unit Price" />
-    ),
-    cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={String(row.original.quotationItems)} />
-    ),
-  },
-
   {
     accessorKey: "quantity",
     header: ({ column }) => (
@@ -53,6 +46,54 @@ export const quotationRecievedColumns: ColumnDef<MergedVendorAssignmentItem>[] =
     ),
     cell: ({ row }) => (
       <DataTableColumnCell row={row} title={String(row.original.quantity)} />
+    ),
+  },
+  {
+    accessorKey: "unitPrice",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Unit Price" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell
+        row={row}
+        title={String(row.original.quotation?.net_amount)}
+      />
+    ),
+  },
+  {
+    accessorKey: "net_amount",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Net Amount" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell
+        row={row}
+        title={String(row.original.quotation?.net_amount)}
+      />
+    ),
+  },
+  {
+    accessorKey: "tax_amount",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Tax Amount" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell
+        row={row}
+        title={String(row.original.quotation?.tax_amount)}
+      />
+    ),
+  },
+  {
+    accessorKey: "total_amount",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Total Amount" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell
+        row={row}
+        title={String(row.original.quotation?.total_amount)}
+      />
     ),
   },
 ];

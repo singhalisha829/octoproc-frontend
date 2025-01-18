@@ -87,6 +87,7 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
             </Button>
           )} */}
           <Button
+            onClick={(e) => e.stopPropagation()}
             asChild
             variant="link"
             className="text-zinc-950 font-semibold"
