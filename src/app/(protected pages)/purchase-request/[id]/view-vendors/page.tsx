@@ -10,10 +10,7 @@ import Header from "@/components/globals/Header";
 import { DataTable } from "@/components/table/data-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  MergedVendorAssignment,
-  VendorAssignment
-} from "@/interfaces/PurchaseRequest";
+import { mergeVendorAssignmentWithQuotations } from "@/lib/utils";
 import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -21,27 +18,6 @@ import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { quotationRecievedColumns } from "./quotationRecievedColumns";
 import { viewVendorColumns } from "./view-vendor-columns";
-
-export const mergeVendorAssignmentWithQuotations = (
-  vendorAssignment: VendorAssignment
-): MergedVendorAssignment => {
-  const mergedItems = vendorAssignment.items.map((item) => {
-    // Find matching quotation item
-    const matchingQuotation = vendorAssignment.quotations.find((quotation) =>
-      quotation.items.some((qItem) => qItem.assignment_item_id === item.id)
-    );
-
-    return {
-      ...item,
-      quotation: matchingQuotation,
-    };
-  });
-
-  return {
-    ...vendorAssignment,
-    items: mergedItems,
-  };
-};
 
 const ViewVendorsPage = () => {
   const params = useParams<{

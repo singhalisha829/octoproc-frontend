@@ -1,4 +1,4 @@
-import { PurchaseRequestItem } from "@/interfaces/PurchaseRequest";
+import { MergedVendorAssignment, PurchaseRequestItem, VendorAssignment } from "@/interfaces/PurchaseRequest";
 import { Item } from "@/interfaces/Stock";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -45,4 +45,26 @@ export const formatItems = (items: PurchaseRequestItem[]): Item[] => {
   }));
   if (formattedItems) return formattedItems;
   return [];
+};
+
+
+export const mergeVendorAssignmentWithQuotations = (
+  vendorAssignment: VendorAssignment
+): MergedVendorAssignment => {
+  const mergedItems = vendorAssignment.items.map((item) => {
+    // Find matching quotation item
+    const matchingQuotation = vendorAssignment.quotations.find((quotation) =>
+      quotation.items.some((qItem) => qItem.assignment_item_id === item.id)
+    );
+
+    return {
+      ...item,
+      quotation: matchingQuotation,
+    };
+  });
+
+  return {
+    ...vendorAssignment,
+    items: mergedItems,
+  };
 };
