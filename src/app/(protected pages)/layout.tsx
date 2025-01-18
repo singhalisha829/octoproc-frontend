@@ -22,7 +22,7 @@ export default function RootLayout({
             <img src="/bg_processed.png" className="h-[25%] z-[1]" />
             <div className="bg-[url('/background.png')] z-[1] bg-repeat bg-[length:200px_200px] w-full grow"></div>
           </div>
-          <main className="z-10 relative px-8 pt-10 pb-[100px] grid gap-3 ">
+          <main className="z-10 relative px-8 pt-10 pb-[100px] flex flex-col  gap-3 ">
             {children}
           </main>
         </div>

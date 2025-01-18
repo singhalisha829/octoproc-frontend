@@ -247,7 +247,7 @@ const AddOrEditClient = () => {
     <>
       <Header title="Add Client" description="" />
       <form
-        className=" grid gap-5 bg-white rounded-md p-5 shadow-lg "
+        className=" grid gap-5 bg-white rounded-md p-5 shadow-lg"
         onSubmit={submitHandler}
       >
         <p className="text-xl leading-8 font-bold text-primary underline">
@@ -259,7 +259,7 @@ const AddOrEditClient = () => {
               if (type === "input") {
                 return (
                   <InputLabelGroup
-                    value={clientDetails[key as "name"]}
+                    value={clientDetails[key as "name"] || ""}
                     onChange={(e) => {
                       setClientDetails((prev) => ({
                         ...prev,
@@ -278,7 +278,7 @@ const AddOrEditClient = () => {
               if (type === "dropdown") {
                 return (
                   <SelectWithLabel
-                    value={clientDetails[key as "name"]}
+                    value={clientDetails[key as "name"] || ""}
                     onSelect={(option) => {
                       setClientDetails((prev) => ({
                         ...prev,
