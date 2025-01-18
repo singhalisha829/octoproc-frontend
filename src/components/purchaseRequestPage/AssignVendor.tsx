@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Table,
@@ -36,6 +36,7 @@ type Props = {
 
 const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
   const params = useParams();
+  const [isOpen, setIsOpen] = useState(false);
   const [assignedVendors, setAssignedVendors] = useState<
     AssignedVendorInItemwise[]
   >([]);
@@ -51,6 +52,13 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
 
   const { mutate } = useMutation({
     mutationFn: assignVendor,
+    onSuccess: () => {
+      toast.success("Vendor assigned successfully");
+      setIsOpen(false);
+    },
+    onError: () => {
+      toast.error("Failed to assign vendor");
+    },
   });
 
   const { data: vendorsList, isLoading } = useQuery({
@@ -63,9 +71,7 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
       if (!value || !valueLabel) {
         return;
       }
-      console.log(value);
 
-      console.log(value, valueLabel);
       setVendorInfo((prev) => ({
         ...prev,
         id: value,
@@ -77,7 +83,6 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
 
   const handleAssign = () => {
     if (!row.productId || !params.id) return;
-    console.log(row);
 
     mutate({
       purchase_request_id: Number(params?.id),
@@ -89,7 +94,6 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
       })),
     });
   };
-  console.log(row);
 
   const vendorsOptions = useMemo(
     () => transformSelectOptions(vendorsList, "id", "name"),
@@ -97,7 +101,7 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
   );
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
       <DialogTrigger asChild>
         <Button variant="link" className="text-zinc-950 font-semibold">
           {vendors.length > 0 ? "Edit" : "Assign "} Vendor
