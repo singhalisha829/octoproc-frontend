@@ -10,18 +10,30 @@ import {
 import InputLabelGroup from "@/components/ui/InputLabelGroup";
 import { GeneratePurchaseOrderDetails } from "@/interfaces/PurchaseOrder";
 import { QuotationItem } from "@/interfaces/PurchaseRequest";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { DatePicker } from "../ui/DatePicker";
 import { toast } from "sonner";
+import { ControlledComboBox } from "../ui/ControlledComboBox";
+import SelectWithLabel from "../ui/SelectWithLabel";
+import { Label } from "../ui/label";
+import { enterpriseQueries } from "@/react-query/enterpriseQueries";
+import { getWarehouses } from "@/api/enterprise";
+import { transformSelectOptions } from "@/lib/utils";
 
 type Props = {
   onSuccess?: () => void;
   vendorQuotationId: number;
   items?: QuotationItem[];
+  enterpriseId: number;
 };
 
-const GeneratePoModal = ({ onSuccess, vendorQuotationId, items }: Props) => {
+const GeneratePoModal = ({
+  onSuccess,
+  vendorQuotationId,
+  items,
+  enterpriseId,
+}: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [poDetails, setPoDetails] = useState<GeneratePurchaseOrderDetails>({
     vendor_quotation_id: vendorQuotationId,
@@ -31,6 +43,14 @@ const GeneratePoModal = ({ onSuccess, vendorQuotationId, items }: Props) => {
     shipping_cost: 0.0,
     payment_terms: "",
     notes: "",
+  });
+
+  const { data: warehouses } = useQuery({
+    queryKey: [enterpriseQueries.warehouse.getWarehouses.key],
+    queryFn: () =>
+      getWarehouses({
+        enterprise_client_id: 3,
+      }),
   });
 
   const { mutate, isPending } = useMutation({
@@ -59,12 +79,13 @@ const GeneratePoModal = ({ onSuccess, vendorQuotationId, items }: Props) => {
         placeholder: "Select date",
       },
       {
-        key: "shipping_address",
-        name: "Shipping Address",
-        id: "shippingAddress",
-        type: "input",
-        inputType: "text",
-        placeholder: "Enter shipping address",
+        key: "warehouse",
+        name: "Warehouse",
+        id: "warehouse",
+        type: "dropdown",
+        inputType: "select",
+        placeholder: "Select Warehouse",
+        options: transformSelectOptions(warehouses || [], "id", "name"),
       },
       {
         key: "billing_address",
@@ -128,41 +149,72 @@ const GeneratePoModal = ({ onSuccess, vendorQuotationId, items }: Props) => {
           Purchase Order Details
         </DialogTitle>
         <div className="grid gap-3">
-          {INPUTS.map(({ id, name, type, inputType, placeholder, key }) => {
-            if (inputType === "date") {
+          {INPUTS.map(
+            ({ id, name, type, inputType, placeholder, key, options }) => {
+              if (inputType === "select") {
+                return (
+                  <SelectWithLabel
+                    key={id}
+                    id={id}
+                    className="max-w-full"
+                    labelText={name}
+                    searchPlaceholder={`Search ${name}`}
+                    placeholder={placeholder}
+                    emptyLabel={`No ${name} found`}
+                    options={options || []}
+                    labelKey="label"
+                    valueKey="value"
+                    onSelect={(option) => {
+                      setPoDetails((prev) => ({
+                        ...prev,
+                        shipping_address: option ? option.value : "",
+                      }));
+                    }}
+                    value={poDetails.shipping_address}
+                  />
+                );
+              }
+              if (inputType === "date") {
+                return (
+                  <div key={id} className="grid gap-2">
+                    <Label htmlFor={id}>
+                      {name}
+                      <span className="text-red-500">*</span>
+                    </Label>
+                    <DatePicker
+                      onChange={(value) =>
+                        setPoDetails((prev) => ({
+                          ...prev,
+                          expected_delivery_date: value,
+                        }))
+                      }
+                      value={new Date(poDetails.expected_delivery_date)}
+                    />
+                  </div>
+                );
+              }
               return (
-                <DatePicker
+                <InputLabelGroup
+                  required
                   key={id}
-                  onChange={(value) =>
+                  value={poDetails[key as "notes"]}
+                  onChange={(e) => {
                     setPoDetails((prev) => ({
                       ...prev,
-                      expected_delivery_date: value,
-                    }))
-                  }
-                  value={new Date(poDetails.expected_delivery_date)}
+                      [key]:
+                        inputType === "number"
+                          ? parseFloat(e.target.value) || 0
+                          : e.target.value,
+                    }));
+                  }}
+                  id={id}
+                  labelText={name}
+                  type={inputType}
+                  placeholder={placeholder}
                 />
               );
             }
-            return (
-              <InputLabelGroup
-                key={id}
-                value={poDetails[key as "notes"]}
-                onChange={(e) => {
-                  setPoDetails((prev) => ({
-                    ...prev,
-                    [key]:
-                      inputType === "number"
-                        ? parseFloat(e.target.value) || 0
-                        : e.target.value,
-                  }));
-                }}
-                id={id}
-                labelText={name}
-                type={inputType}
-                placeholder={placeholder}
-              />
-            );
-          })}
+          )}
           <div className="grid grid-cols-2 gap-4">
             <DialogClose asChild>
               <Button type="button" variant={"secondary"}>

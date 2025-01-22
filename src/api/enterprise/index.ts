@@ -7,14 +7,14 @@ export const getClients = async (): Promise<Client[]> => {
     enterpriseQueries.client.getClients.endpoint,
     { country_ids: [], state_id: [], city_id: [], pan_number: "" }
   );
-  return data.data || null;
+  return data?.data || null;
 };
 
 export const getClient = async (id: string): Promise<ClientDetailApiResponse> => {
   const { data } = await axiosInstance.get(
     enterpriseQueries.client.getClient.endpoint + id
   );
-  return data.data || null;
+  return data?.data || null;
 };
 export const addClient = async (data: ClientDetails): Promise<ClientDetails> => {
   return await axiosInstance.post(
@@ -32,4 +32,20 @@ export const updateClient = async (data: ClientDetails): Promise<ClientDetails> 
 
 export const addWarehouse = async (data: Warehouse) => {
   return await axiosInstance.post(enterpriseQueries.warehouse.addWarehouse.endpoint, data)
+}
+export const getWarehouses = async ({
+  enterprise_client_id,
+  name = "",
+  address = "",
+  city_ids = [],
+  state_ids = []
+}: {
+  enterprise_client_id: number
+  name?: string
+  address?: string
+  city_ids?: number[]
+  state_ids?: number[]
+}): Promise<Warehouse[]> => {
+  const { data } = await axiosInstance.post(enterpriseQueries.warehouse.getWarehouses.endpoint, { enterprise_client_id, name, address, city_ids, state_ids })
+  return data?.data || null
 }

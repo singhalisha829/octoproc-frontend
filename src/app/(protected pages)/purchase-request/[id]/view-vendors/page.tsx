@@ -157,9 +157,10 @@ const ViewVendorsPage = () => {
                 {vendorAssignment.status === "QUOTATION_APPROVED" && (
                   <GeneratePoModal
                     onSuccess={() => {
-                      refetch()
+                      refetch();
                     }}
                     vendorQuotationId={approvedQuotation?.id as number}
+                    enterpriseId={1}
                     items={approvedQuotation?.items}
                   />
                 )}
