@@ -16,7 +16,7 @@ import { DatePicker } from "../ui/DatePicker";
 import { toast } from "sonner";
 
 type Props = {
-  onSuccess?: (po: GeneratePurchaseOrderDetails) => void;
+  onSuccess?: () => void;
   vendorQuotationId: number;
   items?: QuotationItem[];
 };
@@ -37,15 +37,15 @@ const GeneratePoModal = ({ onSuccess, vendorQuotationId, items }: Props) => {
     mutationFn: createPurchaseOrder,
     onSuccess: (response) => {
       if (onSuccess) {
-        onSuccess(response.data);
+        onSuccess();
       }
 
       setIsOpen(false);
       toast.success("Purchase Order create successfully");
     },
-    onError:()=>{
-      toast.error("Failed to create purchase order")
-    }
+    onError: () => {
+      toast.error("Failed to create purchase order");
+    },
   });
 
   const INPUTS = useMemo(
