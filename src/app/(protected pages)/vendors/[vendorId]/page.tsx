@@ -28,15 +28,11 @@ const VendorDetailsPage = () => {
   const [addedProducts, setAddedProducts] = useState<Item[]>([]);
   const [deletedProducts, setDeletedProducts] = useState<Item[]>([]);
 
-  // const { data: vendor, isLoading } = useQuery({
-  //   queryKey: [masterApiQuery.vendor.getVendor.Key],
-  //   queryFn: () => getVendor(params.vendorId),
-  //   enabled: !!params.vendorId,
-  // });
-
-  const vendor = dummyVendors.find(
-    (v) => v.id === Number(params.vendorId || 1)
-  );
+  const { data: vendor, isLoading } = useQuery({
+    queryKey: [masterApiQuery.vendor.getVendor.Key],
+    queryFn: () => getVendor(params.vendorId),
+    enabled: !!params.vendorId,
+  });
 
   const { data: catalogue } = useQuery({
     queryKey: [masterApiQuery.vendor.getVendorCatalogue.Key],
