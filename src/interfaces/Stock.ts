@@ -20,6 +20,19 @@ export type Item = {
   assigned_quantity?: number
 };
 
+
+
+export type StockIn = {
+  client_id: number | null
+  warehouse_id?: number | null
+  remark: string
+  request_context_id?: number | null
+  request_context_type: string
+  delivery_tracking_number: string
+  delivery_challan_file_urls: Array<string>
+  invoice_file_urls: Array<string>
+  items: Item[];
+};
 export type Stock = {
   invoiceNumber: string;
   vendor: string;
