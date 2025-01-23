@@ -67,6 +67,20 @@ export const assignVendorColumns: ColumnDef<Item>[] = [
     ),
   },
   {
+    accessorKey: "assignedquantity",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title=" AssignedQuantity" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell
+        row={row}
+        title={`${row.original?.assigned_quantity || 0}/${
+          row.original.quantity || 0
+        }`}
+      />
+    ),
+  },
+  {
     id: "actions",
     enableHiding: false,
 
