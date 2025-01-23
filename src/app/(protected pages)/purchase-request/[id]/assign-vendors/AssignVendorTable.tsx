@@ -79,9 +79,9 @@ export default function AssignVendorTable({
                             {/* <p>Contact: {vendor.name}</p> */}
                             <p>Quantity Assigned: {assignment.quantity}</p>
                           </div>
-                          <Button size={"icon"} variant={"outline"}>
+                          {/* <Button size={"icon"} variant={"outline"}>
                             <EllipsisVertical />
-                          </Button>
+                          </Button> */}
                         </div>
                       ))
                     ) : (
