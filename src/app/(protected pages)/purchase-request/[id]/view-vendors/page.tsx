@@ -3,7 +3,7 @@ import {
   acceptQuotation,
   getVendorsAssignments,
   rejectQuotation,
-  requestQuotation
+  requestQuotation,
 } from "@/api/purchaseRequest";
 import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
@@ -160,7 +160,7 @@ const ViewVendorsPage = () => {
                       refetch();
                     }}
                     vendorQuotationId={approvedQuotation?.id as number}
-                    enterpriseId={1}
+                    enterpriseId={vendorAssignment.enterprise_client_id}
                     items={approvedQuotation?.items}
                   />
                 )}

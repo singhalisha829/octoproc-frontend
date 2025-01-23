@@ -76,6 +76,7 @@ export interface VendorAssignment {
   created_at: string;
   updated_at: string;
   is_deleted: boolean;
+  enterprise_client_id: number
   vendor: Vendor;
   items: VendorAssigmentItem[];
   quotations: Array<Quotation>;

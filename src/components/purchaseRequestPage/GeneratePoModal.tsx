@@ -46,11 +46,12 @@ const GeneratePoModal = ({
   });
 
   const { data: warehouses } = useQuery({
-    queryKey: [enterpriseQueries.warehouse.getWarehouses.key],
+    queryKey: [enterpriseQueries.warehouse.getWarehouses.key, enterpriseId],
     queryFn: () =>
       getWarehouses({
-        enterprise_client_id: 3,
+        enterprise_client_id: enterpriseId,
       }),
+    enabled: !!enterpriseId,
   });
 
   const { mutate, isPending } = useMutation({

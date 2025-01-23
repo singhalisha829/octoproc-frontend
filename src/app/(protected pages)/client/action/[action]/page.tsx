@@ -292,6 +292,8 @@ const AddOrEditClient = () => {
   const isEditMode = action === "edit" && !!id;
   const isPending = addClientMutation.isPending || editClientMutation.isPending;
 
+  console.log(client);
+
   return (
     <>
       <Header title="Add Client" description="" />
@@ -395,7 +397,7 @@ const AddOrEditClient = () => {
             ))}
           </div>
         )}
-        {action !== "add" && !client?.client && (
+        {action !== "add" && client?.client && (
           <>
             <div className="flex items-center justify-between">
               <p className="text-xl leading-8 font-bold text-primary underline">
@@ -452,7 +454,7 @@ const AddOrEditClient = () => {
           </>
         )}
 
-        {action !== "view" && (
+        {action !== "view" && !isEditMode && (
           <Button
             isLoading={isPending}
             type="submit"
