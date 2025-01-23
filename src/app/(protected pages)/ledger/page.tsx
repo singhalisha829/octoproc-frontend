@@ -1,4 +1,7 @@
 "use client";
+import { getClients } from "@/api/enterprise";
+import { getLegders } from "@/api/inventory";
+import { ledgerColumns } from "@/app/(protected pages)/ledger/ledger-columns";
 import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
 import { DataTable } from "@/components/table/data-table";
@@ -12,20 +15,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import SelectWithLabel from "@/components/ui/SelectWithLabel";
+import { transformSelectOptions } from "@/lib/utils";
+import { enterpriseQueries } from "@/react-query/enterpriseQueries";
+import { useQuery } from "@tanstack/react-query";
 import { Share } from "lucide-react";
 import { useState } from "react";
-import { ledgerColumns } from "@/app/(protected pages)/ledger/ledger-columns";
-import { Label } from "@/components/ui/label";
-import { DatePicker } from "@/components/ui/DatePicker";
-import { ComboBox } from "@/components/ui/ComboBox";
-import { PARTS, STATUSES, UNITS } from "@/utils/constants";
 
 const LedgerPage = () => {
-  const [filter, setFilter] = useState({
+  const [filter, setFilter] = useState<{
+    type: string;
+    searchKeyword: string;
+    enterprise_client_id: number | null;
+    warehouses: number[];
+  }>({
     type: "all",
     searchKeyword: "",
+    enterprise_client_id: null,
+    warehouses: [],
   });
-  const [isAdding, setIsAdding] = useState(false);
+  // const [isAdding, setIsAdding] = useState(false);
 
   const [ledgers, setLedgers] = useState([
     {
@@ -129,6 +138,30 @@ const LedgerPage = () => {
       createdBy: "johndoe",
     },
   ]);
+
+  const { data } = useQuery({
+    queryKey: [
+      "ledgers",
+      filter.enterprise_client_id,
+      filter.warehouses.length,
+    ],
+    queryFn: () =>
+      getLegders({
+        enterprise_client_id: 1,
+        pageNum: 1,
+        pageSize: 100,
+      }),
+
+    enabled: !!filter.enterprise_client_id,
+  });
+
+  const { data: clients } = useQuery({
+    queryKey: [enterpriseQueries.client.getClients.key],
+    queryFn: () => getClients(),
+  });
+
+  console.log(data);
+
   return (
     <>
       <Header title="Ledger" description="Database for all Ledgers" />
@@ -168,15 +201,33 @@ const LedgerPage = () => {
       <Container className="grid gap-4 ">
         <div className="flex items-center justify-between">
           <p className="font-semibold text-lg">Your Transaction Details</p>
-          <Button
+          <SelectWithLabel
+            value={filter.enterprise_client_id || ""}
+            onSelect={(option) => {
+              setFilter((prev) => ({
+                ...prev,
+                enterprise_client_id: option ? Number(option.value) : null,
+              }));
+            }}
+            id={"client"}
+            className="max-w-full"
+            // labelText={"Client"}
+            searchPlaceholder={`Search Client`}
+            placeholder={"Select Client"}
+            options={transformSelectOptions(clients, "id", "name") || []}
+            emptyLabel={`No Client found`}
+            valueKey="value"
+            labelKey="label"
+          />
+          {/* <Button
             onClick={() => setIsAdding((prev) => !prev)}
             variant={"tertiary"}
           >
             {isAdding ? "Cancel" : "Add"}
-          </Button>
+          </Button> */}
         </div>
 
-        {isAdding && (
+        {/* {isAdding && (
           <div className="p-5 grid gap-3">
             <div className="grid grid-cols-3 gap-5">
               <div className="grid gap-1.5">
@@ -252,7 +303,7 @@ const LedgerPage = () => {
               </Button>
             </div>
           </div>
-        )}
+        )} */}
         <DataTable data={ledgers} columns={ledgerColumns} />
       </Container>
     </>
