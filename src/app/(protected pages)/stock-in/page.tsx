@@ -128,6 +128,7 @@ const StockInPage = () => {
     mutationFn: stockIn,
     onSuccess: () => {
       toast.success("Stock in successfully");
+      router.push("/inventory")
     },
     onError: () => {
       toast.error("Failed to stock in");
