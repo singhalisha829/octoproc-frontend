@@ -6,7 +6,6 @@ import { InventoryRecord } from "@/interfaces/Legder";
 import { ColumnDef } from "@tanstack/react-table";
 import { formatDate } from "date-fns";
 
-
 export const ledgerColumns: ColumnDef<InventoryRecord>[] = [
   {
     accessorKey: "transaction_type",
@@ -40,20 +39,17 @@ export const ledgerColumns: ColumnDef<InventoryRecord>[] = [
     ),
   },
   {
-    accessorKey: "id",
+    accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Product ID" />
+      <DataTableColumnHeader column={column} title="Product Name" />
     ),
     cell: ({ row }) => (
       <DataTableColumnCell
         row={row}
-        badge={
-          <Badge variant={"tertiary"}>{`#${row.original.product.id}`}</Badge>
-        }
+        title={String(row.original?.product?.name)}
       />
     ),
   },
-
   {
     accessorKey: "quantity",
     header: ({ column }) => (
