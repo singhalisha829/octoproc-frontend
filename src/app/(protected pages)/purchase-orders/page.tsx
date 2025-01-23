@@ -44,6 +44,7 @@ const PurchaseRequestPage = () => {
     Terms_and_condition json
     Status [enum]
 */
+
   return (
     <>
       <Header
@@ -93,10 +94,10 @@ const PurchaseRequestPage = () => {
           </div> */}
         </div>
         <DataTable
-          data={dummyPO}
+          data={purchaseOrders || []}
           columns={purchaseOrderColumns}
           onRowClick={(row) => {
-            return `/purchase-orders/${row.original.poNo}`;
+            return `/purchase-orders/${row.original.id}`;
           }}
         />
       </Container>

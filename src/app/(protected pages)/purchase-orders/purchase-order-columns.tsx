@@ -2,59 +2,60 @@
 import { DataTableColumnCell } from "@/components/table/DataTableColumnCell";
 import { DataTableColumnHeader } from "@/components/table/DataTableColumnHeader";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
+import { PurchaseOrder } from "@/interfaces/PurchaseOrder";
 import { ColumnDef } from "@tanstack/react-table";
-import { Pen } from "lucide-react";
-import Link from "next/link";
-
-interface PurchaseOrder {
-  poNo: number;
-  date: string;
-  vendor: string;
-  amount: number;
-  status: string;
-}
+import { formatDate } from "date-fns";
 
 export const purchaseOrderColumns: ColumnDef<PurchaseOrder>[] = [
   {
-    accessorKey: "poNo",
+    accessorKey: "reference_no",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="PO NO." />
+      <DataTableColumnHeader column={column} title="Refernce No." />
     ),
     cell: ({ row }) => (
       <DataTableColumnCell
         row={row}
-        badge={<Badge variant={"tertiary"}>{`#${row.original.poNo}`}</Badge>}
+        badge={
+          <Badge variant={"tertiary"}>{`#${row.original.reference_no}`}</Badge>
+        }
       />
     ),
   },
 
   {
-    accessorKey: "vendor",
+    accessorKey: "vendor_id",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Vendor" />
+      <DataTableColumnHeader column={column} title="Vendor ID" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={row.original.vendor} />
+      <DataTableColumnCell
+        row={row}
+        title={row.original.vendor_id?.toString()}
+      />
     ),
   },
   {
-    accessorKey: "amount",
+    accessorKey: "total_amount",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Amount" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={String(row.original.amount)} />
+      <DataTableColumnCell
+        row={row}
+        title={String(row.original?.total_amount?.toFixed(2))}
+      />
     ),
   },
   {
-    accessorKey: "date",
+    accessorKey: "expected_delivery_date",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date" />
+      <DataTableColumnHeader column={column} title="Delivery Date" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={row.original.date} />
+      <DataTableColumnCell
+        row={row}
+        title={formatDate(new Date(row.original.expected_delivery_date), "yyyy-MM-dd")}
+      />
     ),
   },
   {
@@ -66,47 +67,4 @@ export const purchaseOrderColumns: ColumnDef<PurchaseOrder>[] = [
       <DataTableColumnCell row={row} title={row.original.status} />
     ),
   },
-
-  //   {
-  //     id: "actions",
-  //     enableHiding: false,
-  //     cell: ({ row }) => {
-  //       // const items = row.original.items;
-  //       // let totalItems = 0;
-  //       // let itemsAssigned = 0;
-  //       // items.forEach((item) => (totalItems += item.quantity));
-
-  //       // row.original.vendors.forEach(
-  //       //   (vendor) => (itemsAssigned += vendor.quantity)
-  //       // );
-
-  //       return (
-  //         <div className=" flex items-center justify-end gap-3">
-  //           {/* {itemsAssigned !== totalItems && (
-  //             <AssignVendor vendors={row.original.vendors} />
-  //           )}
-  //           {itemsAssigned === totalItems && (
-  //             <Button
-  //               variant="link"
-  //               className="text-zinc-950 font-semibold"
-  //               asChild
-  //             >
-  //               <Link href={`/purchase-request/view-vendors`}>
-  //                 View Vendors <Eye />
-  //               </Link>
-  //             </Button>
-  //           )} */}
-  //           <Button
-  //             asChild
-  //             variant="link"
-  //             className="text-zinc-950 font-semibold"
-  //           >
-  //             <Link href={"/purchase-request/action/edit"}>
-  //               Edit <Pen />
-  //             </Link>
-  //           </Button>
-  //         </div>
-  //       );
-  //     },
-  //   },
 ];
