@@ -147,7 +147,7 @@ const LedgerPage = () => {
     ],
     queryFn: () =>
       getLegders({
-        enterprise_client_id: 1,
+        enterprise_client_id: filter.enterprise_client_id,
         pageNum: 1,
         pageSize: 100,
       }),
