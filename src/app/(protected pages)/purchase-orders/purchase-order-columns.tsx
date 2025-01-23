@@ -23,14 +23,38 @@ export const purchaseOrderColumns: ColumnDef<PurchaseOrder>[] = [
   },
 
   {
-    accessorKey: "vendor_id",
+    accessorKey: "vendor",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Vendor ID" />
+      <DataTableColumnHeader column={column} title="Vendor" />
     ),
     cell: ({ row }) => (
       <DataTableColumnCell
         row={row}
-        title={row.original.vendor_id?.toString()}
+        title={row.original?.vendor?.name}
+      />
+    ),
+  },
+  {
+    accessorKey: "tax_amount",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Tax Amount" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell
+        row={row}
+        title={String(row.original?.tax_amount?.toFixed(2))}
+      />
+    ),
+  },
+  {
+    accessorKey: "shipping_cost",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Shipping Cost" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell
+        row={row}
+        title={String(row.original?.shipping_cost?.toFixed(2))}
       />
     ),
   },
