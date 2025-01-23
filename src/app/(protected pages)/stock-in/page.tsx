@@ -1,5 +1,6 @@
 "use client";
 import { getClients, getWarehouses } from "@/api/enterprise";
+import { stockIn } from "@/api/inventory";
 import {
   getPurchaseOrder,
   getPurchaseOrders,
@@ -17,9 +18,10 @@ import { transformSelectOptions } from "@/lib/utils";
 import { enterpriseQueries } from "@/react-query/enterpriseQueries";
 import { masterApiQuery } from "@/react-query/masterApiQueries";
 import { purchaseOrderQueries } from "@/react-query/purchaseOrderQueries";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const HEADERS = ["Part ID", "Part Name", "Unit Price", "Quantity"];
 
@@ -127,6 +129,29 @@ const StockInPage = () => {
       ...prev,
       items: prev.items.filter((i) => i.productId !== item.productId),
     }));
+  };
+
+  const { mutate, isPending: isStockingIn } = useMutation({
+    mutationFn: stockIn,
+    onSuccess: () => {
+      toast.success("Stock in successfully");
+    },
+    onError: () => {
+      toast.error("Failed to stock in");
+    },
+  });
+
+  const stockInHandler = () => {
+    const { items, ...rest } = stock;
+    mutate({
+      ...rest,
+      items: items.map((item) => ({
+        product_id: item.productId,
+        quantity: item.quantity,
+        remark: "",
+      })),
+      request_type: "stock-in",
+    });
   };
 
   return (
@@ -243,7 +268,11 @@ const StockInPage = () => {
             </Label>
             <MultipleFileUpload
               id={"delivery_challan_file_urls"}
-              contextId={String(stock.request_context_id)}
+              contextId={
+                stock.request_context_id
+                  ? String(stock.request_context_id)
+                  : String(stock.client_id)
+              }
               contextType={stock.request_context_type}
               endpoint={masterApiQuery.file.uploadFle.endpoint}
             />
@@ -281,10 +310,11 @@ const StockInPage = () => {
         </Button>
         <Button
           onClick={() => {
-            router.back();
+            stockInHandler();
           }}
           size={"lg"}
           variant={"tertiary"}
+          isLoading={isStockingIn}
         >
           Save
         </Button>

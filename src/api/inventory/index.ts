@@ -1,6 +1,7 @@
 import { InventoryApiResponse } from "@/interfaces/Inventory"
 import { axiosInstance } from "../axiosInstance"
 import { InventoryRecord } from "@/interfaces/Legder"
+import { StockRequest } from "@/interfaces/Stock"
 
 export const getInventories = async (body: {
     enterprise_client_id: number | null,
@@ -15,7 +16,6 @@ export const getLegders = async ({ pageSize = 100, pageNum = 1, enterprise_clien
 }
 
 
-// const getInventories = async () => {
-//     const { data } = await axiosInstance.get("/inventory/filter")
-//     return data?.data || null
-// }
+export const stockIn = async (body: StockRequest) => {
+    return await axiosInstance.post("/inventory/request/items/add", body)
+}

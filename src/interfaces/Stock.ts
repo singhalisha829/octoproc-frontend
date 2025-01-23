@@ -45,3 +45,23 @@ export type Vendor = {
   id?: null | number;
   quantity: number | null;
 };
+
+
+export interface StockRequestItem {
+  product_id?: number | null | string;
+  quantity: number;
+  remark: string;
+}
+
+export interface StockRequest {
+  request_type: string;
+  items: StockRequestItem[];
+  warehouse_id?: number | null
+  remark: string
+  request_context_id?: number | null
+  request_context_type: string
+  delivery_tracking_number: string
+  delivery_challan_file_urls: Array<string>
+  invoice_file_urls: Array<string>
+
+}
