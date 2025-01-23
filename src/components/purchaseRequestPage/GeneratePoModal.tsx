@@ -121,7 +121,7 @@ const GeneratePoModal = ({
         placeholder: "Enter notes",
       },
     ],
-    []
+    [warehouses]
   );
 
   const submitHandler = () => {
