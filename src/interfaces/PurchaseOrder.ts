@@ -2,7 +2,7 @@ export interface GeneratePurchaseOrderDetails {
 
     vendor_quotation_id: number;
     expected_delivery_date: string;
-    shipping_address?: string | number;
+    warehouse_id?: number;
     billing_address: string;
     shipping_cost: number;
     payment_terms: string;

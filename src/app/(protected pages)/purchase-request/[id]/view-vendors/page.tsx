@@ -3,10 +3,11 @@ import {
   acceptQuotation,
   getVendorsAssignments,
   rejectQuotation,
-  requestQuotation,
+  requestQuotation
 } from "@/api/purchaseRequest";
 import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
+import GeneratePoModal from "@/components/purchaseRequestPage/GeneratePoModal";
 import { DataTable } from "@/components/table/data-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,7 +19,6 @@ import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { quotationRecievedColumns } from "./quotationRecievedColumns";
 import { viewVendorColumns } from "./view-vendor-columns";
-import GeneratePoModal from "@/components/purchaseRequestPage/GeneratePoModal";
 
 const ViewVendorsPage = () => {
   const params = useParams<{

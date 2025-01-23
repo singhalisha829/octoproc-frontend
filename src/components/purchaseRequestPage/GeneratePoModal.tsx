@@ -38,7 +38,7 @@ const GeneratePoModal = ({
   const [poDetails, setPoDetails] = useState<GeneratePurchaseOrderDetails>({
     vendor_quotation_id: vendorQuotationId,
     expected_delivery_date: "",
-    shipping_address: "",
+    warehouse_id: undefined,
     billing_address: "",
     shipping_cost: 0.0,
     payment_terms: "",
@@ -167,10 +167,10 @@ const GeneratePoModal = ({
                     onSelect={(option) => {
                       setPoDetails((prev) => ({
                         ...prev,
-                        shipping_address: option ? option.value : "",
+                        warehouse_id: option ? Number(option.value) : undefined,
                       }));
                     }}
-                    value={poDetails.shipping_address}
+                    value={poDetails.warehouse_id}
                   />
                 );
               }
