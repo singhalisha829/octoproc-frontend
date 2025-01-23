@@ -36,110 +36,7 @@ const LedgerPage = () => {
   });
   // const [isAdding, setIsAdding] = useState(false);
 
-  const [ledgers, setLedgers] = useState([
-    {
-      id: 1,
-      type: "Production Return",
-      partId: "INVC0070135",
-      date: "2024-11-10",
-      quantity: 2000,
-      balanceQuantiy: 1200,
-      documentId: 12,
-      createdBy: "techpix",
-    },
-    {
-      id: 2,
-      type: "Sales Return",
-      partId: "INVC0070136",
-      date: "2024-11-12",
-      quantity: 500,
-      balanceQuantiy: 300,
-      documentId: 13,
-      createdBy: "admin",
-    },
-    {
-      id: 3,
-      type: "Production Return",
-      partId: "INVC0070137",
-      date: "2024-11-15",
-      quantity: 1000,
-      balanceQuantiy: 400,
-      documentId: 14,
-      createdBy: "johndoe",
-    },
-    {
-      id: 4,
-      type: "Sales Return",
-      partId: "INVC0070138",
-      date: "2024-11-18",
-      quantity: 750,
-      balanceQuantiy: 750,
-      documentId: 15,
-      createdBy: "techpix",
-    },
-    {
-      id: 5,
-      type: "Production Return",
-      partId: "INVC0070139",
-      date: "2024-11-20",
-      quantity: 1500,
-      balanceQuantiy: 1000,
-      documentId: 16,
-      createdBy: "admin",
-    },
-    {
-      id: 6,
-      type: "Purchase Return",
-      partId: "INVC0070140",
-      date: "2024-11-22",
-      quantity: 200,
-      balanceQuantiy: 200,
-      documentId: 17,
-      createdBy: "johndoe",
-    },
-    {
-      id: 7,
-      type: "Production Return",
-      partId: "INVC0070141",
-      date: "2024-11-24",
-      quantity: 1200,
-      balanceQuantiy: 600,
-      documentId: 18,
-      createdBy: "techpix",
-    },
-    {
-      id: 8,
-      type: "Sales Return",
-      partId: "INVC0070142",
-      date: "2024-11-26",
-      quantity: 800,
-      balanceQuantiy: 400,
-      documentId: 19,
-      createdBy: "admin",
-    },
-    {
-      id: 9,
-      type: "Production Return",
-      partId: "INVC0070143",
-      date: "2024-11-28",
-      quantity: 950,
-      balanceQuantiy: 450,
-      documentId: 20,
-      createdBy: "techpix",
-    },
-    {
-      id: 10,
-      type: "Purchase Return",
-      partId: "INVC0070144",
-      date: "2024-11-30",
-      quantity: 300,
-      balanceQuantiy: 100,
-      documentId: 21,
-      createdBy: "johndoe",
-    },
-  ]);
-
-  const { data } = useQuery({
+  const { data: ledgers } = useQuery({
     queryKey: [
       "ledgers",
       filter.enterprise_client_id,
@@ -159,8 +56,6 @@ const LedgerPage = () => {
     queryKey: [enterpriseQueries.client.getClients.key],
     queryFn: () => getClients(),
   });
-
-  console.log(data);
 
   return (
     <>
@@ -304,7 +199,7 @@ const LedgerPage = () => {
             </div>
           </div>
         )} */}
-        <DataTable data={ledgers} columns={ledgerColumns} />
+        <DataTable data={ledgers || []} columns={ledgerColumns} />
       </Container>
     </>
   );

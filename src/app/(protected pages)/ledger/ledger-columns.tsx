@@ -2,22 +2,24 @@
 import { DataTableColumnCell } from "@/components/table/DataTableColumnCell";
 import { DataTableColumnHeader } from "@/components/table/DataTableColumnHeader";
 import { Badge } from "@/components/ui/badge";
+import { InventoryRecord } from "@/interfaces/Legder";
 import { ColumnDef } from "@tanstack/react-table";
+import { formatDate } from "date-fns";
 
-export type Transaction = {
-  id: string | number;
-  type: string;
-  partId: string | number;
-  date: string;
-  quantity: number;
-  balanceQuantiy: number;
-  documentId: number;
-  createdBy: string;
-};
+// export type Transaction = {
+//   id: string | number;
+//   type: string;
+//   partId: string | number;
+//   date: string;
+//   quantity: number;
+//   balanceQuantiy: number;
+//   documentId: number;
+//   createdBy: string;
+// };
 
-export const ledgerColumns: ColumnDef<Transaction>[] = [
+export const ledgerColumns: ColumnDef<InventoryRecord>[] = [
   {
-    accessorKey: "type",
+    accessorKey: "transaction_type",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="TRANSACTION TYPE" />
     ),
@@ -25,32 +27,38 @@ export const ledgerColumns: ColumnDef<Transaction>[] = [
       <DataTableColumnCell
         row={row}
         badge={
-          <Badge variant={"secondary"}>{`${row.original.type as string}`}</Badge>
+          <Badge variant={"secondary"}>{`${
+            row.original.entry.transaction_type as string
+          }`}</Badge>
         }
       />
     ),
   },
   {
-    accessorKey: "date",
+    accessorKey: "created_at",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="DATE" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={row.original.date} />
+      <DataTableColumnCell
+        row={row}
+        title={formatDate(
+          new Date(row.original.entry.created_at),
+          "yyyy-MM-dd"
+        )}
+      />
     ),
   },
   {
-    accessorKey: "partId",
+    accessorKey: "id",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="PART ID" />
+      <DataTableColumnHeader column={column} title="Product ID" />
     ),
     cell: ({ row }) => (
       <DataTableColumnCell
         row={row}
         badge={
-          <Badge variant={"tertiary"}>{`#${
-            row.original.partId as string
-          }`}</Badge>
+          <Badge variant={"tertiary"}>{`#${row.original.product.id}`}</Badge>
         }
       />
     ),
@@ -62,37 +70,53 @@ export const ledgerColumns: ColumnDef<Transaction>[] = [
       <DataTableColumnHeader column={column} title="QUANTITY" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={String(row.original.quantity)} />
-    ),
-  },
-  {
-    accessorKey: "balanceQuantiy",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="BALANCE QUANTITY" />
-    ),
-    cell: ({ row }) => (
       <DataTableColumnCell
         row={row}
-        title={String(row.original.balanceQuantiy)}
+        title={String(row.original.entry.quantity)}
       />
     ),
   },
   {
-    accessorKey: "documentId",
+    accessorKey: "starting_balance",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="DOCUMENT ID" />
+      <DataTableColumnHeader column={column} title="STARTING BALANCE" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={String(row.original.documentId)} />
+      <DataTableColumnCell
+        row={row}
+        title={String(row.original.entry.starting_balance)}
+      />
     ),
   },
   {
-    accessorKey: "createdBy",
+    accessorKey: "closing_balance",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="CREATED BY" />
+      <DataTableColumnHeader column={column} title="CLOSING BALANCE" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={String(row.original.createdBy)} />
+      <DataTableColumnCell
+        row={row}
+        title={String(row.original.entry.closing_balance)}
+      />
     ),
   },
+
+  // {
+  //   accessorKey: "transaction_id",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="DOCUMENT ID" />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <DataTableColumnCell row={row} title={String(row.original.entry.transaction_id)} />
+  //   ),
+  // },
+  // {
+  //   accessorKey: "createdBy",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="CREATED BY" />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <DataTableColumnCell row={row} title={String(row.original.entry.)} />
+  //   ),
+  // },
 ];

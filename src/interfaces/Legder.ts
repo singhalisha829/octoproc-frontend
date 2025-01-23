@@ -4,6 +4,7 @@ interface InventoryEntry {
     inventory_item_id: number;
     quantity: number;
     starting_balance: number;
+    created_at: string
     closing_balance: number;
     transaction_type: string;
     transaction_id: number;
@@ -41,7 +42,7 @@ interface Product {
     updated_at: string;
 }
 
-interface UnitOfMeasure {
+export interface UnitOfMeasure {
     name: string;
     symbol: string;
     type: string;
@@ -50,7 +51,7 @@ interface UnitOfMeasure {
     is_deleted: boolean;
 }
 
-interface InventoryRecord {
+export interface InventoryRecord {
     entry: InventoryEntry;
     transaction: Transaction;
     product: Product;
