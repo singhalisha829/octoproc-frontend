@@ -83,7 +83,7 @@ const PurchaseRequestPage = () => {
           data={data || []}
           columns={purchaseRequestColumns}
           onRowClick={(row) => {
-            return `/purchase-request/${row.original.id}`;
+            return `/purchase-request/${row.original.id}/assign-vendors`;
           }}
         />
       </Container>
