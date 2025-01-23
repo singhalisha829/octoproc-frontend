@@ -1,6 +1,6 @@
 import { purchaseOrderQueries } from "@/react-query/purchaseOrderQueries";
 import { axiosInstance } from "../axiosInstance";
-import { GeneratePurchaseOrderDetails } from "@/interfaces/PurchaseOrder";
+import { GeneratePurchaseOrderDetails, PurchaseOrderDetails } from "@/interfaces/PurchaseOrder";
 
 export const getPurchaseOrders = async (filters = {}) => {
   const { data } = await axiosInstance.post(
@@ -9,12 +9,14 @@ export const getPurchaseOrders = async (filters = {}) => {
   );
   return data.data || null;
 };
-export const getPurchaseOrder = async (id: number) => {
+
+export const getPurchaseOrder = async (id: number): Promise<PurchaseOrderDetails> => {
   const { data } = await axiosInstance.get(
-    purchaseOrderQueries.getPurchaseOrders.endpoint + id
+    purchaseOrderQueries.getPurchaseOrder.endpoint + id
   );
   return data.data || null;
 };
+
 export const createPurchaseOrder = async (body: GeneratePurchaseOrderDetails) => {
   const { data } = await axiosInstance.post(
     purchaseOrderQueries.createPurchaseOrder.endpoint,
