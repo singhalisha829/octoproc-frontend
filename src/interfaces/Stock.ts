@@ -58,7 +58,7 @@ export interface StockRequest {
   items: StockRequestItem[];
   warehouse_id?: number | null
   remark: string
-  request_context_id?: number | null
+  request_context_id?: string | null
   request_context_type: string
   delivery_tracking_number: string
   delivery_challan_file_urls: Array<string>

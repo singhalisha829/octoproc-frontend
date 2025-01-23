@@ -36,14 +36,7 @@ const StockInPage = () => {
     request_context_type: "client",
     invoice_file_urls: [],
     remark: "",
-    items: [
-      {
-        productId: 1,
-        productName: "test",
-        quantity: 10,
-        unitPrice: 10,
-      },
-    ],
+    items: [],
   });
 
   // if po selected show the po quantity column.
@@ -142,7 +135,7 @@ const StockInPage = () => {
   });
 
   const stockInHandler = () => {
-    const { items, ...rest } = stock;
+    const { request_context_id, items, ...rest } = stock;
     mutate({
       ...rest,
       items: items.map((item) => ({
@@ -151,6 +144,7 @@ const StockInPage = () => {
         remark: "",
       })),
       request_type: "stock-in",
+      request_context_id: String(request_context_id),
     });
   };
 
