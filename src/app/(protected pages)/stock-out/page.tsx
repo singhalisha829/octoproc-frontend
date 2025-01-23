@@ -49,7 +49,7 @@ const StockOutPage = () => {
             <Label htmlFor="Date" className="font-semibold text-gray-700">
               Date:
             </Label>
-            <DatePicker />
+            <DatePicker value={new Date()} onChange={() => {}} />
           </div>
         </div>
         <StockTable

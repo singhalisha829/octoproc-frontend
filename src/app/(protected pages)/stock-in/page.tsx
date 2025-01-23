@@ -63,7 +63,7 @@ const StockInPage = () => {
             <Label htmlFor="Date" className="font-semibold text-gray-700">
               Date:
             </Label>
-            <DatePicker />
+            <DatePicker value={new Date()} onChange={() => {}} />
           </div>
           <div className="grid gap-1.5">
             <Label htmlFor="Date" className="font-semibold text-gray-700">
