@@ -9,13 +9,11 @@ import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
 import StockTable from "@/components/StockPagesComponents/StockTable";
 import { Button } from "@/components/ui/button";
-import { Product } from "@/interfaces/Product";
 import { Item } from "@/interfaces/Stock";
 import { masterApiQuery } from "@/react-query/masterApiQueries";
-import { dummyVendors } from "@/utils/constants";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 // const convertProductToItem = (products: Product[]): Item[] => {
@@ -34,11 +32,30 @@ const VendorDetailsPage = () => {
     enabled: !!params.vendorId,
   });
 
-  const { data: catalogue } = useQuery({
+  const {
+    data: catalogue,
+    isError: catalogueError,
+    isLoading: isCatalogueLoading,
+  } = useQuery({
     queryKey: [masterApiQuery.vendor.getVendorCatalogue.Key],
     queryFn: () => getVendorCatalogue(params.vendorId),
     enabled: !!params.vendorId,
   });
+
+  useEffect(() => {
+    if (isCatalogueLoading) return;
+    if (catalogueError) return;
+    setAddedProducts(
+      catalogue?.items.map((item) => ({
+        productId: item.id,
+        productName: item.name,
+        quantity: 0,
+        uom_id: item.uom_id,
+        unitPrice: 0,
+        quantityUnit: "",
+      })) || []
+    );
+  }, [catalogue, catalogueError, isCatalogueLoading]);
 
   const { mutate: addItems, isPending: isAddingItems } = useMutation({
     mutationFn: (productIds: Array<number | string>) =>
@@ -82,19 +99,18 @@ const VendorDetailsPage = () => {
   );
 
   const handleSave = () => {
-    if (addedProducts.length > 0) {
-      const addedProductsId = addedProducts
-        .filter((product) => product.productId)
-        .map((product) => product?.productId || 0);
-      addItems(addedProductsId);
-    }
-
     if (deletedProducts.length > 0) {
       //todo: check with currect catalogue
       const deletedProductsId = deletedProducts
         .filter((product) => product.productId)
         .map((product) => product?.productId || 0);
       removeItems(deletedProductsId);
+    }
+    if (addedProducts.length > 0) {
+      const addedProductsId = addedProducts
+        .filter((product) => product.productId)
+        .map((product) => product?.productId || 0);
+      addItems(addedProductsId);
     }
   };
 
