@@ -2,17 +2,10 @@
 import { DataTableColumnCell } from "@/components/table/DataTableColumnCell";
 import { DataTableColumnHeader } from "@/components/table/DataTableColumnHeader";
 import { Badge } from "@/components/ui/badge";
+import { InventoryApiResponse, InventoryItem } from "@/interfaces/Inventory";
 import { ColumnDef } from "@tanstack/react-table";
 
-export type Stock = {
-  id: string | number;
-  type: string;
-  name: string;
-  description: string;
-  quantity: number | string;
-};
-
-export const stocksColumns: ColumnDef<Stock>[] = [
+export const inventoryColumns: ColumnDef<InventoryItem>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -21,31 +14,26 @@ export const stocksColumns: ColumnDef<Stock>[] = [
     cell: ({ row }) => (
       <DataTableColumnCell
         row={row}
-        badge={
-          <Badge variant={"tertiary"}>{`#${row.original.id as string}`}</Badge>
-        }
+        badge={<Badge variant={"tertiary"}>{`#${row.original.id}`}</Badge>}
       />
     ),
   },
-  {
-    accessorKey: "type",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="PART TYPE" />
-    ),
-    cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={`${row.original.type as string}`} />
-    ),
-  },
+  // {
+  //   accessorKey: "type",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Product TYPE" />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <DataTableColumnCell row={row} title={`${row.original.product.}`} />
+  //   ),
+  // },
   {
     accessorKey: "name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="NAME" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell
-        row={row}
-        title={row.original.name}
-      />
+      <DataTableColumnCell row={row} title={row.original.product.name} />
     ),
   },
   {
@@ -54,10 +42,7 @@ export const stocksColumns: ColumnDef<Stock>[] = [
       <DataTableColumnHeader column={column} title="DESCRIPTION" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell
-        row={row}
-        title={row.original.description}
-      />
+      <DataTableColumnCell row={row} title={row.original.product.description} />
     ),
   },
   {

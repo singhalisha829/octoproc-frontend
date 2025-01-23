@@ -40,7 +40,7 @@ export const getWarehouses = async ({
   city_ids = [],
   state_ids = []
 }: {
-  enterprise_client_id: number
+  enterprise_client_id: number | null
   name?: string
   address?: string
   city_ids?: number[]

@@ -12,9 +12,15 @@ import {
 import { Logs, Share } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
-import { stocksColumns } from "@/app/(protected pages)/inventory/table-columns";
+import { inventoryColumns } from "@/app/(protected pages)/inventory/table-columns";
 import Header from "@/components/globals/Header";
 import Container from "@/components/globals/Container";
+import { useQuery } from "@tanstack/react-query";
+import { getInventories } from "@/api/inventory";
+import SelectWithLabel from "@/components/ui/SelectWithLabel";
+import { enterpriseQueries } from "@/react-query/enterpriseQueries";
+import { getClients, getWarehouses } from "@/api/enterprise";
+import { transformSelectOptions } from "@/lib/utils";
 
 const stocks = [
   {
@@ -90,10 +96,46 @@ const stocks = [
 ];
 
 const DashboardPage = () => {
-  const [filter, setFilter] = useState({
+  const [filter, setFilter] = useState<{
+    type: string;
+    searchKeyword: string;
+    enterprise_client_id: number | null;
+    warehouses: number[];
+  }>({
     type: "all",
     searchKeyword: "",
+    enterprise_client_id: null,
+    warehouses: [],
   });
+
+  const { data: inventories } = useQuery({
+    queryKey: [
+      "inventories",
+      filter.enterprise_client_id,
+      filter.warehouses?.length,
+    ],
+    queryFn: () =>
+      getInventories({ enterprise_client_id: filter.enterprise_client_id }),
+    enabled: !!filter.enterprise_client_id,
+  });
+  const { data: clients } = useQuery({
+    queryKey: [enterpriseQueries.client.getClients.key],
+    queryFn: () => getClients(),
+  });
+  const { data: warehouses } = useQuery({
+    queryKey: [enterpriseQueries.warehouse.getWarehouses.key],
+    queryFn: () =>
+      getWarehouses({
+        enterprise_client_id: filter.enterprise_client_id,
+      }),
+    enabled: !!filter.enterprise_client_id,
+  });
+
+  const items = inventories
+    ?.map((inventory) => inventory.items)
+    .flatMap((item) => item);
+
+  console.log(items);
 
   return (
     <>
@@ -136,6 +178,42 @@ const DashboardPage = () => {
         <div className="flex items-center justify-between">
           <p className="font-semibold text-lg">Your Available Stocks Report</p>
           <div className="flex items-center gap-2">
+            <SelectWithLabel
+              value={filter.enterprise_client_id || ""}
+              onSelect={(option) => {
+                setFilter((prev) => ({
+                  ...prev,
+                  enterprise_client_id: option ? Number(option.value) : null,
+                }));
+              }}
+              id={"client"}
+              className="max-w-full"
+              // labelText={"Client"}
+              searchPlaceholder={`Search Client`}
+              placeholder={"Select Client"}
+              options={transformSelectOptions(clients, "id", "name") || []}
+              emptyLabel={`No Client found`}
+              valueKey="value"
+              labelKey="label"
+            />
+            {/* <SelectWithLabel
+              value={filter.warehouses[0] || ""}
+              onSelect={(option) => {
+                setFilter((prev) => ({
+                  ...prev,
+                  warehouses: option ? [Number(option.value)] : [],
+                }));
+              }}
+              id={"Warehouse"}
+              className="max-w-full"
+              // labelText={"Client"}
+              searchPlaceholder={`Search Warehouse`}
+              placeholder={"Select Warehouse"}
+              options={transformSelectOptions(warehouses, "id", "name") || []}
+              emptyLabel={`No Warehouse found`}
+              valueKey="value"
+              labelKey="label"
+            /> */}
             <Button className="p-2" variant={"outline"}>
               <Logs size={26} />
             </Button>
@@ -148,7 +226,7 @@ const DashboardPage = () => {
           </div>
         </div>
         {/* give onRowCLick and rediect to clicked item ledger (page to show this)*/}
-        <DataTable data={stocks} columns={stocksColumns} />
+        <DataTable data={items || []} columns={inventoryColumns} />
       </Container>
     </>
   );
