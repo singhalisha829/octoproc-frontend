@@ -1,8 +1,7 @@
 "use client";
 import {
   getVendorsAssignment,
-  getVendorsAssignments,
-  uploadQuotation,
+  uploadQuotation
 } from "@/api/purchaseRequest";
 import SingleFileUpload from "@/components/file-upload/SingleFileUpload";
 import Container from "@/components/globals/Container";
@@ -142,8 +141,8 @@ const UploadQuotationPage = () => {
                 }));
               }}
               endpoint={masterApiQuery.file.uploadFle.endpoint}
-              contextId="PR/ABHE/2425/001"
-              contextType="pr"
+              contextId={vendorAssignment?.pr_reference_no as string}
+              contextType={vendorAssignment?.vendor.id as string}
             />
           </div>
         </div>

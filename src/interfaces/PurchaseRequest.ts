@@ -77,6 +77,7 @@ export interface VendorAssignment {
   updated_at: string;
   is_deleted: boolean;
   enterprise_client_id: number
+  pr_reference_no: string
   vendor: Vendor;
   items: VendorAssigmentItem[];
   quotations: Array<Quotation>;
