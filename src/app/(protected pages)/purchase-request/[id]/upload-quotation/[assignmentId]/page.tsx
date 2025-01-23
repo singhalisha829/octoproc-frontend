@@ -138,7 +138,7 @@ const UploadQuotationPage = () => {
                 }));
               }}
               endpoint={masterApiQuery.file.uploadFle.endpoint}
-              contextId={vendorAssignment?.pr_reference_no as string}
+              contextId={vendorAssignment?.vendor.id as string}
               contextType={"vendor"}
             />
           </div>
