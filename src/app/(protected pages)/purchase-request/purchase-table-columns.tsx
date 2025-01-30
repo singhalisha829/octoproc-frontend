@@ -32,6 +32,16 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
     },
   },
   {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => {
+      const status = row.original.status;
+      return <DataTableColumnCell row={row} title={status || ""} />;
+    },
+  },
+  {
     accessorKey: "enterprise_client",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Client Name" />
