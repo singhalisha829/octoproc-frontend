@@ -28,9 +28,7 @@ export interface PurchaseOrder {
     updated_at: string;
     created_by: number;
     updated_by: number;
-    vendor: {
-        name: string
-    }
+    vendor_name: string;
 }
 
 

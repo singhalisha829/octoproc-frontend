@@ -30,7 +30,7 @@ export const purchaseOrderColumns: ColumnDef<PurchaseOrder>[] = [
     cell: ({ row }) => (
       <DataTableColumnCell
         row={row}
-        title={row.original?.vendor?.name}
+        title={row.original?.vendor_name}
       />
     ),
   },
