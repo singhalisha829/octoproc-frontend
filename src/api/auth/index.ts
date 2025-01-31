@@ -27,7 +27,7 @@ export const getAccessToken = async () => {
     }
 
     const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/iam/auth/token/refresh`,
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}iam/auth/token/refresh`,
 
       {
         headers: {

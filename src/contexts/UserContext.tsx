@@ -25,12 +25,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     const _token =
       LocalStorageService.get<string | null>(ACCESS_TOKEN_KEY) || "";
+      const _refreshToken = LocalStorageService.get<string | null>(REFRESH_TOKEN_KEY);
 
-    const _refreshToken = LocalStorageService.get(REFRESH_TOKEN_KEY);
-    if (!_token || !_refreshToken) {
-      router.push(`/login?redirect=${pathname}`);
+    if (!_token) {
+      if(!_refreshToken){
+        router.push(`/login?redirect=${pathname}`);
+      }
     }
-    setToken(_token);
+    setToken(_token || _refreshToken);
   }, []);
 
   const logout = () => {
