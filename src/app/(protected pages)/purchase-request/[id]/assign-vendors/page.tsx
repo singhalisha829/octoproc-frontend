@@ -37,6 +37,7 @@ const AssignVendors = () => {
     queryFn: () => getItemWiseAssignedVendors(params.id),
     enabled: !!params.id,
   });
+  console.log('itemWiseAssignedVendors', itemWiseAssignedVendors);
 
   const formattedItems = formatItems(
     itemWiseAssignedVendors

@@ -45,7 +45,7 @@ export const quotationRecievedColumns: ColumnDef<
       <DataTableColumnHeader column={column} title="Quantity" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={String(row.original.quantity)} />
+      <DataTableColumnCell row={row} title={`${row.original.quantity} ${row.original.purchase_request_item.product.uom.symbol}`} />
     ),
   },
   {

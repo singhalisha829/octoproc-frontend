@@ -1,3 +1,5 @@
+import { UnitOfMeasure } from "./Legder";
+
 export interface Product {
   id?: number | string;
   name: string;
@@ -8,6 +10,7 @@ export interface Product {
   manufacturer_id: number;
   manufacturer_sku_code: string;
   data: unknown;
+  uom: UnitOfMeasure;
 }
 
 export interface BASE_UNSPSC_HELPER_TYPE {
@@ -37,5 +40,4 @@ export interface Commodity extends BASE_UNSPSC_HELPER_TYPE {
   class_id: number;
   unspsc?: UNSPSC;
 }
-
 // unspsc (segment, family, class, commodity),

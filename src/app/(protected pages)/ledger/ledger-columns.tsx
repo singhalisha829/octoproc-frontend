@@ -58,7 +58,7 @@ export const ledgerColumns: ColumnDef<InventoryRecord>[] = [
     cell: ({ row }) => (
       <DataTableColumnCell
         row={row}
-        title={String(row.original.entry.quantity)}
+        title={`${row.original.entry.quantity} ${row.original.uom.symbol}`}
       />
     ),
   },

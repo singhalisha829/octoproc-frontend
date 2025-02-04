@@ -181,7 +181,7 @@ const UploadQuotationPage = () => {
                   <TableCell className="text-center">
                     {item.purchase_request_item.product.name}
                   </TableCell>
-                  <TableCell className="text-center">{item.quantity}</TableCell>
+                  <TableCell className="text-center">{item.quantity} {item.purchase_request_item.product.uom.symbol}</TableCell>
                   <TableCell className="">
                     <Input
                       value={String(itemValues?.unit_price) || ""}
