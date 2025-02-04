@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Share } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { getPurchaseRequests } from "@/api/purchaseRequest";
 import Container from "@/components/globals/Container";
@@ -19,16 +19,33 @@ import Header from "@/components/globals/Header";
 import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
 import { useQuery } from "@tanstack/react-query";
 import { purchaseRequestColumns } from "./purchase-table-columns";
+import { useClient } from "@/contexts/ClientContext";
 
 const PurchaseRequestPage = () => {
-  const [filter, setFilter] = useState({
+    const { selectedClient } = useClient();
+  const [filter, setFilter] = useState<{
+    type: string;
+    searchKeyword: string;
+    enterprise_client_ids: number[];
+  }>({
     type: "all",
     searchKeyword: "",
+    enterprise_client_ids:selectedClient?[selectedClient]:[]
   });
 
+   useEffect(() => {
+      setFilter((prev) => ({
+        ...prev,
+        enterprise_client_ids: selectedClient?[selectedClient]:[],
+      }));
+    }, [selectedClient]);
+
   const { data } = useQuery({
-    queryKey: [purchaseRequestQueries.purchaseRequest.getPurchaseRequests.key],
-    queryFn: () => getPurchaseRequests(),
+    queryKey: [
+      purchaseRequestQueries.purchaseRequest.getPurchaseRequests.key,
+      filter.enterprise_client_ids
+    ],
+    queryFn: () => getPurchaseRequests({enterprise_client_ids:filter.enterprise_client_ids}),
   });
 
   return (

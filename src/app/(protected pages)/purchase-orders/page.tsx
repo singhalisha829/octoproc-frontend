@@ -10,25 +10,40 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Share } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { getPurchaseOrders } from "@/api/purchaseRequest/purchaseOrder";
 import Container from "@/components/globals/Container";
 import Header from "@/components/globals/Header";
 import { purchaseOrderQueries } from "@/react-query/purchaseOrderQueries";
-import { dummyPO } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import { purchaseOrderColumns } from "./purchase-order-columns";
+import { useClient } from "@/contexts/ClientContext";
 
 const PurchaseRequestPage = () => {
-  const [filter, setFilter] = useState({
+  const { selectedClient } = useClient();
+  const [filter, setFilter] = useState<{
+    type: string;
+    searchKeyword: string;
+    enterprise_client_ids: number[];
+  }>({
     type: "all",
     searchKeyword: "",
+    enterprise_client_ids: selectedClient?[selectedClient]:[]
   });
 
+   useEffect(() => {
+        setFilter((prev) => ({
+          ...prev,
+          enterprise_client_ids: selectedClient?[selectedClient]:[],
+        }));
+      }, [selectedClient]);
+
   const { data: purchaseOrders } = useQuery({
-    queryKey: [purchaseOrderQueries.getPurchaseOrders.key],
-    queryFn: () => getPurchaseOrders({}),
+    queryKey: [purchaseOrderQueries.getPurchaseOrders.key,      
+      filter.enterprise_client_ids
+    ],
+    queryFn: () => getPurchaseOrders({enterprise_client_ids:filter.enterprise_client_ids}),
   });
 
   // p-order table columns

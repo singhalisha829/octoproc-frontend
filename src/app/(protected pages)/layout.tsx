@@ -1,4 +1,5 @@
 import Sidebar from "@/components/globals/Sidebar";
+import { ClientProvider } from "@/contexts/ClientContext";
 import { UserProvider } from "@/contexts/UserContext";
 
 export default function RootLayout({
@@ -8,6 +9,7 @@ export default function RootLayout({
 }>) {
   return (
     <UserProvider>
+      <ClientProvider>
       <div
         style={{
           gridTemplateColumns: "320px 1fr",
@@ -27,6 +29,7 @@ export default function RootLayout({
           </main>
         </div>
       </div>
+      </ClientProvider>
     </UserProvider>
   );
 }

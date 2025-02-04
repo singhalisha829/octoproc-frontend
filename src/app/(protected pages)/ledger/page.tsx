@@ -1,5 +1,4 @@
 "use client";
-import { getClients } from "@/api/enterprise";
 import { getLegders } from "@/api/inventory";
 import { ledgerColumns } from "@/app/(protected pages)/ledger/ledger-columns";
 import Container from "@/components/globals/Container";
@@ -15,14 +14,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import SelectWithLabel from "@/components/ui/SelectWithLabel";
-import { transformSelectOptions } from "@/lib/utils";
-import { enterpriseQueries } from "@/react-query/enterpriseQueries";
 import { useQuery } from "@tanstack/react-query";
 import { Share } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useClient } from "@/contexts/ClientContext";
 
 const LedgerPage = () => {
+  const { selectedClient } = useClient();
   const [filter, setFilter] = useState<{
     type: string;
     searchKeyword: string;
@@ -31,10 +29,17 @@ const LedgerPage = () => {
   }>({
     type: "all",
     searchKeyword: "",
-    enterprise_client_id: null,
+    enterprise_client_id: selectedClient,
     warehouses: [],
   });
   // const [isAdding, setIsAdding] = useState(false);
+
+  useEffect(() => {
+      setFilter((prev) => ({
+        ...prev,
+        enterprise_client_id: selectedClient,
+      }));
+    }, [selectedClient]);
 
   const { data: ledgers } = useQuery({
     queryKey: [
@@ -50,11 +55,6 @@ const LedgerPage = () => {
       }),
 
     enabled: !!filter.enterprise_client_id,
-  });
-
-  const { data: clients } = useQuery({
-    queryKey: [enterpriseQueries.client.getClients.key],
-    queryFn: () => getClients(),
   });
 
   return (
@@ -96,24 +96,6 @@ const LedgerPage = () => {
       <Container className="grid gap-4 ">
         <div className="flex items-center justify-between">
           <p className="font-semibold text-lg">Your Transaction Details</p>
-          <SelectWithLabel
-            value={filter.enterprise_client_id || ""}
-            onSelect={(option) => {
-              setFilter((prev) => ({
-                ...prev,
-                enterprise_client_id: option ? Number(option.value) : null,
-              }));
-            }}
-            id={"client"}
-            className="max-w-full"
-            // labelText={"Client"}
-            searchPlaceholder={`Search Client`}
-            placeholder={"Select Client"}
-            options={transformSelectOptions(clients, "id", "name") || []}
-            emptyLabel={`No Client found`}
-            valueKey="value"
-            labelKey="label"
-          />
           {/* <Button
             onClick={() => setIsAdding((prev) => !prev)}
             variant={"tertiary"}

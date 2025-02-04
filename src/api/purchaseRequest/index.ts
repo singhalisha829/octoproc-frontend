@@ -6,10 +6,12 @@ import { purchaseRequestQueries } from "@/react-query/purchaseRequest";
 import { axiosInstance } from "../axiosInstance";
 import { QuotationInfo } from "@/app/(protected pages)/purchase-request/[id]/upload-quotation/[assignmentId]/page";
 
-export const getPurchaseRequests = async (): Promise<PurchaseRequest[]> => {
+export const getPurchaseRequests = async (body: {
+  enterprise_client_ids: number[]
+}): Promise<PurchaseRequest[]> => {
   const { data } = await axiosInstance.post(
     purchaseRequestQueries.purchaseRequest.getPurchaseRequests.endpoint,
-    {}
+    {...body}
   );
   return data.data || null;
 };
