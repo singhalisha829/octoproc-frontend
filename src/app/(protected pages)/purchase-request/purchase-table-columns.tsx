@@ -4,6 +4,7 @@ import { DataTableColumnHeader } from "@/components/table/DataTableColumnHeader"
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PurchaseRequest } from "@/interfaces/PurchaseRequest";
+import { formatEnumString } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { Pen } from "lucide-react";
 import Link from "next/link";
@@ -38,7 +39,7 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
     ),
     cell: ({ row }) => {
       const status = row.original.status;
-      return <DataTableColumnCell row={row} title={status || ""} />;
+      return <DataTableColumnCell row={row} title={formatEnumString(status) || ""} />;
     },
   },
   {

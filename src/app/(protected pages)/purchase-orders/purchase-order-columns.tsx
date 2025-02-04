@@ -3,6 +3,7 @@ import { DataTableColumnCell } from "@/components/table/DataTableColumnCell";
 import { DataTableColumnHeader } from "@/components/table/DataTableColumnHeader";
 import { Badge } from "@/components/ui/badge";
 import { PurchaseOrder } from "@/interfaces/PurchaseOrder";
+import { formatEnumString } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { formatDate } from "date-fns";
 
@@ -88,7 +89,7 @@ export const purchaseOrderColumns: ColumnDef<PurchaseOrder>[] = [
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={row.original.status} />
+      <DataTableColumnCell row={row} title={formatEnumString(row.original.status)} />
     ),
   },
 ];

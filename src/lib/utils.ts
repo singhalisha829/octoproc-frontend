@@ -69,3 +69,28 @@ export const mergeVendorAssignmentWithQuotations = (
     items: mergedItems,
   };
 };
+
+export function formatEnumString(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/_/g, ' ') // Replace underscores with spaces
+    .replace(/\b\w/g, char => char.toUpperCase()); // Capitalize first letter of each word
+}
+
+export function dateFormat(dateStr: string) {  // Change 'String' to 'string'
+  const monthNames = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+  
+  if (!dateStr || dateStr.trim() === "") return ""; // Handle empty or whitespace-only strings
+
+  const date = new Date(dateStr);  
+  if (isNaN(date.getTime())) return ""; // Handle invalid date strings
+
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = monthNames[date.getMonth()];
+  const year = date.getFullYear().toString();
+
+  return `${day} ${month} ${year}`;
+}
