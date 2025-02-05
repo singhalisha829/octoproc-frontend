@@ -109,6 +109,7 @@ const StockInPage = () => {
         productName: item?.product?.name,
         quantity: item.quantity,
         unitPrice: item.unit_price,
+        unit_symbol:item.product?.uom?.symbol ?? ''
       })),
     }));
   }, [purchaseOrderDetails]);

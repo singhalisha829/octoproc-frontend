@@ -18,7 +18,7 @@ export type Item = {
   assignedVendors?: Vendor[];
   assignments?: Array<AssignedVendorInItemwise>;
   assigned_quantity?: number;
-  unit_symbol: string
+  unit_symbol?: string
 };
 
 

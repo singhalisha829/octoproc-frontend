@@ -51,7 +51,7 @@ export const inventoryColumns: ColumnDef<InventoryItem>[] = [
       <DataTableColumnHeader column={column} title="QUANTITY" />
     ),
     cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={`${row.original.quantity} ${row.original.product.uom.symbol}`} />
+      <DataTableColumnCell row={row} title={`${row.original.quantity} ${row.original.product?.uom?.symbol ?? ''}`} />
     ),
   },
 ];

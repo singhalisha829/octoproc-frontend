@@ -42,7 +42,7 @@ export const formatItems = (items: PurchaseRequestItem[]): Item[] => {
     assignments: item?.assignments || [],
     id: item.id,
     assigned_quantity: item.assigned_quantity,
-    unit_symbol: item.product.uom.symbol
+    unit_symbol: item.product.uom?.symbol
   }));
   if (formattedItems) return formattedItems;
   return [];

@@ -124,6 +124,7 @@ const CreatePurchaseRequestPage = () => {
         uom_id: item.product.uom_id,
         unitPrice: 0,
         quantityUnit: "",
+        unit_symbol: item.product?.uom?.symbol ?? ''
       }))
     );
   }, [purchaseRequest, id]);

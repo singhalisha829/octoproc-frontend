@@ -10,7 +10,7 @@ export interface Product {
   manufacturer_id: number;
   manufacturer_sku_code: string;
   data: unknown;
-  uom: UnitOfMeasure;
+  uom?: UnitOfMeasure;
 }
 
 export interface BASE_UNSPSC_HELPER_TYPE {

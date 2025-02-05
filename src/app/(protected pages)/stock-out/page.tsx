@@ -23,6 +23,7 @@ const StockOutPage = () => {
         productName: "test",
         quantity: 10,
         unitPrice: 10,
+        unit_symbol:''
       },
     ],
   });
