@@ -18,6 +18,7 @@ import React from "react";
 import { toast } from "sonner";
 import { quotationRecievedColumns } from "./quotationRecievedColumns";
 import { viewVendorColumns } from "./view-vendor-columns";
+import ViewVendorQoutationHistory from "@/components/purchaseRequestPage/ViewVendorQoutation";
 
 type Props = {
   vendorAssignment: VendorAssignment;
@@ -84,8 +85,8 @@ const Assigment = ({ vendorAssignment }: Props) => {
 
   const mergedItems = mergeVendorAssignmentWithQuotations(vendorAssignment);
   return (
-    <Container className="grid gap-4 " key={vendorAssignment.id}>
-      <div className="flex items-center justify-between">
+    <>
+      <div className="flex items-center justify-between" key={vendorAssignment.id}>
         <div className="flex items-center gap-2">
           <p className="font-bold text-lg">{vendorAssignment?.vendor?.name}</p>
           <Badge variant={"tertiary"}>
@@ -158,6 +159,8 @@ const Assigment = ({ vendorAssignment }: Props) => {
               items={approvedQuotation?.items}
             />
           )}
+
+          {vendorAssignment.quotations.length > 0 && <ViewVendorQoutationHistory quotations={vendorAssignment.quotations ?? []}/> }
         </div>
       </div>
       <DataTable
@@ -170,7 +173,8 @@ const Assigment = ({ vendorAssignment }: Props) => {
           latestQuotationRecieved ? quotationRecievedColumns : viewVendorColumns
         }
       />
-    </Container>
+      
+    </>
   );
 };
 

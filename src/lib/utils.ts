@@ -48,6 +48,32 @@ export const formatItems = (items: PurchaseRequestItem[]): Item[] => {
   return [];
 };
 
+export const insertQoutationDetailsInVendorAssignment = (assignments: VendorAssignment[]): VendorAssignment[] => {
+  if (!assignments || assignments.length === 0) return [];
+
+  return assignments.map((assignment) => {
+    const quotation = assignment.quotations?.[0]; // Get the first quotation for this assignment
+
+    const itemsWithPrice = assignment.items.map((item) => {
+      const matchedQuotationItem = quotation?.items.find(qItem => qItem.assignment_item_id === item.id);
+      return {
+        ...item,
+        unit_price: matchedQuotationItem ? matchedQuotationItem.unit_price : undefined,
+        tax_amount: matchedQuotationItem ? matchedQuotationItem.tax_amount : undefined,
+        total_value: matchedQuotationItem ? matchedQuotationItem.net_amount : undefined,
+        total_amount: matchedQuotationItem ? matchedQuotationItem.total_amount : undefined,
+        tax_rate: undefined,
+      };
+    });
+
+    return {
+      ...assignment,
+      items: itemsWithPrice,
+    };
+  });
+};
+
+
 
 export const mergeVendorAssignmentWithQuotations = (
   vendorAssignment: VendorAssignment

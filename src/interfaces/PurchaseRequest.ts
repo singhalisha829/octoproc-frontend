@@ -45,6 +45,11 @@ export interface VendorAssigmentItem {
   created_by: number;
   updated_by: number;
   purchase_request_item: PurchaseRequestItem;
+  unit_price?: number | undefined;
+  tax_rate?: number | undefined;
+  total_value?: number | undefined;
+  tax_amount?: number | undefined;
+  total_amount?: number | undefined;
 }
 
 export interface QuotationItem {

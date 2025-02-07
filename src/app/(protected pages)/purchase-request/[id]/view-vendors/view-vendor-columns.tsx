@@ -38,16 +38,6 @@ export const viewVendorColumns: ColumnDef<VendorAssigmentItem>[] = [
     ),
   },
 
-  // {
-  //   accessorKey: "unitPrice",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Unit Price" />
-  //   ),
-  //   cell: ({ row }) => (
-  //     <DataTableColumnCell row={row} title={String(row.original.unitPrice)} />
-  //   ),
-  // },
-
   {
     accessorKey: "quantity",
     header: ({ column }) => (
@@ -55,6 +45,51 @@ export const viewVendorColumns: ColumnDef<VendorAssigmentItem>[] = [
     ),
     cell: ({ row }) => (
       <DataTableColumnCell row={row} title={`${row.original.quantity} ${row.original.purchase_request_item.product?.uom?.symbol}`} />
+    ),
+  },
+  {
+    accessorKey: "unitPrice",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Unit Price" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell row={row} title={`${row.original.unit_price ?? '...'}`} />
+    ),
+  },
+  {
+    accessorKey: "totalValue",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Total Value" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell row={row} title={`${row.original.total_value ?? '...'}`} />
+    ),
+  },
+  {
+    accessorKey: "taxRate",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Tax Rate" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell row={row} title={`${row.original.tax_rate ?? '...'}`} />
+    ),
+  },
+  {
+    accessorKey: "taxAmount",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Tax Amount" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell row={row} title={`${row.original.tax_amount ?? '...'}`} />
+    ),
+  },
+  {
+    accessorKey: "totalAmount",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Total Amount" />
+    ),
+    cell: ({ row }) => (
+      <DataTableColumnCell row={row} title={`${row.original.total_amount ?? '...'}`} />
     ),
   },
 ];

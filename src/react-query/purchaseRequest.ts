@@ -8,6 +8,10 @@ export const purchaseRequestQueries = {
       key: "purchase-request",
       endpoint: "/purchase-request/",
     },
+    getPurchaseOrder: {
+      key: "purchase-order",
+      endpoint: "/purchase-order/",
+    },
     getItemWiseAssignedVendor: {
       key: "getItemWiseAssignedVendor",
       endpoint_start: "/purchase-request/",
