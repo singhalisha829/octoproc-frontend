@@ -134,7 +134,7 @@ const VendorDetailsPage = () => {
         ))}
       </Container>
       <Container className="flex flex-col gap-4 ">
-        <p className="text-2xl font-bold text-primary">Items:</p>
+        <p className="text-2xl font-bold text-primary">Vendor Catalogue:</p>
         <StockTable
           items={addedProducts}
           addItem={(product) => {
