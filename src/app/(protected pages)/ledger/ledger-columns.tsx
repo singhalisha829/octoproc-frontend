@@ -70,7 +70,7 @@ export const ledgerColumns: ColumnDef<InventoryRecord>[] = [
     cell: ({ row }) => (
       <DataTableColumnCell
         row={row}
-        title={String(row.original.entry.starting_balance)}
+        title={`${row.original.entry.starting_balance} ${row.original.uom.symbol}`}
       />
     ),
   },
@@ -82,7 +82,7 @@ export const ledgerColumns: ColumnDef<InventoryRecord>[] = [
     cell: ({ row }) => (
       <DataTableColumnCell
         row={row}
-        title={String(row.original.entry.closing_balance)}
+        title={`${row.original.entry.closing_balance} ${row.original.uom.symbol}`}
       />
     ),
   },
