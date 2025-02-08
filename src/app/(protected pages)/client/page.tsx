@@ -82,6 +82,7 @@ const ClientsListPage = () => {
           </div>
         </div>
 
+        <div className="overflow-x-auto">
         <DataTable
           isLoading={isLoading}
           data={clients || []}
@@ -92,6 +93,7 @@ const ClientsListPage = () => {
             return `/client/action/view?id=${id}`;
           }}
         />
+        </div>
       </Container>
     </>
   );

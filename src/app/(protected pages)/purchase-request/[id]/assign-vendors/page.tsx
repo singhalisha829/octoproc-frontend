@@ -93,12 +93,13 @@ const AssignVendors = () => {
       })}
       </Container>
 
-      <Container className="grid gap-4 ">
+      <Container className="grid gap-4">
         <div className="flex items-center justify-between">
           <p className="font-semibold text-lg">
             Purchase Orders:
           </p>
         </div>
+        <div className="overflow-x-auto">
         <DataTable
           data={purchaseOrders || []}
           columns={purchaseOrderColumns}
@@ -106,6 +107,7 @@ const AssignVendors = () => {
           //   return `/purchase-orders/${row.original.id}`;
           // }}
         />
+        </div>
       </Container>
       <Container className="fixed bottom-0 left-[320px] right-0 shadow-inner flex rounded-none items-center justify-end gap-2">
         <Button

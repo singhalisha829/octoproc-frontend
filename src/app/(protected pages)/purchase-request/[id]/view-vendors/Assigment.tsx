@@ -85,7 +85,7 @@ const Assigment = ({ vendorAssignment }: Props) => {
 
   const mergedItems = mergeVendorAssignmentWithQuotations(vendorAssignment);
   return (
-    <>
+    <div className="overflow-x-auto">
       <div className="flex items-center justify-between" key={vendorAssignment.id}>
         <div className="flex items-center gap-2">
           <p className="font-bold text-lg">{vendorAssignment?.vendor?.name}</p>
@@ -174,7 +174,7 @@ const Assigment = ({ vendorAssignment }: Props) => {
         }
       />
       
-    </>
+    </div>
   );
 };
 
