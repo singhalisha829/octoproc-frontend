@@ -23,6 +23,7 @@ const badgeVariants = cva(
         partially_vendor_assigned:"border-transparent bg-orange-500 text-primary-foreground shadow hover:bg-orange-500/80",
         vendor_assigned:"border-transparent bg-purple-400 text-primary-foreground shadow hover:bg-purple-500/80",
         approved:"border-transparent bg-green-600 text-primary-foreground shadow hover:bg-green-600/80",
+        waiting_for_quotation: "border-transparent bg-pink-500 text-primary-foreground shadow hover:bg-pink-500/80"
       },
     },
     defaultVariants: {

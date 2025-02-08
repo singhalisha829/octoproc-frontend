@@ -73,7 +73,7 @@ const UploadQuotationPage = () => {
     mutationFn: uploadQuotation,
     onSuccess: () => {
       toast.success("Quotation uploaded successfully");
-      router.replace(`/purchase-request/${params.id}/view-vendors`);
+      router.replace(`/purchase-request/${params.id}/assign-vendors`);
     },
     onError: () => {
       toast.error("Failed to upload quotation");

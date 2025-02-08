@@ -52,17 +52,24 @@ export const insertQoutationDetailsInVendorAssignment = (assignments: VendorAssi
   if (!assignments || assignments.length === 0) return [];
 
   return assignments.map((assignment) => {
-    const quotation = assignment.quotations?.[0]; // Get the first quotation for this assignment
+    // Get the first non-rejected quotation (if exists)
+    const quotation = assignment.quotations?.[0]?.status !== "REJECTED" ? assignment.quotations?.[0] : null;
 
+    // If no valid quotation is found, return the assignment unchanged
+    if (!quotation) return assignment;
+
+    // Ensure quotation has items before accessing them
     const itemsWithPrice = assignment.items.map((item) => {
-      const matchedQuotationItem = quotation?.items.find(qItem => qItem.assignment_item_id === item.id);
+      const matchedQuotationItem = quotation.items?.find(qItem => qItem.assignment_item_id === item.id);
       return {
         ...item,
-        unit_price: matchedQuotationItem ? matchedQuotationItem.unit_price : undefined,
-        tax_amount: matchedQuotationItem ? matchedQuotationItem.tax_amount : undefined,
-        total_value: matchedQuotationItem ? matchedQuotationItem.net_amount : undefined,
-        total_amount: matchedQuotationItem ? matchedQuotationItem.total_amount : undefined,
-        tax_rate: matchedQuotationItem ? (matchedQuotationItem.tax_amount * 100)/matchedQuotationItem.net_amount : undefined,
+        unit_price: matchedQuotationItem?.unit_price ?? undefined,
+        tax_amount: matchedQuotationItem?.tax_amount ?? undefined,
+        total_value: matchedQuotationItem?.net_amount ?? undefined,
+        total_amount: matchedQuotationItem?.total_amount ?? undefined,
+        tax_rate: matchedQuotationItem?.net_amount 
+          ? (matchedQuotationItem.tax_amount * 100) / matchedQuotationItem.net_amount
+          : undefined,
       };
     });
 
@@ -72,7 +79,6 @@ export const insertQoutationDetailsInVendorAssignment = (assignments: VendorAssi
     };
   });
 };
-
 
 
 export const mergeVendorAssignmentWithQuotations = (

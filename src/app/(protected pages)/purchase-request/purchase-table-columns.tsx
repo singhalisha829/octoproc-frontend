@@ -48,6 +48,7 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
         partially_vendor_assigned: "partially_vendor_assigned",
         vendor_assigned: "vendor_assigned",
         purchase_order_sent: "purchase_order_sent",
+        waiting_for_quotation:"waiting_for_quotation"
       };
       
       return <DataTableColumnCell row={row} badge={<Badge variant={statusVariantMap[status.toLowerCase()] || "default"}>{`${formatEnumString(status)}`}</Badge>} />;

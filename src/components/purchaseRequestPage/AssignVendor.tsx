@@ -20,9 +20,9 @@ import { AssignedVendorInItemwise, Item } from "@/interfaces/Stock";
 import { transformSelectOptions } from "@/lib/utils";
 import { masterApiQuery } from "@/react-query/masterApiQueries";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CircleCheck } from "lucide-react";
+import { CircleCheck, Trash } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { toast } from "sonner";
 import { ControlledComboBox } from "../ui/ControlledComboBox";
 import { Input } from "../ui/input";
@@ -37,6 +37,7 @@ type Props = {
 };
 
 const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
+  console.log('vendors', vendors);
   const params = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [assignedVendors, setAssignedVendors] = useState<
@@ -52,6 +53,34 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
     quantity: 0,
   });
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (vendors && vendors.length > 0) {
+      setAssignedVendors((prev) => {
+        // Create a Map to store unique vendors by ID
+        const mergedVendorsMap = new Map();
+  
+        // Add existing assigned vendors first
+        prev.forEach((vendor) => mergedVendorsMap.set(vendor.id, vendor));
+  
+        // Add vendors from props (overwriting if ID already exists)
+        vendors.forEach((vendor) => 
+          mergedVendorsMap.set(vendor.vendor.id, {
+            quantity: Number(vendor.quantity),
+            vendor: {
+              id: vendor.vendor.id,
+              name: vendor.vendor.name,
+            },
+            id: vendor.vendor.id,
+          })
+        );
+  
+        // Convert Map back to array and set state
+        return Array.from(mergedVendorsMap.values());
+      });
+    }
+  }, [vendors]);
+  
   const { mutate } = useMutation({
     mutationFn: assignVendor,
     onSuccess: () => {
@@ -59,6 +88,11 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
       queryClient.invalidateQueries({
         queryKey: [
           purchaseRequestQueries.purchaseRequest.getItemWiseAssignedVendor.key,
+        ],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [
+          purchaseRequestQueries.purchaseRequest.getVendorsAssignments.key,
         ],
       });
       setAssignedVendors([]);
@@ -197,17 +231,26 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
                   if (!vendorInfo.quantity) {
                     return toast.error("Please enter quantity.");
                   }
-                  setAssignedVendors((prev) => [
-                    ...prev,
-                    {
-                      quantity: Number(vendorInfo.quantity),
-                      vendor: {
-                        id: Number(vendorInfo.id),
-                        name: vendorInfo.name,
-                      },
-                      id: Number(vendorInfo.id),
-                    },
-                  ]);
+                  setAssignedVendors((prev) => {
+                    const updatedVendors = prev.map((vendor) =>
+                      vendor.id === vendorInfo.id
+                        ? { ...vendor, quantity: vendor.quantity + Number(vendorInfo.quantity) }
+                        : vendor
+                    );
+              
+                    // Check if the vendor was updated, if not, add a new entry
+                    const isExisting = prev.some((vendor) => vendor.id === vendorInfo.id);
+                    return isExisting
+                      ? updatedVendors
+                      : [...updatedVendors, {
+                          quantity: Number(vendorInfo.quantity),
+                          vendor: { id: Number(vendorInfo.id), name: vendorInfo.name },
+                          id: Number(vendorInfo.id),
+                        }];
+                  });
+
+                  // Reset input fields
+                  setVendorInfo({ name: "", id: null, quantity: 0 });
                 }}
               >
                 <CircleCheck color="white" size={30} />
@@ -220,11 +263,12 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
               <TableRow
                 className="grid "
                 style={{
-                  gridTemplateColumns: `repeat(2, 1fr)`,
+                  gridTemplateColumns: `3fr 3fr 1fr`,
                 }}
               >
                 <TableHead className="flex items-center ">Name</TableHead>
                 <TableHead className="flex items-center ">Quantity</TableHead>
+                <TableHead></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -233,7 +277,7 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
                   key={vendor.id}
                   className="grid"
                   style={{
-                    gridTemplateColumns: `repeat(2, 1fr)`,
+                    gridTemplateColumns: `3fr 3fr 1fr`,
                   }}
                 >
                   <TableCell className="flex items-center ">
@@ -242,6 +286,19 @@ const AssignVendor = ({ vendors, maxQuantity, row }: Props) => {
                   <TableCell className="flex items-center">
                     {vendor.quantity}
                   </TableCell>
+                  <TableCell>
+                  <button
+                      className="bg-primary rounded-full hover:bg-red-600 p-1.5"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setAssignedVendors((prev) =>
+                          prev.filter((v) => v.id !== vendor.id) // Remove the vendor by filtering
+                        );
+                      }}
+              >
+                <Trash color="white" size={20} />
+              </button>
+              </TableCell>
                 </TableRow>
               ))}
             </TableBody>

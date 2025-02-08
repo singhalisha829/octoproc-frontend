@@ -98,6 +98,7 @@ const Assigment = ({ vendorAssignment }: Props) => {
             <Button
               isLoading={requestingQuotation}
               variant={"tertiary"}
+              className="mb-2"
               onClick={() => {
                 requestQuotationMutation({
                   pr_vendor_assignment_ids: [vendorAssignment?.id],
@@ -113,7 +114,7 @@ const Assigment = ({ vendorAssignment }: Props) => {
           )}
           {(vendorAssignment.status === "RFQ" ||
             vendorAssignment.status === "QUOTATION_REJECTED") && (
-            <Button variant={"tertiary"} asChild>
+            <Button variant={"tertiary"} asChild className="mb-2">
               <Link
                 href={`/purchase-request/${params.id}/upload-quotation/${vendorAssignment.id}`}
               >
@@ -164,11 +165,7 @@ const Assigment = ({ vendorAssignment }: Props) => {
         </div>
       </div>
       <DataTable
-        data={
-          latestQuotationRecieved
-            ? mergedItems.items || []
-            : vendorAssignment?.items || []
-        }
+        data={vendorAssignment?.items || []}
         columns={viewVendorColumns}
       />
       

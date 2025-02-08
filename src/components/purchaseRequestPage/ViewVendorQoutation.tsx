@@ -30,6 +30,9 @@ import {
     TableRow,
   } from "@/components/ui/table";
 import * as React from "react";
+import { type VariantProps } from "class-variance-authority"
+import { badgeVariants } from "@/components/ui/badge";
+import { formatEnumString } from "@/lib/utils";
 
 const quotationColumns: ColumnDef<Quotation>[] = [
     {
@@ -58,14 +61,20 @@ const quotationColumns: ColumnDef<Quotation>[] = [
       ),
     },
     {
-      accessorKey: "status",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Status" />
-      ),
-      cell: ({ row }) => {
-        return <DataTableColumnCell row={row} title={row.original.status || ""} />;
+        accessorKey: "status",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Status" />
+        ),
+        cell: ({ row }) => {
+          const status = row.original.status;
+          const statusVariantMap: Record<string, VariantProps<typeof badgeVariants>["variant"]> = {
+            rejected: "destructive",
+            approved: "approved",
+          };
+          
+          return <DataTableColumnCell row={row} badge={<Badge variant={statusVariantMap[status.toLowerCase()] || "default"}>{`${formatEnumString(status)}`}</Badge>} />;
+        },
       },
-    },
     {
         accessorKey: "file",
         header: ({ column }) => (
