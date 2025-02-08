@@ -142,7 +142,7 @@ const GeneratePoModal = ({
         setIsOpen((prev) => !prev);
       }}
     >
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="mb-2">
         <Button variant={"tertiary"}>Create Purchase Order</Button>
       </DialogTrigger>
       <DialogContent>

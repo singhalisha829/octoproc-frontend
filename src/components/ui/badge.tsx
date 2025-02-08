@@ -17,6 +17,12 @@ const badgeVariants = cva(
         outline: "text-foreground",
         tertiary:
           "border-transparent bg-primary/10 text-primary shadow hover:bg-primary/20",
+        created:"border-transparent bg-gray-400 text-primary-foreground shadow hover:bg-gray-500/80",
+        waiting_for_approval:"border-transparent bg-yellow-500 text-primary-foreground shadow hover:bg-yellow-500/80",
+        purchase_order_sent:"border-transparent bg-blue-500 text-primary-foreground shadow hover:bg-blue-500/80",
+        partially_vendor_assigned:"border-transparent bg-orange-500 text-primary-foreground shadow hover:bg-orange-500/80",
+        vendor_assigned:"border-transparent bg-purple-400 text-primary-foreground shadow hover:bg-purple-500/80",
+        approved:"border-transparent bg-green-600 text-primary-foreground shadow hover:bg-green-600/80",
       },
     },
     defaultVariants: {

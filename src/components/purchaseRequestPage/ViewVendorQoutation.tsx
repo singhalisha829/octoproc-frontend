@@ -157,7 +157,7 @@ const quotationItemsColumns: ColumnDef<QuotationItem>[] = [
         <DataTableColumnHeader column={column} title="Product Name" />
       ),
       cell: ({ row }) => {
-        return <DataTableColumnCell row={row} title={""} />;
+        return <DataTableColumnCell row={row} title={"-"} />;
       },
     },
     {

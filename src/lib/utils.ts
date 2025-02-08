@@ -62,7 +62,7 @@ export const insertQoutationDetailsInVendorAssignment = (assignments: VendorAssi
         tax_amount: matchedQuotationItem ? matchedQuotationItem.tax_amount : undefined,
         total_value: matchedQuotationItem ? matchedQuotationItem.net_amount : undefined,
         total_amount: matchedQuotationItem ? matchedQuotationItem.total_amount : undefined,
-        tax_rate: undefined,
+        tax_rate: matchedQuotationItem ? (matchedQuotationItem.tax_amount * 100)/matchedQuotationItem.net_amount : undefined,
       };
     });
 

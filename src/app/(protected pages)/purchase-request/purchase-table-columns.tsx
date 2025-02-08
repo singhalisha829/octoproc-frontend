@@ -8,6 +8,8 @@ import { formatEnumString } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { Pen } from "lucide-react";
 import Link from "next/link";
+import { type VariantProps } from "class-variance-authority"
+import { badgeVariants } from "@/components/ui/badge";
 
 export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
   {
@@ -39,7 +41,16 @@ export const purchaseRequestColumns: ColumnDef<PurchaseRequest>[] = [
     ),
     cell: ({ row }) => {
       const status = row.original.status;
-      return <DataTableColumnCell row={row} title={formatEnumString(status) || ""} />;
+      const statusVariantMap: Record<string, VariantProps<typeof badgeVariants>["variant"]> = {
+        created: "created",
+        waiting_for_approval: "waiting_for_approval",
+        approved: "approved",
+        partially_vendor_assigned: "partially_vendor_assigned",
+        vendor_assigned: "vendor_assigned",
+        purchase_order_sent: "purchase_order_sent",
+      };
+      
+      return <DataTableColumnCell row={row} badge={<Badge variant={statusVariantMap[status.toLowerCase()] || "default"}>{`${formatEnumString(status)}`}</Badge>} />;
     },
   },
   {

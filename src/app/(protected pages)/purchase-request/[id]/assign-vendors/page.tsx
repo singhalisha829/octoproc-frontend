@@ -59,7 +59,6 @@ const AssignVendors = () => {
     });
 
     const formattedAssignment = insertQoutationDetailsInVendorAssignment(vendorAssignments ?? []);
-    console.log('formattedAssignment', formattedAssignment);
 
     const { data: purchaseOrders } = useQuery({
         queryKey: [
@@ -80,7 +79,7 @@ const AssignVendors = () => {
         />
       </Container>
 
-      <Container className="grid gap-4 " >
+      {formattedAssignment?.length > 0 && (<Container className="grid gap-4 " >
         <p className="text-xl font-semibold">Assigned Vendors:</p>
         
         {(formattedAssignment || [])?.map((vendorAssignment) => {
@@ -91,9 +90,9 @@ const AssignVendors = () => {
           />
         );
       })}
-      </Container>
+      </Container>)}
 
-      <Container className="grid gap-4">
+      {purchaseOrders?.length > 0 && (<Container className="grid gap-4">
         <div className="flex items-center justify-between">
           <p className="font-semibold text-lg">
             Purchase Orders:
@@ -108,7 +107,8 @@ const AssignVendors = () => {
           // }}
         />
         </div>
-      </Container>
+      </Container>)}
+
       <Container className="fixed bottom-0 left-[320px] right-0 shadow-inner flex rounded-none items-center justify-end gap-2">
         <Button
           onClick={() => {

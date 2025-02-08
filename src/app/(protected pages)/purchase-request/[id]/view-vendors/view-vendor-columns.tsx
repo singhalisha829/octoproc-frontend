@@ -68,7 +68,7 @@ export const viewVendorColumns: ColumnDef<VendorAssigmentItem>[] = [
   {
     accessorKey: "taxRate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tax Rate" />
+      <DataTableColumnHeader column={column} title="Tax Rate(%)" />
     ),
     cell: ({ row }) => (
       <DataTableColumnCell row={row} title={`${row.original.tax_rate ?? '...'}`} />
