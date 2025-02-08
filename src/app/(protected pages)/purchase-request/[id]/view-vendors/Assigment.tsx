@@ -169,9 +169,7 @@ const Assigment = ({ vendorAssignment }: Props) => {
             ? mergedItems.items || []
             : vendorAssignment?.items || []
         }
-        columns={
-          latestQuotationRecieved ? quotationRecievedColumns : viewVendorColumns
-        }
+        columns={viewVendorColumns}
       />
       
     </div>

@@ -6,6 +6,8 @@ import { PurchaseOrder } from "@/interfaces/PurchaseOrder";
 import { formatEnumString } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { formatDate } from "date-fns";
+import { type VariantProps } from "class-variance-authority"
+import { badgeVariants } from "@/components/ui/badge";
 
 export const purchaseOrderColumns: ColumnDef<PurchaseOrder>[] = [
   {
@@ -88,8 +90,14 @@ export const purchaseOrderColumns: ColumnDef<PurchaseOrder>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
-    cell: ({ row }) => (
-      <DataTableColumnCell row={row} title={formatEnumString(row.original.status)} />
-    ),
+    cell: ({ row }) => {
+      const status = row.original.status;
+      const statusVariantMap: Record<string, VariantProps<typeof badgeVariants>["variant"]> = {
+        goods_received: "purchase_order_sent",
+      };
+      
+      return <DataTableColumnCell row={row} badge={<Badge variant={statusVariantMap[status.toLowerCase()] || "default"}>{`${formatEnumString(status)}`}</Badge>} />;
+    },
   },
+
 ];
