@@ -48,7 +48,6 @@ const ViewItems = () => {
   const statusVariantMap: Record<string, VariantProps<typeof badgeVariants>["variant"]> = {
     goods_received: "purchase_order_sent",
   };
-  console.log('purchaseOrder',purchaseOrder);
 
   // items table -> show the relevent columns based on the backend schema (may change)
 

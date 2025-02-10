@@ -20,6 +20,13 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export interface QuotationInfo {
   pr_vendor_assignment_id: number;
@@ -27,9 +34,9 @@ export interface QuotationInfo {
   additional_notes: string;
   items: Array<{
     pr_vendor_assignment_item_id: number;
-    unit_price: number;
+    unit_price: number | null;
     uom_id: number | null;
-    tax_rate: number;
+    tax_rate: number | null;
     additional_notes: string;
   }>;
 }
@@ -88,10 +95,10 @@ const UploadQuotationPage = () => {
       items:
         vendorAssignment?.items?.map((item) => ({
           pr_vendor_assignment_item_id: item.id,
-          unit_price: 0,
+          unit_price: null,
           uom_id: item.purchase_request_item.product.uom_id,
-          tax_rate: 0,
-          additional_notes: "...",
+          tax_rate: 5,
+          additional_notes: "",
         })) || [],
     });
   }, [vendorAssignment]);
@@ -193,24 +200,34 @@ const UploadQuotationPage = () => {
                           item.id
                         );
                       }}
+                      placeholder="0.0"
                       inputMode="numeric"
                       className="max-w-[100px] mx-auto"
                     />
                   </TableCell>
                   <TableCell>
-                    <Input
-                      type="number"
-                      value={String(itemValues?.tax_rate) || ""}
-                      onChange={(e) => {
-                        handleChangeInput(
-                          "tax_rate",
-                          Number(e.target.value),
-                          item.id
-                        );
-                      }}
-                      inputMode="numeric"
-                      className="max-w-[100px] mx-auto"
-                    />
+              
+                    <Select
+                        value={String(itemValues?.tax_rate) || ""}
+                        onValueChange={(value) =>
+                          handleChangeInput(
+                            "tax_rate",
+                            Number(value),
+                            item.id
+                          )            
+                        }
+                        defaultValue="all"
+                      >
+                        <SelectTrigger className="w-[80px] bg-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="5">5</SelectItem>
+                          <SelectItem value="12">12</SelectItem>
+                          <SelectItem value="18">18</SelectItem>
+                          <SelectItem value="28">28</SelectItem>
+                        </SelectContent>
+                      </Select>
                   </TableCell>
                   <TableCell>
                     <Input
