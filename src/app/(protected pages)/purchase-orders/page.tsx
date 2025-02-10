@@ -111,9 +111,9 @@ const PurchaseRequestPage = () => {
         <DataTable
           data={purchaseOrders || []}
           columns={purchaseOrderColumns}
-          // onRowClick={(row) => {
-          //   return `/purchase-orders/${row.original.id}`;
-          // }}
+          onRowClick={(row) => {
+            return `/purchase-orders/${row.original.id}`;
+          }}
         />
       </Container>
     </>
