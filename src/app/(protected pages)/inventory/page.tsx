@@ -212,7 +212,13 @@ const DashboardPage = () => {
           </div>
         </div>
         {/* give onRowCLick and rediect to clicked item ledger (page to show this)*/}
-        <DataTable data={items || []} columns={inventoryColumns} />
+        <DataTable 
+        data={items || []} 
+        columns={inventoryColumns} 
+        onRowClick={(row) => {
+          return `/ledger?id=${row.original.id}`;
+        }}
+        />
       </Container>
     </>
   );

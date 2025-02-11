@@ -18,19 +18,25 @@ import { useQuery } from "@tanstack/react-query";
 import { Share } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useClient } from "@/contexts/ClientContext";
+import { useSearchParams } from "next/navigation";
 
 const LedgerPage = () => {
+  const searchParams = useSearchParams();
+  const inventoryItemId = Number(searchParams.get("id")) || null;
+
   const { selectedClient } = useClient();
   const [filter, setFilter] = useState<{
     type: string;
     searchKeyword: string;
     enterprise_client_id: number | null;
     warehouses: number[];
+    inventory_item_ids: number[] | null;
   }>({
     type: "all",
     searchKeyword: "",
     enterprise_client_id: selectedClient,
     warehouses: [],
+    inventory_item_ids:null
   });
   // const [isAdding, setIsAdding] = useState(false);
 
@@ -50,6 +56,7 @@ const LedgerPage = () => {
     queryFn: () =>
       getLegders({
         enterprise_client_id: filter.enterprise_client_id,
+        inventory_item_ids:inventoryItemId !== null ? [inventoryItemId] : [],
         pageNum: 1,
         pageSize: 100,
       }),
